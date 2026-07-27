@@ -145,6 +145,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Article 84 · Labor Law 14/2025'**
   String get citationExample;
+
+  /// Label for the email field on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get loginEmailLabel;
+
+  /// Placeholder hint for the email field on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'you@company.com'**
+  String get loginEmailHint;
+
+  /// Label for the password field on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get loginPasswordLabel;
+
+  /// Accessible name for the button that reveals the password
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get loginShowPassword;
+
+  /// Accessible name for the button that hides the password
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get loginHidePassword;
+
+  /// Submit button label on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get loginSubmit;
+
+  /// Validation error when the email field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email'**
+  String get loginErrorEmailRequired;
+
+  /// Validation error when the email field isn't a valid email
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get loginErrorEmailInvalid;
+
+  /// Validation error when the password field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get loginErrorPasswordRequired;
+
+  /// Validation error when the password is shorter than the minimum length
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get loginErrorPasswordTooShort;
+
+  /// Error banner shown on the login screen when the login attempt is rejected
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email or password. Please try again.'**
+  String get loginInvalidCredentials;
+
+  /// Error banner shown when the account has been deactivated by an Owner/HR manager
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deactivated. Please contact your HR administrator.'**
+  String get loginAccountInactive;
+
+  /// Error banner shown for network/server failures during login
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get loginGenericError;
 }
 
 class _AppLocalizationsDelegate

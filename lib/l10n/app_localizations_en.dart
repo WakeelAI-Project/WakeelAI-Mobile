@@ -31,4 +31,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get citationExample => 'Article 84 · Labor Law 14/2025';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginEmailHint => 'you@company.com';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginShowPassword => 'Show password';
+
+  @override
+  String get loginHidePassword => 'Hide password';
+
+  @override
+  String get loginSubmit => 'Log in';
+
+  @override
+  String get loginErrorEmailRequired => 'Enter your email';
+
+  @override
+  String get loginErrorEmailInvalid => 'Enter a valid email address';
+
+  @override
+  String get loginErrorPasswordRequired => 'Enter your password';
+
+  @override
+  String get loginErrorPasswordTooShort =>
+      'Password must be at least 6 characters';
+
+  @override
+  String get loginInvalidCredentials =>
+      'Invalid email or password. Please try again.';
+
+  @override
+  String get loginAccountInactive =>
+      'Your account has been deactivated. Please contact your HR administrator.';
+
+  @override
+  String get loginGenericError => 'Something went wrong. Please try again.';
 }
