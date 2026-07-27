@@ -7,5 +7,16 @@
   "toggleContrast": "تباين عالٍ",
   "toggleLanguage": "English",
   "aiGeneratedLabel": "منشأ بالذكاء الاصطناعي",
-  "citationExample": "المادة 84 · قانون العمل 14/2025"
+  "citationExample": "المادة 84 · قانون العمل 14/2025",
+  "loginEmailLabel": "البريد الإلكتروني",
+  "loginEmailHint": "you@company.com",
+  "loginPasswordLabel": "كلمة المرور",
+  "loginShowPassword": "إظهار كلمة المرور",
+  "loginHidePassword": "إخفاء كلمة المرور",
+  "loginSubmit": "تسجيل الدخول",
+  "loginErrorEmailRequired": "أدخل بريدك الإلكتروني",
+  "loginErrorEmailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا",
+  "loginErrorPasswordRequired": "أدخل كلمة المرور",
+  "loginErrorPasswordTooShort": "يجب ألا تقل كلمة المرور عن 6 أحرف",
+  "loginInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى."
 }

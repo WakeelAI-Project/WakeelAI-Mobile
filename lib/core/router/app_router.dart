@@ -1,13 +1,14 @@
 import 'package:go_router/go_router.dart';
 
+import '../../features/auth/presentation/login_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
 
-/// Root app router. Only one route exists so far — the design-system
-/// showcase — until the first real user story/task defines actual
-/// screens (auth, chat, dashboard, ...).
+/// Root app router. `/login` is the real product entry point; `/design-system`
+/// stays reachable for reference while more feature screens land.
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/login',
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const ThemeShowcaseScreen()),
+    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+    GoRoute(path: '/design-system', builder: (context, state) => const ThemeShowcaseScreen()),
   ],
 );
