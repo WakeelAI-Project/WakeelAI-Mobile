@@ -34,6 +34,23 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_riverpod: ^2.6.1
+  go_router: ^17.3.0
+  google_fonts: ^8.2.0
+  dio: ^5.11.0
+  flutter_secure_storage: ^10.3.1
+  intl: 0.20.2
+  flutter_localizations:
+    sdk: flutter
+  lucide_icons_flutter: ^3.1.15
+
+# path_provider_android >=2.3.0 rewrote its Android implementation on top of
+# the `jni` package, whose android/build.gradle calls a Kotlin-DSL-only
+# `kotlin()` extension that isn't available under this project's Gradle/AGP
+# setup, breaking `assembleDebug`/`assembleRelease` entirely. Pin to the last
+# pre-jni release (plain Kotlin plugin channel) until upstream fixes it.
+dependency_overrides:
+  path_provider_android: 2.2.17
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +68,7 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,0 +1,35 @@
+{
+  "@@locale": "en",
+  "appName": "Wakeel AI",
+  "@appName": {
+    "description": "The application name shown in title bars and app switchers"
+  },
+  "appTagline": "Your Digital HR & Legal Officer",
+  "@appTagline": {
+    "description": "Short tagline shown under the app name"
+  },
+  "themeShowcaseTitle": "Design System",
+  "@themeShowcaseTitle": {
+    "description": "Title of the internal theme/token showcase screen"
+  },
+  "toggleThemeMode": "Toggle theme",
+  "@toggleThemeMode": {
+    "description": "Button label to cycle light/dark/system theme mode"
+  },
+  "toggleContrast": "High contrast",
+  "@toggleContrast": {
+    "description": "Switch label to enable high-contrast mode"
+  },
+  "toggleLanguage": "العربية",
+  "@toggleLanguage": {
+    "description": "Button label to switch the app language to Arabic"
+  },
+  "aiGeneratedLabel": "AI-generated",
+  "@aiGeneratedLabel": {
+    "description": "Badge label marking content produced by the AI, as opposed to authoritative/human content"
+  },
+  "citationExample": "Article 84 · Labor Law 14/2025",
+  "@citationExample": {
+    "description": "Sample law citation shown next to the seal citation marker"
+  }
+}
