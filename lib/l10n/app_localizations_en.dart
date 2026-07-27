@@ -66,4 +66,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loginInvalidCredentials =>
       'Invalid email or password. Please try again.';
+
+  @override
+  String get loginAccountInactive =>
+      'Your account has been deactivated. Please contact your HR administrator.';
+
+  @override
+  String get loginGenericError => 'Something went wrong. Please try again.';
 }

@@ -66,4 +66,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get loginInvalidCredentials =>
       'البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.';
+
+  @override
+  String get loginAccountInactive =>
+      'تم إيقاف حسابك. يرجى التواصل مع مسؤول الموارد البشرية.';
+
+  @override
+  String get loginGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 }

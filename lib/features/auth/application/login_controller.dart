@@ -2,32 +2,30 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Thrown when a login attempt is rejected.
-class LoginFailure implements Exception {
-  const LoginFailure();
-}
+import '../../../core/storage/token_storage.dart';
+import '../data/auth_api_client.dart';
 
 final loginControllerProvider = AsyncNotifierProvider.autoDispose<LoginController, void>(
   LoginController.new,
 );
 
-/// Drives the login screen's idle/loading/error states.
+/// Drives the login screen's idle/loading/error states: calls
+/// `POST /auth/login` and persists the returned access + refresh tokens.
 ///
-/// TODO(auth-api): [_submit] is a stub — replace with a real call to the
-/// backend login endpoint once it exists, and persist the returned JWT
-/// (flutter_secure_storage) as part of that follow-up task. There is no
-/// post-login destination screen yet, so a success path isn't wired here.
+/// There is no post-login destination screen yet, so success just clears
+/// loading/error — navigation is a follow-up task.
 class LoginController extends AutoDisposeAsyncNotifier<void> {
   @override
   FutureOr<void> build() {}
 
   Future<void> login({required String email, required String password}) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _submit(email, password));
-  }
-
-  Future<void> _submit(String email, String password) async {
-    await Future.delayed(const Duration(milliseconds: 900));
-    throw const LoginFailure();
+    state = await AsyncValue.guard(() async {
+      final tokens = await ref.read(authApiClientProvider).login(email: email, password: password);
+      await ref.read(tokenStorageProvider).saveTokens(
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+          );
+    });
   }
 }

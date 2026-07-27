@@ -75,5 +75,13 @@
   "loginInvalidCredentials": "Invalid email or password. Please try again.",
   "@loginInvalidCredentials": {
     "description": "Error banner shown on the login screen when the login attempt is rejected"
+  },
+  "loginAccountInactive": "Your account has been deactivated. Please contact your HR administrator.",
+  "@loginAccountInactive": {
+    "description": "Error banner shown when the account has been deactivated by an Owner/HR manager"
+  },
+  "loginGenericError": "Something went wrong. Please try again.",
+  "@loginGenericError": {
+    "description": "Error banner shown for network/server failures during login"
   }
 }

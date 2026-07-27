@@ -8,6 +8,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/seal_mark.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/login_controller.dart';
+import '../domain/auth_exceptions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -52,6 +53,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           email: _emailController.text.trim(),
           password: _passwordController.text,
         );
+  }
+
+  String _errorMessage(AppLocalizations t, Object? error) {
+    if (error is LoginFailure) {
+      switch (error.reason) {
+        case LoginFailureReason.invalidCredentials:
+          return t.loginInvalidCredentials;
+        case LoginFailureReason.accountInactive:
+          return t.loginAccountInactive;
+        case LoginFailureReason.unknown:
+          return t.loginGenericError;
+      }
+    }
+    return t.loginGenericError;
   }
 
   @override
@@ -99,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             const SizedBox(width: AppSpacing.s2),
                             Expanded(
                               child: Text(
-                                t.loginInvalidCredentials,
+                                _errorMessage(t, loginState.error),
                                 style: textTheme.bodyMedium?.copyWith(color: colors.errorFg),
                               ),
                             ),

@@ -211,6 +211,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid email or password. Please try again.'**
   String get loginInvalidCredentials;
+
+  /// Error banner shown when the account has been deactivated by an Owner/HR manager
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deactivated. Please contact your HR administrator.'**
+  String get loginAccountInactive;
+
+  /// Error banner shown for network/server failures during login
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get loginGenericError;
 }
 
 class _AppLocalizationsDelegate

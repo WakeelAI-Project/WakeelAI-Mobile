@@ -18,5 +18,7 @@
   "loginErrorEmailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا",
   "loginErrorPasswordRequired": "أدخل كلمة المرور",
   "loginErrorPasswordTooShort": "يجب ألا تقل كلمة المرور عن 6 أحرف",
-  "loginInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى."
+  "loginInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
+  "loginAccountInactive": "تم إيقاف حسابك. يرجى التواصل مع مسؤول الموارد البشرية.",
+  "loginGenericError": "حدث خطأ ما. حاول مرة أخرى."
 }
