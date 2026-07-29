@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_colors.dart';
@@ -74,6 +75,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final textTheme = Theme.of(context).textTheme;
     final t = AppLocalizations.of(context)!;
+    
+    ref.listen(loginControllerProvider, (previous, next) {
+      if (previous != null && previous.isLoading && !next.isLoading && !next.hasError) {
+        context.go('/home');
+      }
+    });
+
     final loginState = ref.watch(loginControllerProvider);
     final isLoading = loginState.isLoading;
 
