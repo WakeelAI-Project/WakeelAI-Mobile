@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+@font-face { font-family: 'Amiri'; src: url('/home/claude/fonts/Amiri-Regular.ttf'); font-weight: normal; }
+@font-face { font-family: 'Amiri'; src: url('/home/claude/fonts/Amiri-Bold.ttf'); font-weight: bold; }
+
+@page {
+  size: A4;
+  margin: 2.1cm 1.9cm;
+  @bottom-center {
+    content: "Wakeel AI API Documentation — v2 (updated)";
+    font-size: 8.5px;
+    color: #999;
+  }
+  @bottom-right {
+    content: "Page " counter(page);
+    font-size: 8.5px;
+    color: #999;
+  }
+}
+body {
+  font-family: 'Helvetica Neue', Arial, 'Amiri', sans-serif;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #1c1c1c;
+}
+h1 {
+  font-size: 25px;
+  color: #0b3d5c;
+  border-bottom: 3px solid #0b3d5c;
+  padding-bottom: 8px;
+  margin-bottom: 6px;
+}
+.subtitle { color: #666; font-size: 12px; margin-top: 0; margin-bottom: 20px;}
+h2 {
+  font-size: 16px;
+  color: #fff;
+  background: #0b3d5c;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-top: 26px;
+  margin-bottom: 10px;
+  page-break-after: avoid;
+}
+h3 {
+  font-size: 14px;
+  color: #0b3d5c;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #d5dfe6;
+  padding-bottom: 3px;
+  page-break-after: avoid;
+}
+h4.endpoint {
+  font-size: 13px;
+  margin: 14px 0 4px 0;
+  page-break-after: avoid;
+}
+h4.endpoint .method {
+  display: inline-block;
+  color: #fff;
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 8px;
+}
+.get { background: #1a7a3c; }
+.post { background: #0b5cab; }
+.patch { background: #b8860b; }
+.delete { background: #b30000; }
+
+.badge {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.badge-new { background: #e3f5e6; color: #1a7a3c; border: 1px solid #8fcf9f; }
+.badge-updated { background: #fff3d6; color: #8a6d00; border: 1px solid #e0c060; }
+
+pre {
+  background: #f4f6f8;
+  border: 1px solid #dde3e8;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-family: 'DejaVu Sans Mono', monospace;
+  font-size: 10.3px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  margin: 4px 0 10px 0;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  margin: 6px 0 12px 0;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 5px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+th { background: #eef4f8; color: #0b3d5c; }
+p { margin: 5px 0; }
+.note {
+  background: #f5f8fb;
+  border-left: 3px solid #0b3d5c;
+  padding: 6px 10px;
+  font-size: 11px;
+  margin: 6px 0 12px 0;
+}
+.changelog-box {
+  background: #fbfbfb;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 4px 14px;
+}
+code { font-family: 'DejaVu Sans Mono', monospace; font-size: 11px; background: #f0f0f0; padding: 1px 4px; border-radius: 3px;}
+hr.sep { border: none; border-top: 1px dashed #bbb; margin: 22px 0; }
+ul { margin: 4px 0; padding-left: 20px; }
+li { margin-bottom: 3px; }
+</style>
+</head>
+<body>
+
+<h1>Wakeel AI — API Documentation</h1>
+<p class="subtitle">Version: v2 (updated to match the current system specification) &nbsp;|&nbsp; Base URL: <code>https://api.wakeel-ai.com/v1</code> &nbsp;|&nbsp; Format: <code>application/json</code> unless stated otherwise (file uploads use <code>multipart/form-data</code>)</p>
+
+<h2>Changelog — v1 → v2</h2>
+<div class="changelog-box">
+<h3>Untouched (identical to v1)</h3>
+<p>All Authentication endpoints, <code>POST /users/invite</code>, <code>GET /users</code>, <code>PATCH /users/{user_id}/status</code>, <code>POST /company/policy-document</code>, <code>POST /employees</code>, <code>PATCH /employees/{record_id}</code>, <code>GET /employees</code>, <code>GET /leave-requests</code>, <code>PATCH /leave-requests/{request_id}</code> (approve/reject), <code>GET /me</code>, the Standard Error Format, Rate Limiting, and the Tenant Isolation Rule. No request or response field on any of these was changed, added, removed, or renamed.</p>
+
+<h3>New endpoints (gaps in v1 vs. the current system spec)</h3>
+<ul>
+<li><code>GET /employees/{record_id}</code> — fetch one employee record</li>
+<li><code>GET /documents</code> — list generated documents (HR: company-wide; Employee: own only)</li>
+<li><code>GET /documents/{doc_id}</code> — fetch/download one document</li>
+<li><code>PATCH /documents/{doc_id}</code> — HR edits a draft document</li>
+<li><code>POST /documents/{doc_id}/finalize</code> — marks a document Final and produces the PDF</li>
+<li><code>POST /documents/{doc_id}/send-email</code> — emails the final document</li>
+<li><code>PATCH /leave-requests/{request_id}/submit</code> — Employee submits a Draft leave request (Draft → Pending)</li>
+<li><code>DELETE /leave-requests/{request_id}</code> — Employee cancels a Draft (only while still Draft)</li>
+<li><code>POST /chat/ask</code> and <code>GET /chat/history</code> are now documented as shared <strong>AI Assistant Endpoints</strong>, usable by both <code>HR_Manager</code> and <code>Employee</code> (v1 only documented them under Employee — the spec requires HR to use the same assistant for law/policy/employee questions and document generation)</li>
+</ul>
+
+<h3>Modified endpoints (minimal, additive changes only — reasons noted inline at each endpoint)</h3>
+<ul>
+<li><code>POST /leave-requests</code> — same request fields as v1 (<code>leave_type</code>, <code>start_date</code>, <code>end_date</code>), <strong>plus</strong> an optional <code>attachment</code> file (required when <code>leave_type = Sick</code>, per the medical-report rule). Response status now starts at <code>Draft</code> instead of <code>Pending</code>, matching the spec's Draft → Pending flow (submission is now the new <code>/submit</code> endpoint above).</li>
+<li><code>POST /documents/generate</code> — same request fields as v1 (<code>employee_id</code>, <code>doc_type</code>, <code>prompt</code>). Two changes: (1) <code>doc_type</code> value <code>Resignation_Letter</code> is corrected to <code>Termination_Letter</code> — the spec asks for a company-initiated "Termination (Layoff) Letter," which is a different document from an employee-initiated resignation; (2) the response now returns a <code>Draft</code> with editable content instead of an immediate <code>pdf_url</code>, since the spec requires HR review/edit before the document is finalized to PDF or sent by email (see the new <code>/finalize</code> and <code>/send-email</code> endpoints). The <code>422 missing_employee_data</code> error now returns structured field descriptors (type, label, options) instead of plain field-name strings, per the spec's "structured input fields, not only plain text" requirement.</li>
+</ul>
+</div>
+
+<hr class="sep">
+
+<h2>1. Overview</h2>
+<p>Wakeel AI is a multi-tenant B2B SaaS. Every company (tenant) has isolated data. The API enforces Tenant Isolation: every authenticated request carries a <code>company_id</code> inside its JWT, and every query on the backend must filter by that <code>company_id</code> — regardless of what the client sends. Clients never pass <code>company_id</code> manually in the request body; it is always derived from the token.</p>
+
+<table>
+<tr><th>Role</th><th>Client</th><th>Typical Endpoints</th></tr>
+<tr><td>Company_Owner</td><td>Web Dashboard</td><td>Company setup, user invitations, policy upload</td></tr>
+<tr><td>HR_Manager</td><td>Web Dashboard</td><td>Employee records, document generation, leave approval, AI assistant</td></tr>
+<tr><td>Employee</td><td>Mobile App</td><td>Own profile, AI chat, leave requests, own documents</td></tr>
+</table>
+
+<h2>2. Authentication</h2>
+<h3>2.1 Method</h3>
+<p>Wakeel AI uses JWT Bearer tokens (access + refresh token pattern). Every JWT payload includes:</p>
+<pre>{
+  "user_id": "uuid",
+  "company_id": "uuid",
+  "role": "Company_Owner | HR_Manager | Employee",
+  "exp": 1721568000
+}</pre>
+<p>Access token lifespan: 15 minutes. Refresh token lifespan: 7 days, stored as an httpOnly cookie (web) or secure storage (mobile).</p>
+
+<h3>2.2 Endpoints</h3>
+
+<h4 class="endpoint"><span class="method post">POST</span>/auth/register-company</h4>
+<p>Creates a new company account and its Owner user in one step (first-time signup only).</p>
+<p><strong>Request</strong></p>
+<pre>{
+  "company_name": "Acme Corp",
+  "tax_id": "123456789",
+  "owner_full_name": "Sara Ahmed",
+  "owner_email": "sara@acme.com",
+  "password": "StrongPassword123!"
+}</pre>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "company_id": "c1a2...",
+  "user_id": "u1a2...",
+  "role": "Company_Owner",
+  "access_token": "eyJ...",
+  "refresh_token": "eyJ..."
+}</pre>
+
+<h4 class="endpoint"><span class="method post">POST</span>/auth/login</h4>
+<p>Used by all three roles.</p>
+<p><strong>Request</strong></p>
+<pre>{
+  "email": "hr@acme.com",
+  "password": "StrongPassword123!"
+}</pre>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "user_id": "u1a2...",
+  "company_id": "c1a2...",
+  "role": "HR_Manager",
+  "access_token": "eyJ...",
+  "refresh_token": "eyJ...",
+  "expires_in": 900
+}</pre>
+<p><strong>Errors</strong></p>
+<table>
+<tr><th>Status</th><th>Body</th><th>Meaning</th></tr>
+<tr><td>401</td><td><code>{"error": "invalid_credentials"}</code></td><td>Wrong email/password</td></tr>
+<tr><td>403</td><td><code>{"error": "account_inactive"}</code></td><td>User deactivated by Owner/HR</td></tr>
+</table>
+
+<h4 class="endpoint"><span class="method post">POST</span>/auth/refresh</h4>
+<p><strong>Request</strong></p>
+<pre>{ "refresh_token": "eyJ..." }</pre>
+<p><strong>Response 200 OK</strong></p>
+<pre>{ "access_token": "eyJ...", "expires_in": 900 }</pre>
+
+<h4 class="endpoint"><span class="method post">POST</span>/auth/logout</h4>
+<p>Invalidates the refresh token. Requires Bearer token. Returns <code>204 No Content</code>.</p>
+
+<h2>3. Owner Endpoints</h2>
+<p>All endpoints below require <code>role: Company_Owner</code>.</p>
+
+<h3>3.1 Invite / Add Users</h3>
+<h4 class="endpoint"><span class="method post">POST</span>/users/invite</h4>
+<p>Invites an HR Manager or Employee. Sends an email with a signup link (or auto-creates the account with a temp password, depending on your flow).</p>
+<p><strong>Request</strong></p>
+<pre>{
+  "full_name": "Mohamed Ali",
+  "email": "mohamed@acme.com",
+  "role": "HR_Manager"
+}</pre>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "user_id": "u3f2...",
+  "email": "mohamed@acme.com",
+  "role": "HR_Manager",
+  "status": "invited"
+}</pre>
+
+<h3>3.2 List Company Users</h3>
+<h4 class="endpoint"><span class="method get">GET</span>/users?role=HR_Manager&amp;page=1&amp;limit=20</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    { "user_id": "u3f2...", "full_name": "Mohamed Ali", "role": "HR_Manager", "is_active": true }
+  ],
+  "page": 1,
+  "total": 4
+}</pre>
+
+<h3>3.3 Deactivate a User</h3>
+<h4 class="endpoint"><span class="method patch">PATCH</span>/users/{user_id}/status</h4>
+<p><strong>Request</strong></p>
+<pre>{ "is_active": false }</pre>
+<p><strong>Response 200 OK</strong> → returns the updated user object.</p>
+
+<h3>3.4 Upload Employee Handbook / Company Policy</h3>
+<h4 class="endpoint"><span class="method post">POST</span>/company/policy-document</h4>
+<p><code>multipart/form-data</code></p>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>file</td><td>file (PDF)</td><td>The employee handbook</td></tr>
+<tr><td>title</td><td>string</td><td>e.g. "Employee Handbook 2026"</td></tr>
+</table>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "document_id": "d9a1...",
+  "title": "Employee Handbook 2026",
+  "pdf_url": "https://storage.wakeel-ai.com/policies/d9a1....pdf",
+  "indexed_for_rag": true
+}</pre>
+<p>This document is chunked and embedded into the company's private vector index, so the AI chat only retrieves from this company's policy — never another tenant's. Uploading a new handbook replaces the previous one in place (no version history); the replacement is recorded in the Audit Log.</p>
+
+<h2>4. HR Manager Endpoints</h2>
+<p>Requires <code>role: HR_Manager</code> (Owner may also access these, depending on your permission matrix).</p>
+
+<h3>4.1 Create Employee Record</h3>
+<h4 class="endpoint"><span class="method post">POST</span>/employees</h4>
+<p><strong>Request</strong></p>
+<pre>{
+  "full_name": "Ahmed Youssef",
+  "email": "ahmed@acme.com",
+  "job_title": "Developer",
+  "hire_date": "2026-07-01",
+  "salary": 12000,
+  "contract_type": "Full-time"
+}</pre>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "user_id": "u5c1...",
+  "record_id": "r7d2...",
+  "full_name": "Ahmed Youssef",
+  "job_title": "Developer",
+  "salary": 12000,
+  "employment_status": "Active"
+}</pre>
+
+<h3>4.2 Edit Employee Record</h3>
+<h4 class="endpoint"><span class="method patch">PATCH</span>/employees/{record_id}</h4>
+<p><strong>Request</strong> (partial update, any subset of fields)</p>
+<pre>{ "salary": 13500, "job_title": "Senior Developer" }</pre>
+<p><strong>Response 200 OK</strong> → updated record object.</p>
+
+<h3>4.3 List Employees</h3>
+<h4 class="endpoint"><span class="method get">GET</span>/employees?status=Active&amp;page=1&amp;limit=20</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    { "record_id": "r7d2...", "full_name": "Ahmed Youssef", "job_title": "Developer" }
+  ],
+  "page": 1,
+  "total": 34
+}</pre>
+
+<h3>4.4 Get a Single Employee Record <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method get">GET</span>/employees/{record_id}</h4>
+<div class="note">Added so HR can retrieve a specific employee's full record directly (not just via the AI assistant or a paginated list) — needed to support "HR can retrieve information about ANY employee in the company" as a first-class, non-AI path.</div>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "record_id": "r7d2...",
+  "user_id": "u5c1...",
+  "full_name": "Ahmed Youssef",
+  "email": "ahmed@acme.com",
+  "job_title": "Developer",
+  "department": "Engineering",
+  "hire_date": "2026-07-01",
+  "salary": 12000,
+  "contract_type": "Full-time",
+  "employment_status": "Active"
+}</pre>
+<p><strong>Errors</strong></p>
+<table>
+<tr><th>Status</th><th>Body</th><th>Meaning</th></tr>
+<tr><td>404</td><td><code>{"error": "employee_not_found"}</code></td><td>Doesn't exist, or belongs to another company</td></tr>
+</table>
+
+<h3>4.5 Generate a Document (AI-powered) <span class="badge badge-updated">UPDATED</span></h3>
+<h4 class="endpoint"><span class="method post">POST</span>/documents/generate</h4>
+<p>This is the core "AI generates paperwork" feature.</p>
+<div class="note">Request fields are unchanged from v1. Two things changed: <code>doc_type</code>'s allowed values now use <code>Termination_Letter</code> instead of <code>Resignation_Letter</code> (the spec calls for a company-initiated "Termination (Layoff) Letter," not an employee-initiated resignation). And the response now returns a <strong>Draft</strong>, not an immediate PDF — the spec requires HR to review and optionally edit the AI's output before it's finalized and exported (see §4.7 and §4.8 below).</div>
+<p><strong>Request</strong></p>
+<pre>{
+  "employee_id": "u5c1...",
+  "doc_type": "Contract",
+  "prompt": "Create a contract for Ahmed, Developer, 12,000 EGP"
+}</pre>
+<p>Supported <code>doc_type</code> values: <code>Contract</code>, <code>Warning_Letter</code>, <code>Termination_Letter</code></p>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "doc_id": "g4f1...",
+  "doc_type": "Contract",
+  "status": "Draft",
+  "content_html": "&lt;p&gt;Employment Contract...&lt;/p&gt;",
+  "created_at": "2026-07-21T10:15:00Z"
+}</pre>
+<p><strong>Errors</strong></p>
+<table>
+<tr><th>Status</th><th>Body</th><th>Meaning</th></tr>
+<tr><td>422</td><td><code>{"error": "missing_employee_data", "missing_fields": [{"field_name": "salary", "input_type": "number", "label": "Monthly Salary (EGP)"}]}</code></td><td>Not enough data to generate the document. Each entry is a structured field descriptor (<code>input_type</code>: <code>text</code> / <code>number</code> / <code>dropdown</code> / <code>date</code> / <code>file</code>, plus an <code>options</code> array for dropdowns), matching the spec's requirement for structured input prompts rather than plain text.</td></tr>
+<tr><td>404</td><td><code>{"error": "employee_not_found"}</code></td><td>Employee doesn't belong to this company</td></tr>
+</table>
+
+<h3>4.6 List Generated Documents <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method get">GET</span>/documents?employee_id=&amp;doc_type=&amp;status=&amp;page=1&amp;limit=20</h4>
+<div class="note">Added — v1 had no way to list previously generated documents at all. Required by "every generated document is stored" and by HR needing to find a draft to review/edit.</div>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    { "doc_id": "g4f1...", "employee_id": "u5c1...", "doc_type": "Contract", "status": "Draft", "created_at": "2026-07-21T10:15:00Z" }
+  ],
+  "page": 1,
+  "total": 12
+}</pre>
+
+<h3>4.7 Get / Review a Document <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method get">GET</span>/documents/{doc_id}</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "doc_id": "g4f1...",
+  "employee_id": "u5c1...",
+  "doc_type": "Contract",
+  "status": "Draft",
+  "content_html": "&lt;p&gt;Employment Contract...&lt;/p&gt;",
+  "pdf_url": null,
+  "created_at": "2026-07-21T10:15:00Z"
+}</pre>
+
+<h3>4.8 Edit a Draft Document <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method patch">PATCH</span>/documents/{doc_id}</h4>
+<div class="note">Added for "HR reviews it. HR can edit it." Only allowed while <code>status = Draft</code>.</div>
+<p><strong>Request</strong></p>
+<pre>{ "content_html": "&lt;p&gt;Employment Contract (edited)...&lt;/p&gt;" }</pre>
+<p><strong>Response 200 OK</strong> → updated document object.</p>
+
+<h3>4.9 Finalize a Document <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method post">POST</span>/documents/{doc_id}/finalize</h4>
+<div class="note">Added for the "Save → Export PDF" step. Marks the document <code>Final</code> (locking further edits) and generates the downloadable PDF.</div>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "doc_id": "g4f1...",
+  "status": "Final",
+  "pdf_url": "https://storage.wakeel-ai.com/docs/g4f1....pdf",
+  "finalized_at": "2026-07-21T10:22:00Z"
+}</pre>
+
+<h3>4.10 Send a Document by Email <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method post">POST</span>/documents/{doc_id}/send-email</h4>
+<div class="note">Added for the "or Send Email" step. Only valid once a document is <code>Final</code>.</div>
+<p><strong>Request</strong></p>
+<pre>{ "to_email": "ahmed@acme.com" }</pre>
+<p><strong>Response 200 OK</strong></p>
+<pre>{ "doc_id": "g4f1...", "sent": true, "sent_at": "2026-07-21T10:25:00Z" }</pre>
+
+<h3>4.11 List Leave Requests (pending approval)</h3>
+<h4 class="endpoint"><span class="method get">GET</span>/leave-requests?status=Pending</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    {
+      "request_id": "l1a2...",
+      "employee_id": "u5c1...",
+      "employee_name": "Ahmed Youssef",
+      "leave_type": "Annual",
+      "start_date": "2026-08-01",
+      "end_date": "2026-08-05",
+      "days_requested": 5,
+      "status": "Pending"
+    }
+  ]
+}</pre>
+
+<h3>4.12 Approve / Reject a Leave Request</h3>
+<h4 class="endpoint"><span class="method patch">PATCH</span>/leave-requests/{request_id}</h4>
+<p><strong>Request</strong></p>
+<pre>{ "status": "Approved", "hr_note": "Enjoy your vacation" }</pre>
+<p><strong>Response 200 OK</strong> → updated request; if approved, the employee's LEAVE_BALANCE is decremented automatically.</p>
+
+<h2>5. Employee Endpoints</h2>
+<p>Requires <code>role: Employee</code>. All results are automatically scoped to <code>user_id</code> from the JWT — an employee can never fetch another employee's data.</p>
+
+<h3>5.1 Get My Profile</h3>
+<h4 class="endpoint"><span class="method get">GET</span>/me</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "user_id": "u5c1...",
+  "full_name": "Ahmed Youssef",
+  "job_title": "Developer",
+  "salary": 12000,
+  "hire_date": "2026-07-01",
+  "leave_balances": [
+    { "leave_type": "Annual", "balance": 16, "year": 2026 },
+    { "leave_type": "Sick", "balance": 5, "year": 2026 }
+  ]
+}</pre>
+
+<h3>5.2 Submit a Leave Request <span class="badge badge-updated">UPDATED</span></h3>
+<h4 class="endpoint"><span class="method post">POST</span>/leave-requests</h4>
+<div class="note"><code>leave_type</code>, <code>start_date</code>, and <code>end_date</code> are unchanged from v1. Added an optional <code>attachment</code> file, required when <code>leave_type = Sick</code> (medical report) — this was a hard requirement in the spec with no field to support it in v1, so the request becomes <code>multipart/form-data</code> when an attachment is present (still plain JSON otherwise). The response's initial <code>status</code> is now <code>Draft</code> instead of <code>Pending</code>, matching the spec's Draft → Employee reviews → Employee submits → Pending flow; use §5.3 below to submit.</div>
+<p><strong>Request</strong> (<code>multipart/form-data</code> if <code>attachment</code> is included, otherwise <code>application/json</code>)</p>
+<pre>{
+  "leave_type": "Sick",
+  "start_date": "2026-08-01",
+  "end_date": "2026-08-05",
+  "attachment": "(file, required only if leave_type = Sick)"
+}</pre>
+<p><strong>Response 201 Created</strong></p>
+<pre>{
+  "request_id": "l1a2...",
+  "status": "Draft",
+  "days_requested": 5
+}</pre>
+<p><strong>Errors</strong></p>
+<table>
+<tr><th>Status</th><th>Body</th><th>Meaning</th></tr>
+<tr><td>422</td><td><code>{"error": "attachment_required", "leave_type": "Sick"}</code></td><td>Medical report attachment missing for sick leave</td></tr>
+</table>
+
+<h3>5.3 Submit a Draft Leave Request <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method patch">PATCH</span>/leave-requests/{request_id}/submit</h4>
+<div class="note">Added for the "Employee reviews the draft → Employee submits it → status becomes Pending" step. Only valid while <code>status = Draft</code>.</div>
+<p><strong>Response 200 OK</strong></p>
+<pre>{ "request_id": "l1a2...", "status": "Pending" }</pre>
+
+<h3>5.4 Cancel a Draft Leave Request <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method delete">DELETE</span>/leave-requests/{request_id}</h4>
+<div class="note">Added for "Employees may cancel a Draft before submission." Only valid while <code>status = Draft</code> — once <code>Pending</code>, it must go through HR approve/reject instead.</div>
+<p><strong>Response 204 No Content</strong></p>
+<p><strong>Errors</strong></p>
+<table>
+<tr><th>Status</th><th>Body</th><th>Meaning</th></tr>
+<tr><td>409</td><td><code>{"error": "not_a_draft"}</code></td><td>Request has already been submitted (Pending/Approved/Rejected) and can no longer be cancelled this way</td></tr>
+</table>
+
+<h3>5.5 View My Documents <span class="badge badge-new">NEW</span></h3>
+<h4 class="endpoint"><span class="method get">GET</span>/documents?page=1&amp;limit=20</h4>
+<div class="note">Added — v1 had no endpoint for "Employees can view generated documents / download only their own documents," which is an explicit Employee capability in the spec. Automatically scoped to the caller's own <code>user_id</code>; reuses the same resource shape as the HR-facing <code>GET /documents</code> in §4.6, filtered server-side to the employee's own records.</div>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    { "doc_id": "g4f1...", "doc_type": "Contract", "status": "Final", "pdf_url": "https://storage.wakeel-ai.com/docs/g4f1....pdf", "created_at": "2026-07-21T10:15:00Z" }
+  ],
+  "page": 1,
+  "total": 3
+}</pre>
+
+<h2>6. AI Assistant Endpoints <span class="badge badge-updated">UPDATED — now shared by HR_Manager and Employee</span></h2>
+<div class="note">v1 documented these only under Employee. The spec requires HR to use the same conversational assistant for labor-law questions, policy questions, employee-data questions, and document generation requests — so these are the same two endpoints, now callable by either role. Request and response shapes are unchanged from v1; only the allowed <code>role</code> scope and the retrieval-scoping note below are new.</div>
+
+<h3>6.1 Ask the AI Assistant</h3>
+<h4 class="endpoint"><span class="method post">POST</span>/chat/ask</h4>
+<p><strong>Request</strong></p>
+<pre>{
+  "message": "كام رصيد الإجازات باقي عندي؟",
+  "language": "AR"
+}</pre>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "chat_id": "ch9d1...",
+  "reply": "رصيدك الحالي من الإجازة السنوية هو 16 يوم لعام 2026.",
+  "sources": ["employee_leave_balance", "company_policy_doc"],
+  "created_at": "2026-07-21T10:20:00Z"
+}</pre>
+<p>The RAG pipeline's retrieval scope depends on the caller's role:</p>
+<ul>
+<li><strong>Employee:</strong> (1) this employee's own records, (2) this company's policy documents, (3) the general Egyptian Labor Law knowledge base — never another employee's data.</li>
+<li><strong>HR_Manager:</strong> (1) any employee's record within this company, (2) this company's policy documents, (3) the general Egyptian Labor Law knowledge base — never another tenant's data.</li>
+</ul>
+<p>For HR, a message that expresses intent to generate a document (e.g. "generate a contract for Ahmed at 10,000 EGP") is routed internally to the same flow as <code>POST /documents/generate</code> (§4.5), with any missing fields returned as structured input prompts inside the chat reply.</p>
+
+<h3>6.2 Get My Chat History</h3>
+<h4 class="endpoint"><span class="method get">GET</span>/chat/history?page=1&amp;limit=20</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    { "chat_id": "ch9d1...", "sender": "employee", "message": "...", "created_at": "..." },
+    { "chat_id": "ch9d2...", "sender": "system", "message": "...", "created_at": "..." }
+  ]
+}</pre>
+
+<h2>7. Audit Log (Owner / HR read-only)</h2>
+<h4 class="endpoint"><span class="method get">GET</span>/audit-logs?user_id=&amp;action=&amp;page=1&amp;limit=50</h4>
+<p><strong>Response 200 OK</strong></p>
+<pre>{
+  "data": [
+    {
+      "log_id": "al1...",
+      "user_id": "u3f2...",
+      "action": "GENERATE_DOCUMENT",
+      "resource_type": "Contract",
+      "created_at": "2026-07-21T09:00:00Z"
+    }
+  ],
+  "page": 1,
+  "total": 210
+}</pre>
+
+<h2>8. Standard Error Format</h2>
+<p>All errors follow the same envelope:</p>
+<pre>{
+  "error": "error_code",
+  "message": "Human-readable description",
+  "status": 400
+}</pre>
+<table>
+<tr><th>Status</th><th>Meaning</th></tr>
+<tr><td>400</td><td>Bad request / validation error</td></tr>
+<tr><td>401</td><td>Missing or invalid token</td></tr>
+<tr><td>403</td><td>Authenticated but not authorized for this resource/role</td></tr>
+<tr><td>404</td><td>Resource not found (or belongs to another tenant → treated as not found, not 403, to avoid leaking existence)</td></tr>
+<tr><td>422</td><td>Business-rule violation (e.g., insufficient leave balance)</td></tr>
+<tr><td>429</td><td>Rate limit exceeded</td></tr>
+<tr><td>500</td><td>Internal server error</td></tr>
+</table>
+
+<h2>9. Rate Limiting</h2>
+<table>
+<tr><th>Endpoint group</th><th>Limit</th></tr>
+<tr><td><code>/chat/ask</code></td><td>20 requests / minute / user</td></tr>
+<tr><td><code>/documents/generate</code></td><td>10 requests / minute / user</td></tr>
+<tr><td>All other endpoints</td><td>100 requests / minute / user</td></tr>
+</table>
+<p>Rate-limited responses return <code>429</code> with a <code>Retry-After</code> header (seconds).</p>
+
+<h2>10. Tenant Isolation Rule (applies to every endpoint above)</h2>
+<ol>
+<li><code>company_id</code> is never accepted from the client — it's extracted server-side from the JWT.</li>
+<li>Every database query filters by <code>company_id</code> in addition to any other WHERE clause.</li>
+<li>Requesting a resource (<code>employee_id</code>, <code>doc_id</code>, <code>request_id</code>, etc.) that exists but belongs to a different company returns <code>404</code>, not <code>403</code> — this prevents leaking the existence of other companies' data.</li>
+<li>The RAG vector index used by <code>/chat/ask</code> is partitioned per <code>company_id</code>, so retrieval can never cross tenant boundaries.</li>
+</ol>
+
+</body>
+</html>
