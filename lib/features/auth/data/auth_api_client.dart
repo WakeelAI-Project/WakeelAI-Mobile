@@ -25,7 +25,7 @@ class DioAuthApiClient implements AuthApiClient {
   Future<AuthTokens> login({required String email, required String password}) async {
     try {
       final response = await _dio.post<Map<String, dynamic>>(
-        '/auth/login',
+        '/api/Auth/login',
         data: {'email': email, 'password': password},
       );
       final data = response.data;
