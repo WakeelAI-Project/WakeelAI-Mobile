@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_colors.dart';
@@ -22,16 +21,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+  
+  bool _emailTouched = false;
+  bool _passwordTouched = false;
+  bool _emailDirty = false;
+  bool _passwordDirty = false;
+  bool _isSubmitting = false;
   bool _obscurePassword = true;
 
   @override
+  void initState() {
+    super.initState();
+    _emailFocus.addListener(() {
+      setState(() {
+        if (_emailFocus.hasFocus) _isSubmitting = false;
+        if (!_emailFocus.hasFocus) _emailTouched = true;
+      });
+    });
+    _passwordFocus.addListener(() {
+      setState(() {
+        if (_passwordFocus.hasFocus) _isSubmitting = false;
+        if (!_passwordFocus.hasFocus) _passwordTouched = true;
+      });
+    });
+  }
+
+  @override
   void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
   String? _validateEmail(String? value) {
+    if (_emailFocus.hasFocus && !_isSubmitting) return null;
+    if (!_emailTouched && !_isSubmitting) return null;
+    if (!_emailDirty && !_isSubmitting) return null;
+    
     final t = AppLocalizations.of(context)!;
     final email = value?.trim() ?? '';
     if (email.isEmpty) return t.loginErrorEmailRequired;
@@ -41,6 +71,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   String? _validatePassword(String? value) {
+    if (_passwordFocus.hasFocus && !_isSubmitting) return null;
+    if (!_passwordTouched && !_isSubmitting) return null;
+    if (!_passwordDirty && !_isSubmitting) return null;
+
     final t = AppLocalizations.of(context)!;
     if (value == null || value.isEmpty) return t.loginErrorPasswordRequired;
     if (value.length < 6) return t.loginErrorPasswordTooShort;
@@ -49,6 +83,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   void _submit(bool isLoading) {
     if (isLoading) return;
+    setState(() => _isSubmitting = true);
     if (_formKey.currentState?.validate() != true) return;
     ref.read(loginControllerProvider.notifier).login(
           email: _emailController.text.trim(),
@@ -76,12 +111,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final textTheme = Theme.of(context).textTheme;
     final t = AppLocalizations.of(context)!;
     
-    ref.listen(loginControllerProvider, (previous, next) {
-      if (previous != null && previous.isLoading && !next.isLoading && !next.hasError) {
-        context.go('/home');
-      }
-    });
-
     final loginState = ref.watch(loginControllerProvider);
     final isLoading = loginState.isLoading;
 
@@ -94,7 +123,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               constraints: const BoxConstraints(maxWidth: 420),
               child: Form(
                 key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
@@ -133,10 +161,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ],
                     TextFormField(
                       controller: _emailController,
+                      focusNode: _emailFocus,
+                      autovalidateMode: AutovalidateMode.always,
                       enabled: !isLoading,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.next,
                       autofillHints: const [AutofillHints.email],
+                      onChanged: (_) {
+                        if (!_emailDirty) setState(() => _emailDirty = true);
+                      },
                       validator: _validateEmail,
                       decoration: InputDecoration(
                         labelText: t.loginEmailLabel,
@@ -146,10 +179,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(height: AppSpacing.s4),
                     TextFormField(
                       controller: _passwordController,
+                      focusNode: _passwordFocus,
+                      autovalidateMode: AutovalidateMode.always,
                       enabled: !isLoading,
                       obscureText: _obscurePassword,
                       textInputAction: TextInputAction.done,
                       autofillHints: const [AutofillHints.password],
+                      onChanged: (_) {
+                        if (!_passwordDirty) setState(() => _passwordDirty = true);
+                      },
                       validator: _validatePassword,
                       onFieldSubmitted: (_) => _submit(isLoading),
                       decoration: InputDecoration(

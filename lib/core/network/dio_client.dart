@@ -49,6 +49,12 @@ final dioClientProvider = Provider<Dio>((ref) {
   // Trust the ASP.NET dev-cert's self-signed HTTPS certificate when pointed
   // at a local backend during development. Never applies to release builds.
   if (kDebugMode) {
+    dio.interceptors.add(LogInterceptor(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+    ));
+
     final adapter = dio.httpClientAdapter;
     if (adapter is IOHttpClientAdapter) {
       adapter.createHttpClient = () {

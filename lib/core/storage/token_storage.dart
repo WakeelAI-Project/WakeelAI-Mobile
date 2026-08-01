@@ -1,10 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-/// Persists the access + refresh JWT pair across app restarts (API doc
-/// §2.1: refresh token is 7-day lived and must live in secure storage on
-/// mobile). Abstract so tests can supply an in-memory fake instead of
-/// touching the platform secure-storage channel.
 abstract class TokenStorage {
   Future<void> saveTokens({required String accessToken, required String refreshToken});
   Future<String?> readAccessToken();
