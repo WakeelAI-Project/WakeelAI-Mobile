@@ -19,7 +19,7 @@ class WakeelApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Wakeel AI',
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      routerConfig: ref.watch(appRouterProvider),
       themeMode: themeMode,
       theme: AppTheme.build(brightness: Brightness.light, highContrast: highContrast, isArabic: isArabic),
       darkTheme: AppTheme.build(brightness: Brightness.dark, highContrast: highContrast, isArabic: isArabic),
