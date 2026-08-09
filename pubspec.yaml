@@ -43,6 +43,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   lucide_icons_flutter: ^3.1.15
+  file_picker: ^11.0.3
 
 # path_provider_android >=2.3.0 rewrote its Android implementation on top of
 # the `jni` package, whose android/build.gradle calls a Kotlin-DSL-only

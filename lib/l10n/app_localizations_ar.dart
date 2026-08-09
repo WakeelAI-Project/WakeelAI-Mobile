@@ -73,4 +73,60 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get leaveRequestTitle => 'تقديم طلب إجازة';
+
+  @override
+  String get leaveTypeLabel => 'نوع الإجازة';
+
+  @override
+  String get leaveTypeAnnual => 'سنوية';
+
+  @override
+  String get leaveTypeSick => 'مرضية';
+
+  @override
+  String get leaveTypeUnpaid => 'بدون أجر';
+
+  @override
+  String get startDateLabel => 'تاريخ البداية';
+
+  @override
+  String get endDateLabel => 'تاريخ النهاية';
+
+  @override
+  String get reasonLabel => 'السبب';
+
+  @override
+  String get reasonHint => 'سبب اختياري للإجازة';
+
+  @override
+  String get attachmentLabel => 'مرفق التقرير الطبي';
+
+  @override
+  String get attachmentRequiredHint =>
+      'مطلوب للإجازة المرضية (PDF/JPG/PNG، بحد أقصى 10MB)';
+
+  @override
+  String get submitButton => 'تقديم الطلب';
+
+  @override
+  String get selectDateHint => 'اختر التاريخ';
+
+  @override
+  String get pickFileButton => 'اختر ملف';
+
+  @override
+  String get errorRequiredField => 'هذا الحقل مطلوب';
+
+  @override
+  String get errorEndDateBeforeStartDate =>
+      'يجب أن يكون تاريخ النهاية بعد تاريخ البداية';
+
+  @override
+  String get errorAttachmentRequired => 'التقرير الطبي مطلوب للإجازة المرضية';
+
+  @override
+  String get successLeaveSubmitted => 'تم تقديم طلب الإجازة بنجاح';
 }

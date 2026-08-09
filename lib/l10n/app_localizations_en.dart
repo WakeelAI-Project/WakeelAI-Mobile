@@ -73,4 +73,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginGenericError => 'Something went wrong. Please try again.';
+
+  @override
+  String get leaveRequestTitle => 'Submit Leave Request';
+
+  @override
+  String get leaveTypeLabel => 'Leave Type';
+
+  @override
+  String get leaveTypeAnnual => 'Annual';
+
+  @override
+  String get leaveTypeSick => 'Sick';
+
+  @override
+  String get leaveTypeUnpaid => 'Unpaid';
+
+  @override
+  String get startDateLabel => 'Start Date';
+
+  @override
+  String get endDateLabel => 'End Date';
+
+  @override
+  String get reasonLabel => 'Reason';
+
+  @override
+  String get reasonHint => 'Optional reason for your leave';
+
+  @override
+  String get attachmentLabel => 'Medical Report Attachment';
+
+  @override
+  String get attachmentRequiredHint =>
+      'Required for sick leave (PDF/JPG/PNG, max 10MB)';
+
+  @override
+  String get submitButton => 'Submit Request';
+
+  @override
+  String get selectDateHint => 'Select date';
+
+  @override
+  String get pickFileButton => 'Choose File';
+
+  @override
+  String get errorRequiredField => 'This field is required';
+
+  @override
+  String get errorEndDateBeforeStartDate => 'End date must be after start date';
+
+  @override
+  String get errorAttachmentRequired =>
+      'Medical report is required for sick leave';
+
+  @override
+  String get successLeaveSubmitted => 'Leave request submitted successfully';
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/application/auth_state_provider.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/employee_home_screen.dart';
+import '../../features/leave/presentation/leave_request_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -36,6 +37,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/home', builder: (context, state) => const EmployeeHomeScreen()),
+      GoRoute(path: '/leave-request', builder: (context, state) => const LeaveRequestScreen()),
       GoRoute(path: '/design-system', builder: (context, state) => const ThemeShowcaseScreen()),
     ],
   );

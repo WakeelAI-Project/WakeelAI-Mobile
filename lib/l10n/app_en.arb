@@ -83,5 +83,23 @@
   "loginGenericError": "Something went wrong. Please try again.",
   "@loginGenericError": {
     "description": "Error banner shown for network/server failures during login"
-  }
+  },
+  "leaveRequestTitle": "Submit Leave Request",
+  "leaveTypeLabel": "Leave Type",
+  "leaveTypeAnnual": "Annual",
+  "leaveTypeSick": "Sick",
+  "leaveTypeUnpaid": "Unpaid",
+  "startDateLabel": "Start Date",
+  "endDateLabel": "End Date",
+  "reasonLabel": "Reason",
+  "reasonHint": "Optional reason for your leave",
+  "attachmentLabel": "Medical Report Attachment",
+  "attachmentRequiredHint": "Required for sick leave (PDF/JPG/PNG, max 10MB)",
+  "submitButton": "Submit Request",
+  "selectDateHint": "Select date",
+  "pickFileButton": "Choose File",
+  "errorRequiredField": "This field is required",
+  "errorEndDateBeforeStartDate": "End date must be after start date",
+  "errorAttachmentRequired": "Medical report is required for sick leave",
+  "successLeaveSubmitted": "Leave request submitted successfully"
 }

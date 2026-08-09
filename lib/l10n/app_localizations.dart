@@ -223,6 +223,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get loginGenericError;
+
+  /// No description provided for @leaveRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Leave Request'**
+  String get leaveRequestTitle;
+
+  /// No description provided for @leaveTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Type'**
+  String get leaveTypeLabel;
+
+  /// No description provided for @leaveTypeAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get leaveTypeAnnual;
+
+  /// No description provided for @leaveTypeSick.
+  ///
+  /// In en, this message translates to:
+  /// **'Sick'**
+  String get leaveTypeSick;
+
+  /// No description provided for @leaveTypeUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get leaveTypeUnpaid;
+
+  /// No description provided for @startDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDateLabel;
+
+  /// No description provided for @endDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDateLabel;
+
+  /// No description provided for @reasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason'**
+  String get reasonLabel;
+
+  /// No description provided for @reasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional reason for your leave'**
+  String get reasonHint;
+
+  /// No description provided for @attachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Report Attachment'**
+  String get attachmentLabel;
+
+  /// No description provided for @attachmentRequiredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Required for sick leave (PDF/JPG/PNG, max 10MB)'**
+  String get attachmentRequiredHint;
+
+  /// No description provided for @submitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Request'**
+  String get submitButton;
+
+  /// No description provided for @selectDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDateHint;
+
+  /// No description provided for @pickFileButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose File'**
+  String get pickFileButton;
+
+  /// No description provided for @errorRequiredField.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get errorRequiredField;
+
+  /// No description provided for @errorEndDateBeforeStartDate.
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after start date'**
+  String get errorEndDateBeforeStartDate;
+
+  /// No description provided for @errorAttachmentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical report is required for sick leave'**
+  String get errorAttachmentRequired;
+
+  /// No description provided for @successLeaveSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request submitted successfully'**
+  String get successLeaveSubmitted;
 }
 
 class _AppLocalizationsDelegate
