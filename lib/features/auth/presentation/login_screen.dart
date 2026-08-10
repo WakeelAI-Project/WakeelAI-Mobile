@@ -8,6 +8,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/seal_mark.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/login_controller.dart';
+import '../application/pending_password_change_provider.dart';
 import '../domain/auth_exceptions.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -30,10 +31,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _passwordDirty = false;
   bool _isSubmitting = false;
   bool _obscurePassword = true;
+  bool _showPasswordChangedBanner = false;
 
   @override
   void initState() {
     super.initState();
+    // One-shot: consume the flag now so revisiting this screen later
+    // (e.g. after logout) doesn't keep showing a stale success message.
+    // Clearing it is deferred to after this frame — Riverpod disallows
+    // writing to a provider during initState.
+    if (ref.read(passwordJustChangedProvider)) {
+      _showPasswordChangedBanner = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) ref.read(passwordJustChangedProvider.notifier).state = false;
+      });
+    }
     _emailFocus.addListener(() {
       setState(() {
         if (_emailFocus.hasFocus) _isSubmitting = false;
@@ -137,6 +149,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
                     ),
                     const SizedBox(height: AppSpacing.s8),
+                    if (_showPasswordChangedBanner) ...[
+                      Container(
+                        padding: const EdgeInsets.all(AppSpacing.s3),
+                        decoration: BoxDecoration(
+                          color: colors.successBg,
+                          borderRadius: AppRadius.mdRadius,
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.check_circle_outline, size: 20, color: colors.successFg),
+                            const SizedBox(width: AppSpacing.s2),
+                            Expanded(
+                              child: Text(
+                                t.loginPasswordChangedMessage,
+                                style: textTheme.bodyMedium?.copyWith(color: colors.successFg),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.s4),
+                    ],
                     if (loginState.hasError) ...[
                       Container(
                         padding: const EdgeInsets.all(AppSpacing.s3),

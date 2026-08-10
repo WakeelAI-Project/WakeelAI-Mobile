@@ -20,5 +20,19 @@
   "loginErrorPasswordTooShort": "يجب ألا تقل كلمة المرور عن 6 أحرف",
   "loginInvalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
   "loginAccountInactive": "تم إيقاف حسابك. يرجى التواصل مع مسؤول الموارد البشرية.",
-  "loginGenericError": "حدث خطأ ما. حاول مرة أخرى."
+  "loginGenericError": "حدث خطأ ما. حاول مرة أخرى.",
+  "loginPasswordChangedMessage": "تم تغيير كلمة المرور. يرجى تسجيل الدخول بكلمة المرور الجديدة.",
+  "changePasswordTitle": "تعيين كلمة المرور",
+  "changePasswordSubtitle": "هذه أول مرة تسجّل فيها الدخول. اختر كلمة مرور جديدة لإكمال إعداد حسابك.",
+  "changePasswordCurrentPasswordLabel": "كلمة المرور الحالية",
+  "changePasswordErrorCurrentPasswordRequired": "أدخل كلمة المرور الحالية",
+  "changePasswordNewPasswordLabel": "كلمة المرور الجديدة",
+  "changePasswordConfirmPasswordLabel": "تأكيد كلمة المرور الجديدة",
+  "changePasswordSubmit": "تعيين كلمة المرور",
+  "changePasswordErrorPasswordRequired": "أدخل كلمة مرور جديدة",
+  "changePasswordErrorPasswordTooShort": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+  "changePasswordErrorPasswordMismatch": "كلمتا المرور غير متطابقتين",
+  "changePasswordInvalidCurrentPassword": "كلمة المرور المؤقتة لم تعد صالحة. يرجى تسجيل الدخول مرة أخرى.",
+  "changePasswordUserNotFound": "تعذر العثور على حسابك. يرجى تسجيل الدخول مرة أخرى.",
+  "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى."
 }

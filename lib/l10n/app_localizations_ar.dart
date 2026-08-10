@@ -73,4 +73,53 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get loginPasswordChangedMessage =>
+      'تم تغيير كلمة المرور. يرجى تسجيل الدخول بكلمة المرور الجديدة.';
+
+  @override
+  String get changePasswordTitle => 'تعيين كلمة المرور';
+
+  @override
+  String get changePasswordSubtitle =>
+      'هذه أول مرة تسجّل فيها الدخول. اختر كلمة مرور جديدة لإكمال إعداد حسابك.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'كلمة المرور الحالية';
+
+  @override
+  String get changePasswordErrorCurrentPasswordRequired =>
+      'أدخل كلمة المرور الحالية';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'كلمة المرور الجديدة';
+
+  @override
+  String get changePasswordConfirmPasswordLabel => 'تأكيد كلمة المرور الجديدة';
+
+  @override
+  String get changePasswordSubmit => 'تعيين كلمة المرور';
+
+  @override
+  String get changePasswordErrorPasswordRequired => 'أدخل كلمة مرور جديدة';
+
+  @override
+  String get changePasswordErrorPasswordTooShort =>
+      'يجب ألا تقل كلمة المرور عن 8 أحرف';
+
+  @override
+  String get changePasswordErrorPasswordMismatch =>
+      'كلمتا المرور غير متطابقتين';
+
+  @override
+  String get changePasswordInvalidCurrentPassword =>
+      'كلمة المرور المؤقتة لم تعد صالحة. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get changePasswordUserNotFound =>
+      'تعذر العثور على حسابك. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get changePasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 }

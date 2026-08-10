@@ -223,6 +223,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get loginGenericError;
+
+  /// Success banner shown on the login screen after a forced first-login password change completes
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed. Please log in with your new password.'**
+  String get loginPasswordChangedMessage;
+
+  /// Title of the forced first-login change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Set your password'**
+  String get changePasswordTitle;
+
+  /// Explanatory subtitle on the forced first-login change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'This is your first time signing in. Choose a new password to finish setting up your account.'**
+  String get changePasswordSubtitle;
+
+  /// Label for the current/temp password field on the change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get changePasswordCurrentPasswordLabel;
+
+  /// Validation error when the current password field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password'**
+  String get changePasswordErrorCurrentPasswordRequired;
+
+  /// Label for the new password field on the change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get changePasswordNewPasswordLabel;
+
+  /// Label for the confirm-new-password field on the change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get changePasswordConfirmPasswordLabel;
+
+  /// Submit button label on the change-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Set password'**
+  String get changePasswordSubmit;
+
+  /// Validation error when the new password field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a new password'**
+  String get changePasswordErrorPasswordRequired;
+
+  /// Validation error when the new password is shorter than the minimum length
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get changePasswordErrorPasswordTooShort;
+
+  /// Validation error when the confirm-password field doesn't match the new password field
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get changePasswordErrorPasswordMismatch;
+
+  /// Error banner shown when the backend rejects the temp/current password
+  ///
+  /// In en, this message translates to:
+  /// **'Your temporary password is no longer valid. Please log in again.'**
+  String get changePasswordInvalidCurrentPassword;
+
+  /// Error banner shown when the backend can't find the user for this token
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find your account. Please log in again.'**
+  String get changePasswordUserNotFound;
+
+  /// Error banner shown for network/server failures during change-password
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get changePasswordGenericError;
 }
 
 class _AppLocalizationsDelegate

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/storage/token_storage.dart';
 import '../data/auth_api_client.dart';
 import 'auth_state_provider.dart';
+import 'pending_password_change_provider.dart';
 
 final loginControllerProvider = AsyncNotifierProvider.autoDispose<LoginController, void>(
   LoginController.new,
@@ -20,6 +21,18 @@ class LoginController extends AutoDisposeAsyncNotifier<void> {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final tokens = await ref.read(authApiClientProvider).login(email: email, password: password);
+
+      if (tokens.mustChangePassword) {
+        // Don't persist these tokens or mark the session authenticated —
+        // the temp-password session ends the moment the new password is
+        // set (see ChangePasswordController). The router redirects to
+        // /change-password whenever this is non-null.
+        ref.read(pendingPasswordChangeProvider.notifier).state = PendingPasswordChange(
+          accessToken: tokens.accessToken,
+        );
+        return;
+      }
+
       await ref.read(tokenStorageProvider).saveTokens(
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
