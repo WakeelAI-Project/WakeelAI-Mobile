@@ -8,13 +8,36 @@ import '../../features/auth/presentation/change_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/employee_home_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
+import '../../features/auth/presentation/welcome_screen.dart';
+import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/leaves/presentation/my_leave_requests_screen.dart';
+import '../../features/shell/presentation/main_navigation_scaffold.dart';
+
+Page<dynamic> _buildSlideTransitionPage(BuildContext context, GoRouterState state, Widget child) {
+  return CustomTransitionPage(
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(-1.0, 0.0); // start from left
+      const end = Offset.zero;
+      const curve = Curves.easeOutCubic;
+
+      final tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
   final pendingPasswordChange = ref.watch(pendingPasswordChangeProvider);
 
   return GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/welcome',
     redirect: (context, state) {
       if (authState == AuthState.loading) return '/splash';
 
@@ -34,8 +57,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         return '/login';
       }
 
-      if (authState == AuthState.authenticated && isGoingToLogin) {
-        return '/home';
+      if (authState == AuthState.authenticated && (isGoingToLogin || path == '/splash')) {
+        return '/welcome';
       }
 
       return null;
@@ -43,14 +66,75 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/splash',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
+        pageBuilder: (context, state) => _buildSlideTransitionPage(
+          context, 
+          state, 
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
         ),
       ),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/change-password', builder: (context, state) => const ChangePasswordScreen()),
-      GoRoute(path: '/home', builder: (context, state) => const EmployeeHomeScreen()),
-      GoRoute(path: '/design-system', builder: (context, state) => const ThemeShowcaseScreen()),
+      GoRoute(
+        path: '/login', 
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const LoginScreen()),
+      ),
+      GoRoute(
+        path: '/change-password',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ChangePasswordScreen()),
+      ),
+      GoRoute(
+        path: '/welcome', 
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const WelcomeScreen()),
+      ),
+      GoRoute(
+        path: '/settings',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const SettingsScreen()),
+      ),
+      GoRoute(
+        path: '/design-system', 
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ThemeShowcaseScreen()),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainNavigationScaffold(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/home',
+                pageBuilder: (context, state) => const NoTransitionPage(child: EmployeeHomeScreen()),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/chat',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: Scaffold(body: Center(child: Text('Chat - Coming Soon'))),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/leaves',
+                pageBuilder: (context, state) => const NoTransitionPage(child: MyLeaveRequestsScreen()),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/docs',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: Scaffold(body: Center(child: Text('Docs - Coming Soon'))),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     ],
   );
 });

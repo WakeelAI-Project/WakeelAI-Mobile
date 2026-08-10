@@ -43,12 +43,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   lucide_icons_flutter: ^3.1.15
-
-# path_provider_android >=2.3.0 rewrote its Android implementation on top of
-# the `jni` package, whose android/build.gradle calls a Kotlin-DSL-only
-# `kotlin()` extension that isn't available under this project's Gradle/AGP
-# setup, breaking `assembleDebug`/`assembleRelease` entirely. Pin to the last
-# pre-jni release (plain Kotlin plugin channel) until upstream fixes it.
+  material_symbols_icons: ^4.2960.0
+  shared_preferences: ^2.5.5
 dependency_overrides:
   path_provider_android: 2.2.17
 

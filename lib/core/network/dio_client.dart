@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:wakeel_ai_app/core/storage/token_storage.dart';
+import 'package:wakeel_ai_app/features/auth/application/auth_state_provider.dart';
 
 /// Base URL for the backend API (wakeel-ai-api-documentation.md §Overview).
 ///
@@ -16,11 +17,13 @@ const String _apiBaseUrl = String.fromEnvironment(
   defaultValue: 'https://wakeel-ai-api.runasp.net',
 );
 
-/// Interceptor to attach the JWT access token to every outgoing API request.
-class AuthInterceptor extends Interceptor {
-  AuthInterceptor(this._tokenStorage);
+/// Interceptor to attach the JWT access token and handle 401/403 errors.
+class AuthInterceptor extends QueuedInterceptor {
+  AuthInterceptor(this._tokenStorage, this._dioForRefresh, this._onForceLogout);
 
   final TokenStorage _tokenStorage;
+  final Dio _dioForRefresh;
+  final Future<void> Function() _onForceLogout;
 
   @override
   Future<void> onRequest(
@@ -31,7 +34,61 @@ class AuthInterceptor extends Interceptor {
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
-    super.onRequest(options, handler);
+    return handler.next(options);
+  }
+
+  @override
+  Future<void> onError(
+    DioException err,
+    ErrorInterceptorHandler handler,
+  ) async {
+    if (err.response?.statusCode == 401) {
+      final refreshToken = await _tokenStorage.readRefreshToken();
+      if (refreshToken == null || refreshToken.isEmpty) {
+        await _forceLogout();
+        return handler.next(err);
+      }
+
+      try {
+        final response = await _dioForRefresh.post<Map<String, dynamic>>(
+          '/api/Auth/refresh',
+          data: {'refresh_token': refreshToken},
+        );
+        
+        final data = response.data;
+        final newAccessToken = data?['access_token'] as String?;
+        if (newAccessToken != null) {
+          await _tokenStorage.saveTokens(
+            accessToken: newAccessToken,
+            refreshToken: refreshToken,
+          );
+          
+          final retryOptions = err.requestOptions;
+          retryOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+          
+          final retryResponse = await _dioForRefresh.fetch(retryOptions);
+          return handler.resolve(retryResponse);
+        } else {
+          await _forceLogout();
+          return handler.next(err);
+        }
+      } catch (e) {
+        await _forceLogout();
+        return handler.next(err);
+      }
+    } else if (err.response?.statusCode == 403) {
+      final data = err.response?.data;
+      if (data is Map && data['error'] == 'account_inactive') {
+        await _forceLogout();
+      }
+      return handler.next(err);
+    }
+    
+    return handler.next(err);
+  }
+
+  Future<void> _forceLogout() async {
+    await _onForceLogout();
   }
 }
 
@@ -44,7 +101,19 @@ final dioClientProvider = Provider<Dio>((ref) {
     ),
   );
 
-  dio.interceptors.add(AuthInterceptor(ref.watch(tokenStorageProvider)));
+  final dioForRefresh = Dio(
+    BaseOptions(
+      baseUrl: _apiBaseUrl,
+      connectTimeout: const Duration(seconds: 10),
+      receiveTimeout: const Duration(seconds: 10),
+    ),
+  );
+
+  dio.interceptors.add(AuthInterceptor(
+    ref.watch(tokenStorageProvider), 
+    dioForRefresh, 
+    () => ref.read(authProvider.notifier).logout(),
+  ));
 
   // Trust the ASP.NET dev-cert's self-signed HTTPS certificate when pointed
   // at a local backend during development. Never applies to release builds.
