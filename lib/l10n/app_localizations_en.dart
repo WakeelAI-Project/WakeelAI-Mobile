@@ -73,4 +73,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginGenericError => 'Something went wrong. Please try again.';
+
+  @override
+  String get loginPasswordChangedMessage =>
+      'Password changed. Please log in with your new password.';
+
+  @override
+  String get changePasswordTitle => 'Set your password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'This is your first time signing in. Choose a new password to finish setting up your account.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'Current password';
+
+  @override
+  String get changePasswordErrorCurrentPasswordRequired =>
+      'Enter your current password';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'New password';
+
+  @override
+  String get changePasswordConfirmPasswordLabel => 'Confirm new password';
+
+  @override
+  String get changePasswordSubmit => 'Set password';
+
+  @override
+  String get changePasswordErrorPasswordRequired => 'Enter a new password';
+
+  @override
+  String get changePasswordErrorPasswordTooShort =>
+      'Password must be at least 8 characters';
+
+  @override
+  String get changePasswordErrorPasswordMismatch => 'Passwords do not match';
+
+  @override
+  String get changePasswordInvalidCurrentPassword =>
+      'Your temporary password is no longer valid. Please log in again.';
+
+  @override
+  String get changePasswordUserNotFound =>
+      'We couldn\'t find your account. Please log in again.';
+
+  @override
+  String get changePasswordGenericError =>
+      'Something went wrong. Please try again.';
 }

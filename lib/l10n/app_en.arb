@@ -83,5 +83,61 @@
   "loginGenericError": "Something went wrong. Please try again.",
   "@loginGenericError": {
     "description": "Error banner shown for network/server failures during login"
+  },
+  "loginPasswordChangedMessage": "Password changed. Please log in with your new password.",
+  "@loginPasswordChangedMessage": {
+    "description": "Success banner shown on the login screen after a forced first-login password change completes"
+  },
+  "changePasswordTitle": "Set your password",
+  "@changePasswordTitle": {
+    "description": "Title of the forced first-login change-password screen"
+  },
+  "changePasswordSubtitle": "This is your first time signing in. Choose a new password to finish setting up your account.",
+  "@changePasswordSubtitle": {
+    "description": "Explanatory subtitle on the forced first-login change-password screen"
+  },
+  "changePasswordCurrentPasswordLabel": "Current password",
+  "@changePasswordCurrentPasswordLabel": {
+    "description": "Label for the current/temp password field on the change-password screen"
+  },
+  "changePasswordErrorCurrentPasswordRequired": "Enter your current password",
+  "@changePasswordErrorCurrentPasswordRequired": {
+    "description": "Validation error when the current password field is left empty"
+  },
+  "changePasswordNewPasswordLabel": "New password",
+  "@changePasswordNewPasswordLabel": {
+    "description": "Label for the new password field on the change-password screen"
+  },
+  "changePasswordConfirmPasswordLabel": "Confirm new password",
+  "@changePasswordConfirmPasswordLabel": {
+    "description": "Label for the confirm-new-password field on the change-password screen"
+  },
+  "changePasswordSubmit": "Set password",
+  "@changePasswordSubmit": {
+    "description": "Submit button label on the change-password screen"
+  },
+  "changePasswordErrorPasswordRequired": "Enter a new password",
+  "@changePasswordErrorPasswordRequired": {
+    "description": "Validation error when the new password field is left empty"
+  },
+  "changePasswordErrorPasswordTooShort": "Password must be at least 8 characters",
+  "@changePasswordErrorPasswordTooShort": {
+    "description": "Validation error when the new password is shorter than the minimum length"
+  },
+  "changePasswordErrorPasswordMismatch": "Passwords do not match",
+  "@changePasswordErrorPasswordMismatch": {
+    "description": "Validation error when the confirm-password field doesn't match the new password field"
+  },
+  "changePasswordInvalidCurrentPassword": "Your temporary password is no longer valid. Please log in again.",
+  "@changePasswordInvalidCurrentPassword": {
+    "description": "Error banner shown when the backend rejects the temp/current password"
+  },
+  "changePasswordUserNotFound": "We couldn't find your account. Please log in again.",
+  "@changePasswordUserNotFound": {
+    "description": "Error banner shown when the backend can't find the user for this token"
+  },
+  "changePasswordGenericError": "Something went wrong. Please try again.",
+  "@changePasswordGenericError": {
+    "description": "Error banner shown for network/server failures during change-password"
   }
 }
