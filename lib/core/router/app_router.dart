@@ -12,6 +12,9 @@ import '../../features/auth/presentation/welcome_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/leaves/presentation/my_leave_requests_screen.dart';
+import '../../features/documents/domain/wakeel_document.dart';
+import '../../features/documents/presentation/documents_screen.dart';
+import '../../features/documents/presentation/document_detail_screen.dart';
 import '../../features/shell/presentation/main_navigation_scaffold.dart';
 
 Page<dynamic> _buildSlideTransitionPage(BuildContext context, GoRouterState state, Widget child) {
@@ -98,6 +101,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ProfileScreen()),
       ),
       GoRoute(
+        path: '/documents/:docId',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(
+          context,
+          state,
+          DocumentDetailScreen(document: state.extra as WakeelDocument),
+        ),
+      ),
+      GoRoute(
         path: '/design-system', 
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ThemeShowcaseScreen()),
       ),
@@ -136,9 +147,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/docs',
-                pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text('Docs - Coming Soon'))),
-                ),
+                pageBuilder: (context, state) => const NoTransitionPage(child: DocumentsScreen()),
               ),
             ],
           ),
