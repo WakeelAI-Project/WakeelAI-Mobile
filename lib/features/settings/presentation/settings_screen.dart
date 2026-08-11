@@ -7,9 +7,7 @@ import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shadows.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
-import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_motion.dart';
-import '../../../core/widgets/logout_confirmation.dart';
 import '../../../l10n/app_localizations.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -114,17 +112,6 @@ class SettingsScreen extends ConsumerWidget {
                 // We'll set it to dark base + high contrast, or just enable high contrast flag.
                 ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark);
               },
-            ),
-            const SizedBox(height: AppSpacing.s12),
-
-            // Log Out Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: AppButtonStyles.danger(context),
-                onPressed: () => confirmLogout(context, ref),
-                child: Text(l10n.logout),
-              ),
             ),
             const SizedBox(height: AppSpacing.s6),
           ],

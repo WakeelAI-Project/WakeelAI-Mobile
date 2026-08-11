@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_colors.dart';
@@ -127,6 +129,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = loginState.isLoading;
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: colors.bgPage,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            iconSize: 28,
+            tooltip: t.settingsTitle,
+            onPressed: () => context.push('/settings'),
+            icon: Icon(Symbols.settings, color: colors.textSecondary, fill: 0),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

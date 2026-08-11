@@ -54,7 +54,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final isGoingToLogin = path == '/login';
 
-      if (authState == AuthState.unauthenticated && !isGoingToLogin) {
+      // Settings (theme/locale) is reachable pre-login too, so it's exempt
+      // from the unauthenticated bounce-to-login below.
+      final isGoingToSettings = path == '/settings';
+
+      if (authState == AuthState.unauthenticated && !isGoingToLogin && !isGoingToSettings) {
         return '/login';
       }
 
