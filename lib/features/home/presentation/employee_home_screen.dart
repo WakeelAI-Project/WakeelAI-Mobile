@@ -84,7 +84,7 @@ class EmployeeHomeScreen extends ConsumerWidget {
                           children: [
                             InkWell(
                               onTap: () {
-                                // Navigate to Profile
+                                context.push('/profile');
                               },
                               child: CircleAvatar(
                                 radius: 24,
@@ -264,7 +264,9 @@ class EmployeeHomeScreen extends ConsumerWidget {
                     QuickActionCard(
                       title: l10n.quickActionProfile,
                       icon: Symbols.account_circle,
-                      onTap: () {},
+                      onTap: () {
+                        context.push('/profile');
+                      },
                     ),
                   ],
                 ),

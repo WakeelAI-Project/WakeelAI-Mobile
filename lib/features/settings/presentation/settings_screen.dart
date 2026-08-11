@@ -9,37 +9,11 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_motion.dart';
+import '../../../core/widgets/logout_confirmation.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../auth/application/auth_state_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
-
-  Future<void> _confirmLogout(BuildContext context, WidgetRef ref, AppLocalizations l10n, AppColors colors) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: colors.bgCard,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgRadius),
-        title: Text(l10n.logoutConfirmationTitle, style: Theme.of(context).textTheme.titleLarge?.copyWith(color: colors.textPrimary)),
-        content: Text(l10n.logoutConfirmationDesc, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.textSecondary)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel, style: TextStyle(color: colors.textSecondary)),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.logout, style: TextStyle(color: colors.errorFg, fontWeight: FontWeight.bold)),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      ref.read(authProvider.notifier).logout();
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -148,7 +122,7 @@ class SettingsScreen extends ConsumerWidget {
               width: double.infinity,
               child: ElevatedButton(
                 style: AppButtonStyles.danger(context),
-                onPressed: () => _confirmLogout(context, ref, l10n, colors),
+                onPressed: () => confirmLogout(context, ref),
                 child: Text(l10n.logout),
               ),
             ),

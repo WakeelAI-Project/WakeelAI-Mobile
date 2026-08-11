@@ -197,6 +197,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeGreeting => 'Hello';
 
   @override
+  String get profileTitle => 'My Profile';
+
+  @override
+  String get profileEmailLabel => 'Email';
+
+  @override
+  String get profileDepartmentLabel => 'Department';
+
+  @override
+  String get profileHireDateLabel => 'Hire Date';
+
+  @override
+  String get profileSalaryLabel => 'Salary';
+
+  @override
+  String get profileFailedToLoad => 'Failed to load profile';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
