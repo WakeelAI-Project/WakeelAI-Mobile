@@ -12,6 +12,8 @@ class ThemeModeNotifier extends Notifier<ThemeMode> {
     final modeString = ref.watch(sharedPreferencesProvider).getString('themeMode');
     if (modeString == 'light') return ThemeMode.light;
     if (modeString == 'dark') return ThemeMode.dark;
+    // No explicit choice yet — match the device's theme. Settings has a
+    // System card so this now shows as selected instead of blank.
     return ThemeMode.system;
   }
 
