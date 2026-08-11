@@ -69,6 +69,7 @@
   "settingsTitle": "الإعدادات",
   "settingsLanguage": "اللغة",
   "settingsTheme": "المظهر",
+  "themeSystem": "تلقائي (حسب النظام)",
   "themeLight": "فاتح",
   "themeDark": "داكن",
   "themeHighContrast": "تباين عالي",

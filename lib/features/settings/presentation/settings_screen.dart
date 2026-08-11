@@ -86,6 +86,15 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: AppSpacing.s2),
             _ThemeOptionCard(
+              title: l10n.themeSystem,
+              isSelected: currentThemeMode == ThemeMode.system && !isHighContrast,
+              onTap: () {
+                ref.read(highContrastProvider.notifier).setHighContrast(false);
+                ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.system);
+              },
+            ),
+            const SizedBox(height: AppSpacing.s2),
+            _ThemeOptionCard(
               title: l10n.themeLight,
               isSelected: currentThemeMode == ThemeMode.light && !isHighContrast,
               onTap: () {
@@ -137,7 +146,7 @@ class _LanguageSegment extends StatelessWidget {
     final colors = Theme.of(context).extension<AppColors>()!;
     final shadows = Theme.of(context).extension<AppShadows>()!;
     final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
-    
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -149,8 +158,8 @@ class _LanguageSegment extends StatelessWidget {
           color: isActive ? colors.bgCard : Colors.transparent,
           borderRadius: AppRadius.smRadius,
           boxShadow: isActive ? shadows.sm : [],
-          border: isActive && shadows.sm.isEmpty 
-              ? Border.all(color: colors.borderDefault) 
+          border: isActive && shadows.sm.isEmpty
+              ? Border.all(color: colors.borderDefault)
               : Border.all(color: Colors.transparent),
         ),
         alignment: Alignment.center,
