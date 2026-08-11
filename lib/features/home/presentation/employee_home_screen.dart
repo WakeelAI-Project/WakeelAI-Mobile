@@ -259,7 +259,9 @@ class EmployeeHomeScreen extends ConsumerWidget {
                     QuickActionCard(
                       title: l10n.quickActionDocs,
                       icon: Symbols.description,
-                      onTap: () {},
+                      onTap: () {
+                        context.go('/docs');
+                      },
                     ),
                     QuickActionCard(
                       title: l10n.quickActionProfile,
