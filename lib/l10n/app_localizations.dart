@@ -307,6 +307,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get changePasswordGenericError;
+
+  /// No description provided for @navHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get navHome;
+
+  /// No description provided for @navChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get navChat;
+
+  /// No description provided for @navLeaves.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaves'**
+  String get navLeaves;
+
+  /// No description provided for @navDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Docs'**
+  String get navDocs;
+
+  /// No description provided for @homeLeaveBalances.
+  ///
+  /// In en, this message translates to:
+  /// **'LEAVE BALANCES'**
+  String get homeLeaveBalances;
+
+  /// No description provided for @homeQuickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'QUICK ACTIONS'**
+  String get homeQuickActions;
+
+  /// No description provided for @homeGreetingMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get homeGreetingMorning;
+
+  /// No description provided for @homeGreetingAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get homeGreetingAfternoon;
+
+  /// No description provided for @homeGreetingEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get homeGreetingEvening;
+
+  /// No description provided for @homeLeaveLowBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Low balance'**
+  String get homeLeaveLowBalance;
+
+  /// No description provided for @homeLeaveNoneLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'None left'**
+  String get homeLeaveNoneLeft;
+
+  /// No description provided for @homeLeaveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{remaining} of {total} days left'**
+  String homeLeaveSubtitle(int remaining, int total);
+
+  /// No description provided for @homeLeaveSubtitleUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Used: {used} days (no limit)'**
+  String homeLeaveSubtitleUnlimited(int used);
+
+  /// No description provided for @homeLeaveAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get homeLeaveAvailable;
+
+  /// No description provided for @homeLeaveUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get homeLeaveUnlimited;
+
+  /// No description provided for @leaveTypeAnnual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get leaveTypeAnnual;
+
+  /// No description provided for @leaveTypeSick.
+  ///
+  /// In en, this message translates to:
+  /// **'Sick'**
+  String get leaveTypeSick;
+
+  /// No description provided for @leaveTypeUnpaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get leaveTypeUnpaid;
+
+  /// No description provided for @quickActionChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the assistant'**
+  String get quickActionChat;
+
+  /// No description provided for @quickActionLeaves.
+  ///
+  /// In en, this message translates to:
+  /// **'My Leave Requests'**
+  String get quickActionLeaves;
+
+  /// No description provided for @quickActionDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'My Documents'**
+  String get quickActionDocs;
+
+  /// No description provided for @quickActionProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get quickActionProfile;
+
+  /// No description provided for @welcomeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello'**
+  String get welcomeGreeting;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeHighContrast.
+  ///
+  /// In en, this message translates to:
+  /// **'High contrast'**
+  String get themeHighContrast;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get logout;
+
+  /// No description provided for @logoutConfirmationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logoutConfirmationTitle;
+
+  /// No description provided for @logoutConfirmationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get logoutConfirmationDesc;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

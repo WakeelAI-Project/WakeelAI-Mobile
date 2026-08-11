@@ -48,11 +48,11 @@ class ThemeShowcaseScreen extends ConsumerWidget {
                     runSpacing: AppSpacing.s3,
                     children: [
                       OutlinedButton.icon(
-                        onPressed: () => ref.read(themeModeProvider.notifier).state = switch (themeMode) {
+                        onPressed: () => ref.read(themeModeProvider.notifier).setThemeMode(switch (themeMode) {
                           ThemeMode.light => ThemeMode.dark,
                           ThemeMode.dark => ThemeMode.system,
                           ThemeMode.system => ThemeMode.light,
-                        },
+                        }),
                         icon: Icon(switch (themeMode) {
                           ThemeMode.light => LucideIcons.sun,
                           ThemeMode.dark => LucideIcons.moon,
@@ -61,8 +61,8 @@ class ThemeShowcaseScreen extends ConsumerWidget {
                         label: Text(t.toggleThemeMode),
                       ),
                       OutlinedButton.icon(
-                        onPressed: () => ref.read(localeProvider.notifier).state =
-                            isArabic ? const Locale('en') : const Locale('ar'),
+                        onPressed: () => ref.read(localeProvider.notifier).setLocale(
+                            isArabic ? const Locale('en') : const Locale('ar')),
                         icon: const Icon(LucideIcons.languages, size: 20),
                         label: Text(t.toggleLanguage),
                       ),
@@ -71,7 +71,7 @@ class ThemeShowcaseScreen extends ConsumerWidget {
                         children: [
                           Switch(
                             value: highContrast,
-                            onChanged: (v) => ref.read(highContrastProvider.notifier).state = v,
+                            onChanged: (v) => ref.read(highContrastProvider.notifier).setHighContrast(v),
                           ),
                           const SizedBox(width: AppSpacing.s2),
                           Text(t.toggleContrast),

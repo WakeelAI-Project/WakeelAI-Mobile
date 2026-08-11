@@ -122,4 +122,107 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changePasswordGenericError =>
       'Something went wrong. Please try again.';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navChat => 'Chat';
+
+  @override
+  String get navLeaves => 'Leaves';
+
+  @override
+  String get navDocs => 'Docs';
+
+  @override
+  String get homeLeaveBalances => 'LEAVE BALANCES';
+
+  @override
+  String get homeQuickActions => 'QUICK ACTIONS';
+
+  @override
+  String get homeGreetingMorning => 'Good morning';
+
+  @override
+  String get homeGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get homeGreetingEvening => 'Good evening';
+
+  @override
+  String get homeLeaveLowBalance => 'Low balance';
+
+  @override
+  String get homeLeaveNoneLeft => 'None left';
+
+  @override
+  String homeLeaveSubtitle(int remaining, int total) {
+    return '$remaining of $total days left';
+  }
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return 'Used: $used days (no limit)';
+  }
+
+  @override
+  String get homeLeaveAvailable => 'Available';
+
+  @override
+  String get homeLeaveUnlimited => 'Unlimited';
+
+  @override
+  String get leaveTypeAnnual => 'Annual';
+
+  @override
+  String get leaveTypeSick => 'Sick';
+
+  @override
+  String get leaveTypeUnpaid => 'Unpaid';
+
+  @override
+  String get quickActionChat => 'Ask the assistant';
+
+  @override
+  String get quickActionLeaves => 'My Leave Requests';
+
+  @override
+  String get quickActionDocs => 'My Documents';
+
+  @override
+  String get quickActionProfile => 'Profile';
+
+  @override
+  String get welcomeGreeting => 'Hello';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeHighContrast => 'High contrast';
+
+  @override
+  String get logout => 'Log out';
+
+  @override
+  String get logoutConfirmationTitle => 'Log Out';
+
+  @override
+  String get logoutConfirmationDesc => 'Are you sure you want to log out?';
+
+  @override
+  String get cancel => 'Cancel';
 }

@@ -122,4 +122,107 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get changePasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get navHome => 'الرئيسية';
+
+  @override
+  String get navChat => 'المحادثة';
+
+  @override
+  String get navLeaves => 'الإجازات';
+
+  @override
+  String get navDocs => 'المستندات';
+
+  @override
+  String get homeLeaveBalances => 'أرصدة الإجازات';
+
+  @override
+  String get homeQuickActions => 'إجراءات سريعة';
+
+  @override
+  String get homeGreetingMorning => 'صباح الخير';
+
+  @override
+  String get homeGreetingAfternoon => 'مساء الخير';
+
+  @override
+  String get homeGreetingEvening => 'مساء الخير';
+
+  @override
+  String get homeLeaveLowBalance => 'رصيد منخفض';
+
+  @override
+  String get homeLeaveNoneLeft => 'لا يوجد رصيد';
+
+  @override
+  String homeLeaveSubtitle(int remaining, int total) {
+    return 'متبقي $remaining من $total أيام';
+  }
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return 'المستخدم: $used أيام (بدون حد)';
+  }
+
+  @override
+  String get homeLeaveAvailable => 'متاح';
+
+  @override
+  String get homeLeaveUnlimited => 'غير محدود';
+
+  @override
+  String get leaveTypeAnnual => 'سنوية';
+
+  @override
+  String get leaveTypeSick => 'مرضية';
+
+  @override
+  String get leaveTypeUnpaid => 'بدون راتب';
+
+  @override
+  String get quickActionChat => 'اسأل المساعد';
+
+  @override
+  String get quickActionLeaves => 'طلبات إجازاتي';
+
+  @override
+  String get quickActionDocs => 'مستنداتي';
+
+  @override
+  String get quickActionProfile => 'الملف الشخصي';
+
+  @override
+  String get welcomeGreeting => 'مرحباً';
+
+  @override
+  String get settingsTitle => 'الإعدادات';
+
+  @override
+  String get settingsLanguage => 'اللغة';
+
+  @override
+  String get settingsTheme => 'المظهر';
+
+  @override
+  String get themeLight => 'فاتح';
+
+  @override
+  String get themeDark => 'داكن';
+
+  @override
+  String get themeHighContrast => 'تباين عالي';
+
+  @override
+  String get logout => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmationTitle => 'تسجيل الخروج';
+
+  @override
+  String get logoutConfirmationDesc => 'هل أنت متأكد أنك تريد تسجيل الخروج؟';
+
+  @override
+  String get cancel => 'إلغاء';
 }

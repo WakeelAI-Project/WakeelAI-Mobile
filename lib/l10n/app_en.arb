@@ -84,6 +84,7 @@
   "@loginGenericError": {
     "description": "Error banner shown for network/server failures during login"
   },
+
   "loginPasswordChangedMessage": "Password changed. Please log in with your new password.",
   "@loginPasswordChangedMessage": {
     "description": "Success banner shown on the login screen after a forced first-login password change completes"
@@ -140,4 +141,56 @@
   "@changePasswordGenericError": {
     "description": "Error banner shown for network/server failures during change-password"
   }
+,
+  "navHome": "Home",
+  "navChat": "Chat",
+  "navLeaves": "Leaves",
+  "navDocs": "Docs",
+  "homeLeaveBalances": "LEAVE BALANCES",
+  "homeQuickActions": "QUICK ACTIONS",
+  "homeGreetingMorning": "Good morning",
+  "homeGreetingAfternoon": "Good afternoon",
+  "homeGreetingEvening": "Good evening",
+  "homeLeaveLowBalance": "Low balance",
+  "homeLeaveNoneLeft": "None left",
+  "homeLeaveSubtitle": "{remaining} of {total} days left",
+  "@homeLeaveSubtitle": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "homeLeaveSubtitleUnlimited": "Used: {used} days (no limit)",
+  "@homeLeaveSubtitleUnlimited": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      }
+    }
+  },
+  "homeLeaveAvailable": "Available",
+  "homeLeaveUnlimited": "Unlimited",
+  "leaveTypeAnnual": "Annual",
+  "leaveTypeSick": "Sick",
+  "leaveTypeUnpaid": "Unpaid",
+  "quickActionChat": "Ask the assistant",
+  "quickActionLeaves": "My Leave Requests",
+  "quickActionDocs": "My Documents",
+  "quickActionProfile": "Profile",
+  "welcomeGreeting": "Hello",
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsTheme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeHighContrast": "High contrast",
+  "logout": "Log out",
+  "logoutConfirmationTitle": "Log Out",
+  "logoutConfirmationDesc": "Are you sure you want to log out?",
+  "cancel": "Cancel"
+
 }
