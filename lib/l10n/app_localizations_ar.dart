@@ -197,6 +197,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get welcomeGreeting => 'مرحباً';
 
   @override
+  String get profileTitle => 'ملفي الشخصي';
+
+  @override
+  String get profileEmailLabel => 'البريد الإلكتروني';
+
+  @override
+  String get profileDepartmentLabel => 'القسم';
+
+  @override
+  String get profileHireDateLabel => 'تاريخ التعيين';
+
+  @override
+  String get profileSalaryLabel => 'الراتب';
+
+  @override
+  String get profileFailedToLoad => 'تعذر تحميل الملف الشخصي';
+
+  @override
   String get settingsTitle => 'الإعدادات';
 
   @override

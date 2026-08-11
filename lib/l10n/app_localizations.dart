@@ -446,6 +446,42 @@ abstract class AppLocalizations {
   /// **'Hello'**
   String get welcomeGreeting;
 
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Profile'**
+  String get profileTitle;
+
+  /// No description provided for @profileEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get profileEmailLabel;
+
+  /// No description provided for @profileDepartmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Department'**
+  String get profileDepartmentLabel;
+
+  /// No description provided for @profileHireDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hire Date'**
+  String get profileHireDateLabel;
+
+  /// No description provided for @profileSalaryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get profileSalaryLabel;
+
+  /// No description provided for @profileFailedToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load profile'**
+  String get profileFailedToLoad;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:

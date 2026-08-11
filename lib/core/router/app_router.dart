@@ -10,6 +10,7 @@ import '../../features/home/presentation/employee_home_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
 import '../../features/auth/presentation/welcome_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/leaves/presentation/my_leave_requests_screen.dart';
 import '../../features/shell/presentation/main_navigation_scaffold.dart';
 
@@ -87,6 +88,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/settings',
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const SettingsScreen()),
+      ),
+      GoRoute(
+        path: '/profile',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ProfileScreen()),
       ),
       GoRoute(
         path: '/design-system', 
