@@ -87,40 +87,30 @@ class SettingsScreen extends ConsumerWidget {
             const SizedBox(height: AppSpacing.s2),
             _ThemeOptionCard(
               title: l10n.themeSystem,
-              isSelected: currentThemeMode == ThemeMode.system && !isHighContrast,
-              onTap: () {
-                ref.read(highContrastProvider.notifier).setHighContrast(false);
-                ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.system);
-              },
+              isSelected: currentThemeMode == ThemeMode.system,
+              onTap: () => ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.system),
             ),
             const SizedBox(height: AppSpacing.s2),
             _ThemeOptionCard(
               title: l10n.themeLight,
-              isSelected: currentThemeMode == ThemeMode.light && !isHighContrast,
-              onTap: () {
-                ref.read(highContrastProvider.notifier).setHighContrast(false);
-                ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.light);
-              },
+              isSelected: currentThemeMode == ThemeMode.light,
+              onTap: () => ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.light),
             ),
             const SizedBox(height: AppSpacing.s2),
             _ThemeOptionCard(
               title: l10n.themeDark,
-              isSelected: currentThemeMode == ThemeMode.dark && !isHighContrast,
-              onTap: () {
-                ref.read(highContrastProvider.notifier).setHighContrast(false);
-                ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark);
-              },
+              isSelected: currentThemeMode == ThemeMode.dark,
+              onTap: () => ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark),
             ),
-            const SizedBox(height: AppSpacing.s2),
-            _ThemeOptionCard(
+            const SizedBox(height: AppSpacing.s6),
+
+            // High contrast — orthogonal to System/Light/Dark (design system
+            // §2.3, §12): it boosts contrast on whichever of those is active,
+            // so it's a toggle, not another mutually-exclusive option.
+            _HighContrastToggle(
               title: l10n.themeHighContrast,
-              isSelected: isHighContrast,
-              onTap: () {
-                ref.read(highContrastProvider.notifier).setHighContrast(true);
-                // Usually high contrast implies a dark theme in some systems, but here it's an orthogonal toggle.
-                // We'll set it to dark base + high contrast, or just enable high contrast flag.
-                ref.read(themeModeProvider.notifier).setThemeMode(ThemeMode.dark);
-              },
+              value: isHighContrast,
+              onChanged: (value) => ref.read(highContrastProvider.notifier).setHighContrast(value),
             ),
             const SizedBox(height: AppSpacing.s6),
           ],
@@ -226,6 +216,55 @@ class _ThemeOptionCard extends StatelessWidget {
               child: isSelected
                   ? Icon(Icons.check, size: 16, color: colors.onBrandPrimary)
                   : null,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HighContrastToggle extends StatelessWidget {
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const _HighContrastToggle({
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).extension<AppColors>()!;
+    final shadows = Theme.of(context).extension<AppShadows>()!;
+    final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
+
+    return InkWell(
+      onTap: () => onChanged(!value),
+      borderRadius: AppRadius.lgRadius,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s2),
+        decoration: BoxDecoration(
+          color: colors.bgCard,
+          borderRadius: AppRadius.lgRadius,
+          boxShadow: shadows.sm,
+          border: shadows.sm.isEmpty ? Border.all(color: colors.borderDefault) : null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: AppTypography.textBase(isArabic).copyWith(color: colors.textPrimary),
+              ),
+            ),
+            Switch(
+              value: value,
+              onChanged: onChanged,
+              activeThumbColor: colors.brandPrimary,
             ),
           ],
         ),
