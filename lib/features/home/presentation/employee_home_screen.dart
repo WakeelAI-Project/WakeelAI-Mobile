@@ -11,7 +11,6 @@ import '../../../core/theme/app_button_styles.dart';
 import '../application/employee_provider.dart';
 import 'widgets/leave_balance_card.dart';
 import 'widgets/quick_action_card.dart';
-import '../../auth/application/auth_state_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class EmployeeHomeScreen extends ConsumerWidget {

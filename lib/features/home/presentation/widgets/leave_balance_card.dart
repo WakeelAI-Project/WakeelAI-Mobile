@@ -39,10 +39,11 @@ class LeaveBalanceCard extends StatelessWidget {
 
     final double progress = !isUnlimited && total > 0 ? (currentBalance / total).clamp(0.0, 1.0) : 0.0;
     
-    // Determine status badge
-    AppStatus? badgeStatus;
-    String? badgeLabel;
-    
+    // Determine status badge — every branch below assigns both, so these
+    // are never actually null by the time they're used.
+    AppStatus badgeStatus;
+    String badgeLabel;
+
     if (isUnlimited) {
       badgeStatus = AppStatus.success;
       badgeLabel = l10n.homeLeaveUnlimited;
@@ -102,8 +103,7 @@ class LeaveBalanceCard extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                     ),
-                    if (badgeStatus != null && badgeLabel != null)
-                      StatusBadge(label: badgeLabel, status: badgeStatus),
+                    StatusBadge(label: badgeLabel, status: badgeStatus),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.s1),
