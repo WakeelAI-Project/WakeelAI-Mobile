@@ -179,7 +179,7 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                             final document = state.items[index];
                             return DocumentCard(
                               document: document,
-                              onTap: () => context.push('/documents/${document.docId}', extra: document),
+                              onTap: () => context.push('/documents/${document.id}'),
                             );
                           },
                         ),

@@ -1,7 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,22 +15,32 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/status_badge.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
+import '../application/documents_provider.dart';
+import '../data/documents_repository.dart';
 import '../domain/wakeel_document.dart';
-import 'widgets/document_card.dart' show iconForDocumentType, labelForDocumentType;
+import 'widgets/document_card.dart' show iconForDocumentType;
 import 'widgets/document_pdf_preview.dart';
 
-typedef PdfPreviewBuilder = Widget Function(String assetPath);
+/// Takes the (not-yet-invoked) download step rather than a plain file path
+/// so tests can override the whole loading+rendering pipeline — including
+/// skipping the download — not just the final PDF-rendering widget.
+typedef PdfPreviewBuilder = Widget Function(Future<String> Function() ensureLocalCopy);
 
-Widget _defaultPdfPreviewBuilder(String assetPath) => DocumentPdfPreview(assetPath: assetPath);
+Widget _defaultPdfPreviewBuilder(Future<String> Function() ensureLocalCopy) {
+  return _PdfPreviewLoader(ensureLocalCopy: ensureLocalCopy);
+}
 
-class DocumentDetailScreen extends StatefulWidget {
+/// Fetches the document fresh via `GET /api/Documents/{doc_id}` on entry
+/// (see [documentDetailProvider]) rather than reusing the list item, since
+/// the list endpoint omits `content_html`/`pdf_url`.
+class DocumentDetailScreen extends ConsumerStatefulWidget {
   const DocumentDetailScreen({
     super.key,
-    required this.document,
+    required this.documentId,
     this.pdfPreviewBuilder = _defaultPdfPreviewBuilder,
   });
 
-  final WakeelDocument document;
+  final String documentId;
 
   /// Overridable so tests can substitute a stub instead of the real
   /// [DocumentPdfPreview] — that widget calls into pdfx's native PDF
@@ -37,38 +48,44 @@ class DocumentDetailScreen extends StatefulWidget {
   final PdfPreviewBuilder pdfPreviewBuilder;
 
   @override
-  State<DocumentDetailScreen> createState() => _DocumentDetailScreenState();
+  ConsumerState<DocumentDetailScreen> createState() => _DocumentDetailScreenState();
 }
 
-class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
+class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
   bool _isWorking = false;
   String? _localFilePath;
 
-  /// Sample data encodes bundled assets as `asset:<path>` since there's no
-  /// real `pdf_url` to download from yet (see documents_repository.dart).
-  String get _assetPath {
-    final url = widget.document.pdfUrl!;
-    return url.startsWith('asset:') ? url.substring('asset:'.length) : url;
-  }
+  String _fileNameFor(WakeelDocument document) => '${document.id}.pdf';
 
-  String get _fileName => '${widget.document.docId}.pdf';
-
-  Future<String> _ensureLocalCopy() async {
+  /// Downloads `pdf_url` (a path relative to the API host, e.g.
+  /// `/uploads/documents/xxx.pdf`) into the app's documents directory the
+  /// first time it's needed, then reuses the cached copy.
+  Future<String> _ensureLocalCopy(WakeelDocument document) async {
     final cached = _localFilePath;
     if (cached != null) return cached;
-    final data = await rootBundle.load(_assetPath);
+
+    final pdfUrl = document.pdfUrl;
+    if (pdfUrl == null) {
+      throw StateError('Document ${document.id} has no pdf_url to download.');
+    }
+
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$_fileName');
-    await file.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+    final file = File('${dir.path}/${_fileNameFor(document)}');
+    if (await file.exists()) {
+      _localFilePath = file.path;
+      return file.path;
+    }
+
+    await ref.read(documentsRepositoryProvider).downloadPdf(pdfUrl: pdfUrl, savePath: file.path);
     _localFilePath = file.path;
     return file.path;
   }
 
-  Future<void> _download() async {
+  Future<void> _download(WakeelDocument document) async {
     if (_isWorking) return;
     setState(() => _isWorking = true);
     try {
-      await _ensureLocalCopy();
+      await _ensureLocalCopy(document);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Saved to your device.')),
@@ -83,13 +100,13 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
     }
   }
 
-  Future<void> _share() async {
+  Future<void> _share(WakeelDocument document) async {
     if (_isWorking) return;
     setState(() => _isWorking = true);
     try {
-      final path = await _ensureLocalCopy();
+      final path = await _ensureLocalCopy(document);
       await SharePlus.instance.share(
-        ShareParams(files: [XFile(path)], fileNameOverrides: [_fileName]),
+        ShareParams(files: [XFile(path)], fileNameOverrides: [_fileNameFor(document)]),
       );
     } catch (_) {
       if (!mounted) return;
@@ -106,8 +123,7 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final l10n = AppLocalizations.of(context)!;
     final isArabic = l10n.localeName == 'ar';
-    final document = widget.document;
-    final isDraft = document.status == DocumentStatus.draft;
+    final asyncDocument = ref.watch(documentDetailProvider(widget.documentId));
 
     return Scaffold(
       backgroundColor: colors.bgPage,
@@ -117,69 +133,211 @@ class _DocumentDetailScreenState extends State<DocumentDetailScreen> {
         scrolledUnderElevation: 0,
         iconTheme: IconThemeData(color: colors.textPrimary),
         title: Text(
-          labelForDocumentType(document.docType),
+          asyncDocument.valueOrNull?.title ?? '',
           style: AppTypography.textXl(isArabic).copyWith(color: colors.textPrimary),
         ),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s3),
-              child: Row(
-                children: [
-                  Icon(iconForDocumentType(document.docType), color: colors.textSecondary),
-                  const SizedBox(width: AppSpacing.s2),
-                  Expanded(
-                    child: Text(
-                      DateFormat.yMMMd(isArabic ? 'ar' : 'en').format(document.createdAt),
-                      style: AppTypography.textSm(isArabic).copyWith(color: colors.textSecondary),
-                    ),
-                  ),
-                  StatusBadge(
-                    label: isDraft ? 'Being reviewed' : 'Final',
-                    status: isDraft ? AppStatus.warning : AppStatus.success,
-                  ),
-                ],
-              ),
+        child: switch (asyncDocument) {
+          AsyncData(:final value) => _DocumentDetailBody(
+              document: value,
+              colors: colors,
+              isArabic: isArabic,
+              isWorking: _isWorking,
+              onDownload: () => _download(value),
+              onShare: () => _share(value),
+              ensureLocalCopy: () => _ensureLocalCopy(value),
+              pdfPreviewBuilder: widget.pdfPreviewBuilder,
             ),
-            Expanded(
-              child: isDraft
-                  ? _DraftReviewState(colors: colors, isArabic: isArabic)
-                  : widget.pdfPreviewBuilder(_assetPath),
+          AsyncError(:final error) => _ErrorState(
+              colors: colors,
+              isArabic: isArabic,
+              error: error,
+              onRetry: () => ref.invalidate(documentDetailProvider(widget.documentId)),
             ),
-            if (!isDraft)
-              Padding(
-                padding: const EdgeInsets.all(AppSpacing.s4),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        style: AppButtonStyles.secondary(context),
-                        onPressed: _isWorking ? null : _share,
-                        icon: const Icon(Symbols.share),
-                        label: const Text('Share'),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.s3),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        style: AppButtonStyles.primary(context),
-                        onPressed: _isWorking ? null : _download,
-                        icon: _isWorking
-                            ? SizedBox(
-                                height: 18,
-                                width: 18,
-                                child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
-                              )
-                            : const Icon(Symbols.download),
-                        label: const Text('Download'),
-                      ),
-                    ),
-                  ],
+          _ => const Center(child: CircularProgressIndicator()),
+        },
+      ),
+    );
+  }
+}
+
+class _DocumentDetailBody extends StatelessWidget {
+  const _DocumentDetailBody({
+    required this.document,
+    required this.colors,
+    required this.isArabic,
+    required this.isWorking,
+    required this.onDownload,
+    required this.onShare,
+    required this.ensureLocalCopy,
+    required this.pdfPreviewBuilder,
+  });
+
+  final WakeelDocument document;
+  final AppColors colors;
+  final bool isArabic;
+  final bool isWorking;
+  final VoidCallback onDownload;
+  final VoidCallback onShare;
+  final Future<String> Function() ensureLocalCopy;
+  final PdfPreviewBuilder pdfPreviewBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDraft = document.status == DocumentStatus.draft;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s3),
+          child: Row(
+            children: [
+              Icon(iconForDocumentType(document.category), color: colors.textSecondary),
+              const SizedBox(width: AppSpacing.s2),
+              Expanded(
+                child: Text(
+                  DateFormat.yMMMd(isArabic ? 'ar' : 'en').format(document.createdAt),
+                  style: AppTypography.textSm(isArabic).copyWith(color: colors.textSecondary),
                 ),
               ),
+              StatusBadge(
+                label: isDraft ? 'Being reviewed' : 'Final',
+                status: isDraft ? AppStatus.warning : AppStatus.success,
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: isDraft
+              ? _DraftReviewState(colors: colors, isArabic: isArabic)
+              : document.pdfUrl == null
+                  ? _ErrorState(
+                      colors: colors,
+                      isArabic: isArabic,
+                      error: StateError('Finalized document is missing a pdf_url.'),
+                      onRetry: null,
+                    )
+                  : pdfPreviewBuilder(ensureLocalCopy),
+        ),
+        if (!isDraft && document.pdfUrl != null)
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.s4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: AppButtonStyles.secondary(context),
+                    onPressed: isWorking ? null : onShare,
+                    icon: const Icon(Symbols.share),
+                    label: const Text('Share'),
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.s3),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: AppButtonStyles.primary(context),
+                    onPressed: isWorking ? null : onDownload,
+                    icon: isWorking
+                        ? SizedBox(
+                            height: 18,
+                            width: 18,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
+                          )
+                        : const Icon(Symbols.download),
+                    label: const Text('Download'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// Production default for [PdfPreviewBuilder]: downloads the PDF once
+/// (caching the local path for the life of this widget) before handing it
+/// to [DocumentPdfPreview].
+class _PdfPreviewLoader extends StatefulWidget {
+  const _PdfPreviewLoader({required this.ensureLocalCopy});
+
+  final Future<String> Function() ensureLocalCopy;
+
+  @override
+  State<_PdfPreviewLoader> createState() => _PdfPreviewLoaderState();
+}
+
+class _PdfPreviewLoaderState extends State<_PdfPreviewLoader> {
+  late final Future<String> _localFile = widget.ensureLocalCopy();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String>(
+      future: _localFile,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError || !snapshot.hasData) {
+          final colors = Theme.of(context).extension<AppColors>()!;
+          return Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Symbols.picture_as_pdf, size: 48, color: colors.borderDefault),
+                const SizedBox(height: AppSpacing.s3),
+                Text('Preview unavailable', style: TextStyle(color: colors.textSecondary)),
+              ],
+            ),
+          );
+        }
+        return DocumentPdfPreview(filePath: snapshot.data!);
+      },
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.colors, required this.isArabic, required this.error, required this.onRetry});
+
+  final AppColors colors;
+  final bool isArabic;
+  final Object error;
+  final VoidCallback? onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.s8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Symbols.error, size: 48, color: colors.errorFg),
+            const SizedBox(height: AppSpacing.s3),
+            Text(
+              'Failed to load document.',
+              style: AppTypography.textBase(isArabic).copyWith(color: colors.textPrimary),
+            ),
+            if (kDebugMode)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  error.toString(),
+                  style: AppTypography.textSm(isArabic).copyWith(color: colors.errorFg),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            if (onRetry != null) ...[
+              const SizedBox(height: AppSpacing.s4),
+              ElevatedButton(
+                style: AppButtonStyles.secondary(context),
+                onPressed: onRetry,
+                child: const Text('Retry'),
+              ),
+            ],
           ],
         ),
       ),

@@ -110,7 +110,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => _buildSlideTransitionPage(
           context,
           state,
-          DocumentDetailScreen(document: state.extra as WakeelDocument),
+          DocumentDetailScreen(documentId: state.pathParameters['docId']!),
         ),
       ),
       GoRoute(
