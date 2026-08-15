@@ -7,20 +7,17 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_typography.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
-/// In-app PDF preview with pinch-zoom. [assetPath] is a bundled asset
-/// (there's no real `pdf_url` to fetch from yet — see documents_repository.dart)
-/// but this widget only depends on a [PdfDocument] future, so swapping in
-/// `PdfDocument.openFile`/`openData` from a downloaded network PDF later is
-/// a one-line change.
+/// In-app PDF preview with pinch-zoom over a locally-downloaded copy of
+/// `pdf_url` (see `DocumentDetailScreen._ensureLocalCopy`).
 ///
 /// Loading is delegated to [PdfControllerPinch]/[PdfViewPinch] themselves —
 /// on failure (e.g. no native PDF renderer available, as under `flutter
 /// test`) [onDocumentError] fires and we fall back to a static panel
 /// instead of crashing.
 class DocumentPdfPreview extends StatefulWidget {
-  const DocumentPdfPreview({super.key, required this.assetPath});
+  const DocumentPdfPreview({super.key, required this.filePath});
 
-  final String assetPath;
+  final String filePath;
 
   @override
   State<DocumentPdfPreview> createState() => _DocumentPdfPreviewState();
@@ -33,7 +30,7 @@ class _DocumentPdfPreviewState extends State<DocumentPdfPreview> {
   @override
   void initState() {
     super.initState();
-    _controller = PdfControllerPinch(document: PdfDocument.openAsset(widget.assetPath));
+    _controller = PdfControllerPinch(document: PdfDocument.openFile(widget.filePath));
   }
 
   @override

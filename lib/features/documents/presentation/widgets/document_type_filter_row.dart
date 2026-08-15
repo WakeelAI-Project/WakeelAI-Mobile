@@ -22,17 +22,24 @@ class DocumentTypeFilterRow extends ConsumerWidget {
 
     // Stub labels — same convention as LeaveStatusFilterRow, needs actual
     // localization keys later.
-    const filters = <DocumentType?>[null, DocumentType.contract, DocumentType.warningLetter, DocumentType.termination];
-    String labelFor(DocumentType? type) {
+    const filters = <DocumentTypeCategory?>[
+      null,
+      DocumentTypeCategory.contract,
+      DocumentTypeCategory.warningLetter,
+      DocumentTypeCategory.termination,
+    ];
+    String labelFor(DocumentTypeCategory? type) {
       switch (type) {
         case null:
           return 'All';
-        case DocumentType.contract:
+        case DocumentTypeCategory.contract:
           return 'Contracts';
-        case DocumentType.warningLetter:
+        case DocumentTypeCategory.warningLetter:
           return 'Warning';
-        case DocumentType.termination:
+        case DocumentTypeCategory.termination:
           return 'Termination';
+        case DocumentTypeCategory.other:
+          return 'Other';
       }
     }
 
