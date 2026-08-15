@@ -12,6 +12,8 @@ import '../../features/auth/presentation/welcome_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/leaves/presentation/my_leave_requests_screen.dart';
+import '../../features/leaves/presentation/new_leave_request_screen.dart';
+import '../../features/documents/domain/wakeel_document.dart';
 import '../../features/documents/presentation/documents_screen.dart';
 import '../../features/documents/presentation/document_detail_screen.dart';
 import '../../features/shell/presentation/main_navigation_scaffold.dart';
@@ -98,6 +100,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/profile',
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ProfileScreen()),
+      ),
+      GoRoute(
+        path: '/leaves/new',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const NewLeaveRequestScreen()),
       ),
       GoRoute(
         path: '/documents/:docId',

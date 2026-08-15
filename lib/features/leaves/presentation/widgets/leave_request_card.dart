@@ -92,7 +92,7 @@ class LeaveRequestCard extends ConsumerWidget {
                         color: colors.textSecondary,
                       ),
                 ),
-                if (request.attachmentName != null) ...[
+                if (request.attachmentUrl != null) ...[
                   const SizedBox(height: AppSpacing.s3),
                   GestureDetector(
                     onTap: () {
@@ -103,7 +103,9 @@ class LeaveRequestCard extends ConsumerWidget {
                         Icon(Symbols.attach_file, size: 16, color: colors.brandPrimary),
                         const SizedBox(width: AppSpacing.s1),
                         Text(
-                          request.attachmentName!,
+                          Uri.parse(request.attachmentUrl!).pathSegments.isNotEmpty
+                              ? Uri.parse(request.attachmentUrl!).pathSegments.last
+                              : request.attachmentUrl!,
                           style: AppTypography.textSm(isArabic).copyWith(
                             color: colors.brandPrimary,
                             decoration: TextDecoration.underline,

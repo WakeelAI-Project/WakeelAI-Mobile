@@ -246,4 +246,84 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get newLeaveRequestTitle => 'طلب إجازة';
+
+  @override
+  String get newLeaveRequestTypeLabel => 'نوع الإجازة';
+
+  @override
+  String get newLeaveRequestStartDateLabel => 'تاريخ البدء';
+
+  @override
+  String get newLeaveRequestEndDateLabel => 'تاريخ الانتهاء';
+
+  @override
+  String get newLeaveRequestSelectDateHint => 'اختر التاريخ';
+
+  @override
+  String newLeaveRequestDaysSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count يوماً',
+      few: '$count أيام',
+      two: 'يومان',
+      one: 'يوم واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newLeaveRequestReasonLabel => 'السبب (اختياري)';
+
+  @override
+  String get newLeaveRequestReasonHint => 'أضف أي تفاصيل إضافية...';
+
+  @override
+  String get newLeaveRequestAttachmentLabel => 'التقرير الطبي';
+
+  @override
+  String get newLeaveRequestAttachmentButton => 'اختر ملفًا';
+
+  @override
+  String get newLeaveRequestAttachmentRequiredHint =>
+      'التقرير الطبي مطلوب للإجازة المرضية';
+
+  @override
+  String get newLeaveRequestSubmitButton => 'إرسال الطلب';
+
+  @override
+  String get newLeaveRequestErrorRequiredDates =>
+      'اختر تاريخ البدء وتاريخ الانتهاء';
+
+  @override
+  String get newLeaveRequestErrorEndBeforeStart =>
+      'يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء';
+
+  @override
+  String get newLeaveRequestErrorAttachmentRequired =>
+      'يرجى إرفاق تقرير طبي للإجازة المرضية';
+
+  @override
+  String get newLeaveRequestErrorAttachmentTooLarge =>
+      'حجم المرفق يتجاوز الحد الأقصى البالغ 10 ميجابايت';
+
+  @override
+  String get newLeaveRequestSuccessMessage => 'تم إرسال طلب الإجازة';
+
+  @override
+  String get newLeaveRequestErrorValidation =>
+      'تحقق من تفاصيل الطلب وحاول مرة أخرى.';
+
+  @override
+  String get newLeaveRequestErrorInsufficientBalance =>
+      'رصيد إجازتك المتبقي غير كافٍ لتغطية هذه التواريخ.';
+
+  @override
+  String get newLeaveRequestErrorGeneric => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get myLeaveRequestsFabLabel => 'طلب جديد';
 }

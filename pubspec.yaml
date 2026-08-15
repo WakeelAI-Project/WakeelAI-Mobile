@@ -48,6 +48,7 @@ dependencies:
   pdfx: ^2.9.2
   share_plus: ^13.3.0
   path_provider: ^2.1.6
+  file_picker: ^12.0.0
 dependency_overrides:
   path_provider_android: 2.2.17
 

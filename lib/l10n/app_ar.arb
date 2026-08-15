@@ -76,6 +76,27 @@
   "logout": "تسجيل الخروج",
   "logoutConfirmationTitle": "تسجيل الخروج",
   "logoutConfirmationDesc": "هل أنت متأكد أنك تريد تسجيل الخروج؟",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "newLeaveRequestTitle": "طلب إجازة",
+  "newLeaveRequestTypeLabel": "نوع الإجازة",
+  "newLeaveRequestStartDateLabel": "تاريخ البدء",
+  "newLeaveRequestEndDateLabel": "تاريخ الانتهاء",
+  "newLeaveRequestSelectDateHint": "اختر التاريخ",
+  "newLeaveRequestDaysSummary": "{count, plural, one{يوم واحد}two{يومان}few{{count} أيام}other{{count} يوماً}}",
+  "newLeaveRequestReasonLabel": "السبب (اختياري)",
+  "newLeaveRequestReasonHint": "أضف أي تفاصيل إضافية...",
+  "newLeaveRequestAttachmentLabel": "التقرير الطبي",
+  "newLeaveRequestAttachmentButton": "اختر ملفًا",
+  "newLeaveRequestAttachmentRequiredHint": "التقرير الطبي مطلوب للإجازة المرضية",
+  "newLeaveRequestSubmitButton": "إرسال الطلب",
+  "newLeaveRequestErrorRequiredDates": "اختر تاريخ البدء وتاريخ الانتهاء",
+  "newLeaveRequestErrorEndBeforeStart": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء",
+  "newLeaveRequestErrorAttachmentRequired": "يرجى إرفاق تقرير طبي للإجازة المرضية",
+  "newLeaveRequestErrorAttachmentTooLarge": "حجم المرفق يتجاوز الحد الأقصى البالغ 10 ميجابايت",
+  "newLeaveRequestSuccessMessage": "تم إرسال طلب الإجازة",
+  "newLeaveRequestErrorValidation": "تحقق من تفاصيل الطلب وحاول مرة أخرى.",
+  "newLeaveRequestErrorInsufficientBalance": "رصيد إجازتك المتبقي غير كافٍ لتغطية هذه التواريخ.",
+  "newLeaveRequestErrorGeneric": "حدث خطأ ما. حاول مرة أخرى.",
+  "myLeaveRequestsFabLabel": "طلب جديد"
 
 }

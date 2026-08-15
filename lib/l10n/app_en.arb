@@ -198,6 +198,35 @@
   "logout": "Log out",
   "logoutConfirmationTitle": "Log Out",
   "logoutConfirmationDesc": "Are you sure you want to log out?",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "newLeaveRequestTitle": "Request Leave",
+  "newLeaveRequestTypeLabel": "Leave Type",
+  "newLeaveRequestStartDateLabel": "Start Date",
+  "newLeaveRequestEndDateLabel": "End Date",
+  "newLeaveRequestSelectDateHint": "Select date",
+  "newLeaveRequestDaysSummary": "{count, plural, one{1 day requested} other{{count} days requested}}",
+  "@newLeaveRequestDaysSummary": {
+    "description": "Computed days-requested summary shown once both dates are picked",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "newLeaveRequestReasonLabel": "Reason (optional)",
+  "newLeaveRequestReasonHint": "Add any additional details...",
+  "newLeaveRequestAttachmentLabel": "Medical Report",
+  "newLeaveRequestAttachmentButton": "Choose File",
+  "newLeaveRequestAttachmentRequiredHint": "A medical report is required for sick leave",
+  "newLeaveRequestSubmitButton": "Submit Request",
+  "newLeaveRequestErrorRequiredDates": "Select both a start and end date",
+  "newLeaveRequestErrorEndBeforeStart": "End date must be after the start date",
+  "newLeaveRequestErrorAttachmentRequired": "Please attach a medical report for sick leave",
+  "newLeaveRequestErrorAttachmentTooLarge": "Attachment exceeds the 10 MB size limit",
+  "newLeaveRequestSuccessMessage": "Leave request submitted",
+  "newLeaveRequestErrorValidation": "Check the request details and try again.",
+  "newLeaveRequestErrorInsufficientBalance": "Your remaining leave balance isn't enough to cover these dates.",
+  "newLeaveRequestErrorGeneric": "Something went wrong. Please try again.",
+  "myLeaveRequestsFabLabel": "New Request"
 
 }
