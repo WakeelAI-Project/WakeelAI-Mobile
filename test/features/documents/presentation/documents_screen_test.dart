@@ -19,16 +19,18 @@ class _FakeDocumentsRepository implements DocumentsRepository {
   late final List<WakeelDocument> _all = List.generate(
     total,
     (i) => WakeelDocument(
-      docId: 'doc-$i',
-      docType: DocumentType.contract,
-      status: DocumentStatus.finalStatus,
-      pdfUrl: 'asset:assets/sample_documents/sample_contract.pdf',
+      id: 'doc-$i',
+      documentType: 'employment_contract',
+      title: 'Document $i',
+      status: DocumentStatus.finalized,
+      pdfUrl: '/uploads/documents/doc-$i.pdf',
       createdAt: DateTime(2026, 1, 1).add(Duration(days: i)),
+      updatedAt: DateTime(2026, 1, 1).add(Duration(days: i)),
     ),
   );
 
   @override
-  Future<DocumentsPage> fetchDocuments({required int page, required int limit, DocumentType? type}) async {
+  Future<DocumentsPage> fetchDocuments({required int page, required int limit, DocumentTypeCategory? category}) async {
     requestedPages.add(page);
     if (shouldThrow) throw Exception('Simulated failure');
 
@@ -39,6 +41,14 @@ class _FakeDocumentsRepository implements DocumentsRepository {
     final end = (start + limit).clamp(0, _all.length);
     return DocumentsPage(items: _all.sublist(start, end), page: page, hasMore: end < _all.length);
   }
+
+  @override
+  Future<WakeelDocument> fetchDocument(String id) async {
+    return _all.firstWhere((d) => d.id == id);
+  }
+
+  @override
+  Future<void> downloadPdf({required String pdfUrl, required String savePath}) async {}
 }
 
 void main() {

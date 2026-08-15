@@ -31,7 +31,7 @@ class DocumentsState {
   /// a previously-loaded list to show — the list "survives" by staying on
   /// screen instead of being replaced with an error view.
   final bool isStale;
-  final DocumentType? filter;
+  final DocumentTypeCategory? filter;
   final Object? error;
 
   static const initial = DocumentsState(
@@ -48,8 +48,7 @@ class DocumentsState {
 
 /// Drives the Documents list: initial load, filter-by-type, infinite-scroll
 /// pagination, pull-to-refresh, and the stale indicator. Backed by
-/// [documentsRepositoryProvider], which is currently an in-memory fixture
-/// (see that file for why) rather than a live network call.
+/// [documentsRepositoryProvider] (`GET /api/Documents`).
 class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
   @override
   DocumentsState build() {
@@ -61,7 +60,7 @@ class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
     final repo = ref.read(documentsRepositoryProvider);
     final filter = state.filter;
     try {
-      final result = await repo.fetchDocuments(page: 1, limit: documentsPageSize, type: filter);
+      final result = await repo.fetchDocuments(page: 1, limit: documentsPageSize, category: filter);
       state = DocumentsState(
         status: DocumentsLoadStatus.data,
         items: result.items,
@@ -87,7 +86,7 @@ class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
     }
   }
 
-  Future<void> setFilter(DocumentType? type) async {
+  Future<void> setFilter(DocumentTypeCategory? type) async {
     if (state.filter == type) return;
     state = DocumentsState(
       status: DocumentsLoadStatus.loading,
@@ -123,7 +122,7 @@ class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
 
     final repo = ref.read(documentsRepositoryProvider);
     try {
-      final result = await repo.fetchDocuments(page: 1, limit: documentsPageSize, type: state.filter);
+      final result = await repo.fetchDocuments(page: 1, limit: documentsPageSize, category: state.filter);
       state = DocumentsState(
         status: DocumentsLoadStatus.data,
         items: result.items,
@@ -165,7 +164,7 @@ class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
 
     final repo = ref.read(documentsRepositoryProvider);
     try {
-      final result = await repo.fetchDocuments(page: state.page + 1, limit: documentsPageSize, type: state.filter);
+      final result = await repo.fetchDocuments(page: state.page + 1, limit: documentsPageSize, category: state.filter);
       state = DocumentsState(
         status: DocumentsLoadStatus.data,
         items: [...state.items, ...result.items],
@@ -194,3 +193,10 @@ class DocumentsNotifier extends AutoDisposeNotifier<DocumentsState> {
 }
 
 final documentsProvider = AutoDisposeNotifierProvider<DocumentsNotifier, DocumentsState>(DocumentsNotifier.new);
+
+/// Backs the Document detail screen: fetches `GET /api/Documents/{doc_id}`
+/// fresh on entry rather than reusing the list item, since the list
+/// endpoint doesn't include `content_html`/`pdf_url`.
+final documentDetailProvider = AutoDisposeFutureProviderFamily<WakeelDocument, String>((ref, id) {
+  return ref.watch(documentsRepositoryProvider).fetchDocument(id);
+});

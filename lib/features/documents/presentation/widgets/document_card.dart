@@ -12,27 +12,16 @@ import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
 import '../../domain/wakeel_document.dart';
 
-IconData iconForDocumentType(DocumentType type) {
-  switch (type) {
-    case DocumentType.contract:
+IconData iconForDocumentType(DocumentTypeCategory category) {
+  switch (category) {
+    case DocumentTypeCategory.contract:
       return Symbols.description;
-    case DocumentType.warningLetter:
+    case DocumentTypeCategory.warningLetter:
       return Symbols.warning;
-    case DocumentType.termination:
+    case DocumentTypeCategory.termination:
       return Symbols.person_remove;
-  }
-}
-
-// Stub labels — same convention as LeaveStatusFilterRow/leave type labels
-// elsewhere, needs actual localization keys later.
-String labelForDocumentType(DocumentType type) {
-  switch (type) {
-    case DocumentType.contract:
-      return 'Contract';
-    case DocumentType.warningLetter:
-      return 'Warning Letter';
-    case DocumentType.termination:
-      return 'Termination Letter';
+    case DocumentTypeCategory.other:
+      return Symbols.draft;
   }
 }
 
@@ -75,7 +64,7 @@ class DocumentCard extends StatelessWidget {
                     color: colors.bgCardRaised,
                     borderRadius: AppRadius.mdRadius,
                   ),
-                  child: Icon(iconForDocumentType(document.docType), color: colors.textSecondary),
+                  child: Icon(iconForDocumentType(document.category), color: colors.textSecondary),
                 ),
                 const SizedBox(width: AppSpacing.s3),
                 Expanded(
@@ -83,7 +72,8 @@ class DocumentCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        labelForDocumentType(document.docType),
+                        document.title,
+                        overflow: TextOverflow.ellipsis,
                         style: AppTypography.textBase(isArabic).copyWith(
                               color: colors.textPrimary,
                               fontWeight: FontWeight.w600,
