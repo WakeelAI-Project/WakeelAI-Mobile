@@ -13,15 +13,50 @@ import '../application/leave_providers.dart';
 import 'widgets/leave_status_filter_row.dart';
 import 'widgets/leave_request_card.dart';
 
-class MyLeaveRequestsScreen extends ConsumerWidget {
+class MyLeaveRequestsScreen extends ConsumerStatefulWidget {
   const MyLeaveRequestsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyLeaveRequestsScreen> createState() => _MyLeaveRequestsScreenState();
+}
+
+class _MyLeaveRequestsScreenState extends ConsumerState<MyLeaveRequestsScreen> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final threshold = _scrollController.position.maxScrollExtent - 200;
+    if (_scrollController.position.pixels >= threshold) {
+      ref.read(leaveRequestsProvider.notifier).loadNextPage();
+    }
+  }
+
+  Future<void> _openNewRequest() async {
+    final created = await context.push<bool>('/leaves/new');
+    if (created == true) {
+      ref.read(leaveRequestsProvider.notifier).refresh();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final l10n = AppLocalizations.of(context)!;
     final isArabic = l10n.localeName == 'ar';
-    final leavesAsync = ref.watch(leaveRequestsProvider);
+    final state = ref.watch(leaveRequestsProvider);
 
     return Scaffold(
       backgroundColor: colors.bgPage,
@@ -46,6 +81,11 @@ class MyLeaveRequestsScreen extends ConsumerWidget {
               ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _openNewRequest,
+        icon: const Icon(Symbols.add),
+        label: Text(l10n.myLeaveRequestsFabLabel),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -55,81 +95,88 @@ class MyLeaveRequestsScreen extends ConsumerWidget {
               child: RefreshIndicator(
                 color: colors.brandPrimary,
                 onRefresh: () => ref.read(leaveRequestsProvider.notifier).refresh(),
-                child: leavesAsync.when(
-                  data: (leaves) {
-                    if (leaves.isEmpty) {
-                      return ListView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        children: [
-                          const SizedBox(height: 100),
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Symbols.beach_access, size: 64, color: colors.borderDefault),
-                                const SizedBox(height: AppSpacing.s4),
-                                Text(
-                                  'No leave requests found.',
-                                  style: AppTypography.textBase(isArabic).copyWith(
-                                    color: colors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: AppSpacing.s4),
-                                ElevatedButton.icon(
-                                  style: AppButtonStyles.primary(context),
-                                  onPressed: () {
-                                    // Ask assistant
-                                  },
-                                  icon: const Icon(Symbols.assistant),
-                                  label: const Text('Ask the assistant to request leave'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    
-                    return ListView.builder(
+                child: switch (state.status) {
+                  LeaveRequestsLoadStatus.loading => ListView.builder(
                       padding: const EdgeInsets.all(AppSpacing.s4),
-                      itemCount: leaves.length,
-                      itemBuilder: (context, index) {
-                        return LeaveRequestCard(request: leaves[index]);
-                      },
-                    );
-                  },
-                  loading: () => ListView.builder(
-                    padding: const EdgeInsets.all(AppSpacing.s4),
-                    itemCount: 4,
-                    itemBuilder: (context, index) => Container(
-                      margin: const EdgeInsets.only(bottom: AppSpacing.s3),
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: colors.borderDefault,
-                        borderRadius: BorderRadius.circular(16),
+                      itemCount: 4,
+                      itemBuilder: (context, index) => Container(
+                        margin: const EdgeInsets.only(bottom: AppSpacing.s3),
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: colors.borderDefault,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
                     ),
-                  ),
-                  error: (e, st) => Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  LeaveRequestsLoadStatus.error => ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       children: [
-                        Icon(Symbols.error, size: 48, color: colors.errorFg),
-                        const SizedBox(height: AppSpacing.s3),
-                        Text(
-                          'Failed to load requests.',
-                          style: AppTypography.textBase(isArabic).copyWith(color: colors.textPrimary),
+                        const SizedBox(height: 100),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Symbols.error, size: 48, color: colors.errorFg),
+                              const SizedBox(height: AppSpacing.s3),
+                              Text(
+                                'Failed to load requests.',
+                                style: AppTypography.textBase(isArabic).copyWith(color: colors.textPrimary),
+                              ),
+                              const SizedBox(height: AppSpacing.s4),
+                              ElevatedButton(
+                                style: AppButtonStyles.secondary(context),
+                                onPressed: () => ref.read(leaveRequestsProvider.notifier).refresh(),
+                                child: const Text('Retry'),
+                              ),
+                            ],
+                          ),
                         ),
-                        const SizedBox(height: AppSpacing.s4),
-                        ElevatedButton(
-                          style: AppButtonStyles.secondary(context),
-                          onPressed: () => ref.read(leaveRequestsProvider.notifier).refresh(),
-                          child: const Text('Retry'),
-                        )
                       ],
                     ),
-                  ),
-                ),
+                  LeaveRequestsLoadStatus.data => state.items.isEmpty
+                      ? ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            const SizedBox(height: 100),
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Symbols.beach_access, size: 64, color: colors.borderDefault),
+                                  const SizedBox(height: AppSpacing.s4),
+                                  Text(
+                                    'No leave requests found.',
+                                    style: AppTypography.textBase(isArabic).copyWith(
+                                      color: colors.textSecondary,
+                                    ),
+                                  ),
+                                  const SizedBox(height: AppSpacing.s4),
+                                  ElevatedButton.icon(
+                                    style: AppButtonStyles.primary(context),
+                                    onPressed: () => context.go('/chat'),
+                                    icon: const Icon(Symbols.assistant),
+                                    label: const Text('Ask the assistant to request leave'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : ListView.builder(
+                          controller: _scrollController,
+                          padding: const EdgeInsets.all(AppSpacing.s4),
+                          itemCount: state.items.length + (state.hasMore ? 1 : 0),
+                          itemBuilder: (context, index) {
+                            if (index >= state.items.length) {
+                              return const Padding(
+                                padding: EdgeInsets.symmetric(vertical: AppSpacing.s4),
+                                child: Center(child: CircularProgressIndicator()),
+                              );
+                            }
+                            return LeaveRequestCard(request: state.items[index]);
+                          },
+                        ),
+                },
               ),
             ),
           ],

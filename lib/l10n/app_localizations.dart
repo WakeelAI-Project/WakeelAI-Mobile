@@ -547,6 +547,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get cancel;
+
+  /// No description provided for @newLeaveRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Leave'**
+  String get newLeaveRequestTitle;
+
+  /// No description provided for @newLeaveRequestTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Type'**
+  String get newLeaveRequestTypeLabel;
+
+  /// No description provided for @newLeaveRequestStartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get newLeaveRequestStartDateLabel;
+
+  /// No description provided for @newLeaveRequestEndDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get newLeaveRequestEndDateLabel;
+
+  /// No description provided for @newLeaveRequestSelectDateHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get newLeaveRequestSelectDateHint;
+
+  /// Computed days-requested summary shown once both dates are picked
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 day requested} other{{count} days requested}}'**
+  String newLeaveRequestDaysSummary(int count);
+
+  /// No description provided for @newLeaveRequestReasonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reason (optional)'**
+  String get newLeaveRequestReasonLabel;
+
+  /// No description provided for @newLeaveRequestReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any additional details...'**
+  String get newLeaveRequestReasonHint;
+
+  /// No description provided for @newLeaveRequestAttachmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Report'**
+  String get newLeaveRequestAttachmentLabel;
+
+  /// No description provided for @newLeaveRequestAttachmentButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose File'**
+  String get newLeaveRequestAttachmentButton;
+
+  /// No description provided for @newLeaveRequestAttachmentRequiredHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A medical report is required for sick leave'**
+  String get newLeaveRequestAttachmentRequiredHint;
+
+  /// No description provided for @newLeaveRequestSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Request'**
+  String get newLeaveRequestSubmitButton;
+
+  /// No description provided for @newLeaveRequestErrorRequiredDates.
+  ///
+  /// In en, this message translates to:
+  /// **'Select both a start and end date'**
+  String get newLeaveRequestErrorRequiredDates;
+
+  /// No description provided for @newLeaveRequestErrorEndBeforeStart.
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after the start date'**
+  String get newLeaveRequestErrorEndBeforeStart;
+
+  /// No description provided for @newLeaveRequestErrorAttachmentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please attach a medical report for sick leave'**
+  String get newLeaveRequestErrorAttachmentRequired;
+
+  /// No description provided for @newLeaveRequestErrorAttachmentTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachment exceeds the 10 MB size limit'**
+  String get newLeaveRequestErrorAttachmentTooLarge;
+
+  /// No description provided for @newLeaveRequestSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave request submitted'**
+  String get newLeaveRequestSuccessMessage;
+
+  /// No description provided for @newLeaveRequestErrorValidation.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the request details and try again.'**
+  String get newLeaveRequestErrorValidation;
+
+  /// No description provided for @newLeaveRequestErrorInsufficientBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Your remaining leave balance isn\'t enough to cover these dates.'**
+  String get newLeaveRequestErrorInsufficientBalance;
+
+  /// No description provided for @newLeaveRequestErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get newLeaveRequestErrorGeneric;
+
+  /// No description provided for @myLeaveRequestsFabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New Request'**
+  String get myLeaveRequestsFabLabel;
 }
 
 class _AppLocalizationsDelegate

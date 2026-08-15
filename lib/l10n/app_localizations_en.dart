@@ -246,4 +246,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get newLeaveRequestTitle => 'Request Leave';
+
+  @override
+  String get newLeaveRequestTypeLabel => 'Leave Type';
+
+  @override
+  String get newLeaveRequestStartDateLabel => 'Start Date';
+
+  @override
+  String get newLeaveRequestEndDateLabel => 'End Date';
+
+  @override
+  String get newLeaveRequestSelectDateHint => 'Select date';
+
+  @override
+  String newLeaveRequestDaysSummary(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days requested',
+      one: '1 day requested',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get newLeaveRequestReasonLabel => 'Reason (optional)';
+
+  @override
+  String get newLeaveRequestReasonHint => 'Add any additional details...';
+
+  @override
+  String get newLeaveRequestAttachmentLabel => 'Medical Report';
+
+  @override
+  String get newLeaveRequestAttachmentButton => 'Choose File';
+
+  @override
+  String get newLeaveRequestAttachmentRequiredHint =>
+      'A medical report is required for sick leave';
+
+  @override
+  String get newLeaveRequestSubmitButton => 'Submit Request';
+
+  @override
+  String get newLeaveRequestErrorRequiredDates =>
+      'Select both a start and end date';
+
+  @override
+  String get newLeaveRequestErrorEndBeforeStart =>
+      'End date must be after the start date';
+
+  @override
+  String get newLeaveRequestErrorAttachmentRequired =>
+      'Please attach a medical report for sick leave';
+
+  @override
+  String get newLeaveRequestErrorAttachmentTooLarge =>
+      'Attachment exceeds the 10 MB size limit';
+
+  @override
+  String get newLeaveRequestSuccessMessage => 'Leave request submitted';
+
+  @override
+  String get newLeaveRequestErrorValidation =>
+      'Check the request details and try again.';
+
+  @override
+  String get newLeaveRequestErrorInsufficientBalance =>
+      'Your remaining leave balance isn\'t enough to cover these dates.';
+
+  @override
+  String get newLeaveRequestErrorGeneric =>
+      'Something went wrong. Please try again.';
+
+  @override
+  String get myLeaveRequestsFabLabel => 'New Request';
 }

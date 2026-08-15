@@ -25,7 +25,11 @@ class LeaveRequest {
   final int daysRequested;
   final String? reason;
   final String? hrNote;
-  final String? attachmentName;
+
+  /// The uploaded file's URL (backend field `attachment_url` — see
+  /// Wakeel.Application.DTOs.LeaveRequests.LeaveRequestDto), not a display
+  /// name. Card UI derives a filename from it for display.
+  final String? attachmentUrl;
 
   LeaveRequest({
     required this.id,
@@ -36,7 +40,7 @@ class LeaveRequest {
     required this.daysRequested,
     this.reason,
     this.hrNote,
-    this.attachmentName,
+    this.attachmentUrl,
   });
 
   factory LeaveRequest.fromJson(Map<String, dynamic> json) {
@@ -49,7 +53,7 @@ class LeaveRequest {
       daysRequested: json['days_requested'] ?? 0,
       reason: json['reason'],
       hrNote: json['hr_note'],
-      attachmentName: json['attachment_name'] ?? json['attachment'],
+      attachmentUrl: json['attachment_url'],
     );
   }
 
@@ -63,7 +67,7 @@ class LeaveRequest {
       'days_requested': daysRequested,
       'reason': reason,
       'hr_note': hrNote,
-      'attachment_name': attachmentName,
+      'attachment_url': attachmentUrl,
     };
   }
 
@@ -76,7 +80,7 @@ class LeaveRequest {
     int? daysRequested,
     String? reason,
     String? hrNote,
-    String? attachmentName,
+    String? attachmentUrl,
   }) {
     return LeaveRequest(
       id: id ?? this.id,
@@ -87,7 +91,7 @@ class LeaveRequest {
       daysRequested: daysRequested ?? this.daysRequested,
       reason: reason ?? this.reason,
       hrNote: hrNote ?? this.hrNote,
-      attachmentName: attachmentName ?? this.attachmentName,
+      attachmentUrl: attachmentUrl ?? this.attachmentUrl,
     );
   }
 }
