@@ -40,6 +40,11 @@ class _FakeAuthApiClient implements AuthApiClient {
       throw const ChangePasswordFailure(ChangePasswordFailureReason.invalidCurrentPassword);
     }
   }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    await Future.delayed(const Duration(milliseconds: 50));
+  }
 }
 
 class _FakeTokenStorage implements TokenStorage {

@@ -124,6 +124,37 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong. Please try again.';
 
   @override
+  String get loginForgotPasswordLink => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter the email associated with your account and we\'ll send you a temporary password.';
+
+  @override
+  String get forgotPasswordSubmit => 'Send temporary password';
+
+  @override
+  String get forgotPasswordSuccessTitle => 'Check your email';
+
+  @override
+  String get forgotPasswordSuccessMessage =>
+      'If an account exists for this email, we\'ve sent a temporary password to it. Log in with it, then set a new password.';
+
+  @override
+  String get forgotPasswordBackToLogin => 'Back to login';
+
+  @override
+  String get forgotPasswordTooManyRequests =>
+      'Too many attempts. Please wait a while before trying again.';
+
+  @override
+  String get forgotPasswordGenericError =>
+      'Something went wrong. Please try again.';
+
+  @override
   String get navHome => 'Home';
 
   @override

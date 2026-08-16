@@ -35,7 +35,17 @@
   "changePasswordErrorPasswordMismatch": "كلمتا المرور غير متطابقتين",
   "changePasswordInvalidCurrentPassword": "كلمة المرور المؤقتة لم تعد صالحة. يرجى تسجيل الدخول مرة أخرى.",
   "changePasswordUserNotFound": "تعذر العثور على حسابك. يرجى تسجيل الدخول مرة أخرى.",
-  "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى."
+  "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى.",
+
+  "loginForgotPasswordLink": "هل نسيت كلمة المرور؟",
+  "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "forgotPasswordSubtitle": "أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك كلمة مرور مؤقتة.",
+  "forgotPasswordSubmit": "إرسال كلمة مرور مؤقتة",
+  "forgotPasswordSuccessTitle": "تحقق من بريدك الإلكتروني",
+  "forgotPasswordSuccessMessage": "إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فقد أرسلنا إليه كلمة مرور مؤقتة. سجّل الدخول بها ثم عيّن كلمة مرور جديدة.",
+  "forgotPasswordBackToLogin": "العودة لتسجيل الدخول",
+  "forgotPasswordTooManyRequests": "محاولات كثيرة جدًا. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.",
+  "forgotPasswordGenericError": "حدث خطأ ما. حاول مرة أخرى."
 ,
   "navHome": "الرئيسية",
   "navChat": "المحادثة",

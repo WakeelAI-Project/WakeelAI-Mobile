@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/auth/application/auth_state_provider.dart';
 import '../../features/auth/application/pending_password_change_provider.dart';
 import '../../features/auth/presentation/change_password_screen.dart';
+import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/home/presentation/employee_home_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
@@ -58,11 +59,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final isGoingToLogin = path == '/login';
 
-      // Settings (theme/locale) is reachable pre-login too, so it's exempt
-      // from the unauthenticated bounce-to-login below.
+      // Settings (theme/locale) and forgot-password are reachable pre-login
+      // too, so they're exempt from the unauthenticated bounce-to-login below.
       final isGoingToSettings = path == '/settings';
+      final isGoingToForgotPassword = path == '/forgot-password';
 
-      if (authState == AuthState.unauthenticated && !isGoingToLogin && !isGoingToSettings) {
+      if (authState == AuthState.unauthenticated &&
+          !isGoingToLogin &&
+          !isGoingToSettings &&
+          !isGoingToForgotPassword) {
         return '/login';
       }
 
@@ -88,6 +93,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/change-password',
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ChangePasswordScreen()),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ForgotPasswordScreen()),
       ),
       GoRoute(
         path: '/welcome', 

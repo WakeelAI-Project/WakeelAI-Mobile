@@ -33,6 +33,12 @@ abstract class AuthApiClient {
     required String currentPassword,
     required String newPassword,
   });
+
+  /// `POST /api/Auth/forgot-password`. Always resolves on a 200 — the
+  /// backend intentionally returns the same generic response whether or not
+  /// [email] is registered, so callers should show a generic "check your
+  /// email" message regardless of outcome.
+  Future<void> forgotPassword({required String email});
 }
 
 class DioAuthApiClient implements AuthApiClient {
@@ -103,6 +109,29 @@ class DioAuthApiClient implements AuthApiClient {
         return ChangePasswordFailureReason.userNotFound;
       default:
         return ChangePasswordFailureReason.unknown;
+    }
+  }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    try {
+      await _dio.post<void>(
+        '/api/Auth/forgot-password',
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw ForgotPasswordFailure(_forgotPasswordReasonFor(e));
+    }
+  }
+
+  ForgotPasswordFailureReason _forgotPasswordReasonFor(DioException e) {
+    final body = e.response?.data;
+    final errorCode = body is Map ? body['error'] as String? : null;
+    switch (errorCode) {
+      case 'too_many_requests':
+        return ForgotPasswordFailureReason.tooManyRequests;
+      default:
+        return ForgotPasswordFailureReason.unknown;
     }
   }
 }

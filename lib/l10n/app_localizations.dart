@@ -308,6 +308,60 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again.'**
   String get changePasswordGenericError;
 
+  /// Clickable link on the login screen leading to the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgotPasswordLink;
+
+  /// Title of the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// Explanatory subtitle on the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email associated with your account and we\'ll send you a temporary password.'**
+  String get forgotPasswordSubtitle;
+
+  /// Submit button label on the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Send temporary password'**
+  String get forgotPasswordSubmit;
+
+  /// Title shown after a forgot-password request is accepted
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email'**
+  String get forgotPasswordSuccessTitle;
+
+  /// Generic success message shown regardless of whether the email is registered, to avoid account enumeration
+  ///
+  /// In en, this message translates to:
+  /// **'If an account exists for this email, we\'ve sent a temporary password to it. Log in with it, then set a new password.'**
+  String get forgotPasswordSuccessMessage;
+
+  /// Button label returning from the forgot-password success state to the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Back to login'**
+  String get forgotPasswordBackToLogin;
+
+  /// Error banner shown when the forgot-password endpoint rate-limits the request
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a while before trying again.'**
+  String get forgotPasswordTooManyRequests;
+
+  /// Error banner shown for network/server failures during forgot-password
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get forgotPasswordGenericError;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

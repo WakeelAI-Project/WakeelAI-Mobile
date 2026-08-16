@@ -124,6 +124,36 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
+  String get loginForgotPasswordLink => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك كلمة مرور مؤقتة.';
+
+  @override
+  String get forgotPasswordSubmit => 'إرسال كلمة مرور مؤقتة';
+
+  @override
+  String get forgotPasswordSuccessTitle => 'تحقق من بريدك الإلكتروني';
+
+  @override
+  String get forgotPasswordSuccessMessage =>
+      'إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فقد أرسلنا إليه كلمة مرور مؤقتة. سجّل الدخول بها ثم عيّن كلمة مرور جديدة.';
+
+  @override
+  String get forgotPasswordBackToLogin => 'العودة لتسجيل الدخول';
+
+  @override
+  String get forgotPasswordTooManyRequests =>
+      'محاولات كثيرة جدًا. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.';
+
+  @override
+  String get forgotPasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override
