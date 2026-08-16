@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:wakeel_ai_app/app.dart';
+import 'package:wakeel_ai_app/core/providers/app_settings_providers.dart';
 import 'package:wakeel_ai_app/core/storage/token_storage.dart';
 import 'package:wakeel_ai_app/features/auth/data/auth_api_client.dart';
 import 'package:wakeel_ai_app/features/auth/domain/auth_exceptions.dart';
@@ -71,8 +73,23 @@ class _FakeTokenStorage implements TokenStorage {
 }
 
 void main() {
+  late SharedPreferences prefs;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    prefs = await SharedPreferences.getInstance();
+  });
+
   testWidgets('App boots to the login screen', (WidgetTester tester) async {
-    await tester.pumpWidget(const ProviderScope(child: WakeelApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          tokenStorageProvider.overrideWithValue(_FakeTokenStorage()),
+        ],
+        child: const WakeelApp(),
+      ),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Wakeel AI'), findsOneWidget);
@@ -84,7 +101,11 @@ void main() {
   testWidgets('Invalid credentials show an inline error after submit', (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [authApiClientProvider.overrideWithValue(_FakeAuthApiClient())],
+        overrides: [
+          authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          tokenStorageProvider.overrideWithValue(_FakeTokenStorage()),
+        ],
         child: const WakeelApp(),
       ),
     );
@@ -109,6 +130,7 @@ void main() {
         overrides: [
           authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
           tokenStorageProvider.overrideWithValue(tokenStorage),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const WakeelApp(),
       ),
@@ -134,6 +156,7 @@ void main() {
         overrides: [
           authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
           tokenStorageProvider.overrideWithValue(tokenStorage),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const WakeelApp(),
       ),
@@ -161,6 +184,7 @@ void main() {
           overrides: [
             authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
             tokenStorageProvider.overrideWithValue(tokenStorage),
+            sharedPreferencesProvider.overrideWithValue(prefs),
           ],
           child: const WakeelApp(),
         ),
@@ -197,6 +221,7 @@ void main() {
         overrides: [
           authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
           tokenStorageProvider.overrideWithValue(_FakeTokenStorage()),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const WakeelApp(),
       ),
