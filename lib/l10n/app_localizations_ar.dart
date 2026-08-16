@@ -124,6 +124,79 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
+  String get loginForgotPasswordLink => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك رمزًا مكونًا من 6 أرقام لإعادة تعيين كلمة المرور.';
+
+  @override
+  String get forgotPasswordSubmit => 'إرسال الرمز';
+
+  @override
+  String get forgotPasswordTooManyRequests =>
+      'محاولات كثيرة جدًا. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.';
+
+  @override
+  String get forgotPasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get resetPasswordTitle => 'أدخل رمز التحقق';
+
+  @override
+  String resetPasswordSubtitle(String email) {
+    return 'أدخل الرمز المكون من 6 أرقام المرسل إلى $email واختر كلمة مرور جديدة.';
+  }
+
+  @override
+  String get resetPasswordOtpLabel => 'رمز التحقق';
+
+  @override
+  String get resetPasswordOtpHint => 'رمز مكون من 6 أرقام';
+
+  @override
+  String get resetPasswordErrorOtpRequired => 'أدخل رمز التحقق';
+
+  @override
+  String get resetPasswordErrorOtpInvalidLength =>
+      'أدخل الرمز المكون من 6 أرقام';
+
+  @override
+  String get resetPasswordSubmit => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get resetPasswordResendCode => 'إعادة إرسال الرمز';
+
+  @override
+  String resetPasswordResendCodeCountdown(int seconds) {
+    return 'إعادة إرسال الرمز خلال $seconds ثانية';
+  }
+
+  @override
+  String get resetPasswordResendSuccess => 'تم إرسال رمز جديد.';
+
+  @override
+  String get resetPasswordErrorInvalidOtp => 'رمز غير صحيح. حاول مرة أخرى.';
+
+  @override
+  String get resetPasswordErrorOtpExpired =>
+      'انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا.';
+
+  @override
+  String get resetPasswordErrorTooManyAttempts =>
+      'محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.';
+
+  @override
+  String get resetPasswordErrorValidation =>
+      'تحقق من الرمز وكلمة المرور، ثم حاول مرة أخرى.';
+
+  @override
+  String get resetPasswordErrorGeneric => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override

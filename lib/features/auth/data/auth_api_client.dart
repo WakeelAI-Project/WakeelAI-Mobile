@@ -33,6 +33,18 @@ abstract class AuthApiClient {
     required String currentPassword,
     required String newPassword,
   });
+
+  /// `POST /api/Auth/forgot-password`. Always resolves on a 200 — the
+  /// backend intentionally returns the same generic response whether or not
+  /// [email] is registered, so callers should show a generic "check your
+  /// email" message regardless of outcome. Triggers a one-time 6-digit OTP
+  /// emailed to [email], which [resetPassword] then consumes.
+  Future<void> forgotPassword({required String email});
+
+  /// `POST /api/Auth/reset-password`. Verifies [otp] (issued by
+  /// [forgotPassword]) and, if valid, sets the account's password to
+  /// [newPassword] in one step.
+  Future<void> resetPassword({required String email, required String otp, required String newPassword});
 }
 
 class DioAuthApiClient implements AuthApiClient {
@@ -103,6 +115,58 @@ class DioAuthApiClient implements AuthApiClient {
         return ChangePasswordFailureReason.userNotFound;
       default:
         return ChangePasswordFailureReason.unknown;
+    }
+  }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    try {
+      await _dio.post<void>(
+        '/api/Auth/forgot-password',
+        data: {'email': email},
+      );
+    } on DioException catch (e) {
+      throw ForgotPasswordFailure(_forgotPasswordReasonFor(e));
+    }
+  }
+
+  ForgotPasswordFailureReason _forgotPasswordReasonFor(DioException e) {
+    final body = e.response?.data;
+    final errorCode = body is Map ? body['error'] as String? : null;
+    switch (errorCode) {
+      case 'too_many_requests':
+        return ForgotPasswordFailureReason.tooManyRequests;
+      default:
+        return ForgotPasswordFailureReason.unknown;
+    }
+  }
+
+  @override
+  Future<void> resetPassword({required String email, required String otp, required String newPassword}) async {
+    try {
+      await _dio.post<void>(
+        '/api/Auth/reset-password',
+        data: {'email': email, 'otp': otp, 'new_password': newPassword},
+      );
+    } on DioException catch (e) {
+      throw ResetPasswordFailure(_resetPasswordReasonFor(e));
+    }
+  }
+
+  ResetPasswordFailureReason _resetPasswordReasonFor(DioException e) {
+    final body = e.response?.data;
+    final errorCode = body is Map ? body['error'] as String? : null;
+    switch (errorCode) {
+      case 'invalid_otp':
+        return ResetPasswordFailureReason.invalidOtp;
+      case 'otp_expired':
+        return ResetPasswordFailureReason.otpExpired;
+      case 'too_many_attempts':
+        return ResetPasswordFailureReason.tooManyAttempts;
+      case 'validation_error':
+        return ResetPasswordFailureReason.validationError;
+      default:
+        return ResetPasswordFailureReason.unknown;
     }
   }
 }

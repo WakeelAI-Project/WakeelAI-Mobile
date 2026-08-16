@@ -249,7 +249,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.s6),
+                    const SizedBox(height: AppSpacing.s2),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: isLoading ? null : () => context.push('/forgot-password'),
+                        child: Text(t.loginForgotPasswordLink),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.s4),
                     ElevatedButton(
                       style: AppButtonStyles.primary(context),
                       // Stays non-null so the button keeps its primary
