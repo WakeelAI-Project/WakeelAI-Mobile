@@ -26,7 +26,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   bool _emailTouched = false;
   bool _emailDirty = false;
   bool _isSubmitting = false;
-  bool _submitted = false;
 
   @override
   void initState() {
@@ -64,10 +63,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     setState(() => _isSubmitting = true);
     if (_formKey.currentState?.validate() != true) return;
 
-    await ref.read(forgotPasswordControllerProvider.notifier).submit(email: _emailController.text.trim());
+    final email = _emailController.text.trim();
+    await ref.read(forgotPasswordControllerProvider.notifier).submit(email: email);
     final state = ref.read(forgotPasswordControllerProvider);
     if (mounted && !state.hasError) {
-      setState(() => _submitted = true);
+      context.push('/reset-password', extra: email);
     }
   }
 
@@ -106,106 +106,81 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             padding: const EdgeInsets.all(AppSpacing.s6),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
-              child: _submitted
-                  ? Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(child: SealMark.logomark(size: 56, ringColor: colors.brandPrimary)),
-                        const SizedBox(height: AppSpacing.s4),
-                        Text(
-                          t.forgotPasswordSuccessTitle,
-                          textAlign: TextAlign.center,
-                          style: textTheme.headlineMedium,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Center(child: SealMark.logomark(size: 56, ringColor: colors.brandPrimary)),
+                    const SizedBox(height: AppSpacing.s4),
+                    Text(
+                      t.forgotPasswordTitle,
+                      textAlign: TextAlign.center,
+                      style: textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: AppSpacing.s1),
+                    Text(
+                      t.forgotPasswordSubtitle,
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+                    ),
+                    const SizedBox(height: AppSpacing.s8),
+                    if (forgotPasswordState.hasError) ...[
+                      Container(
+                        padding: const EdgeInsets.all(AppSpacing.s3),
+                        decoration: BoxDecoration(
+                          color: colors.errorBg,
+                          borderRadius: AppRadius.mdRadius,
                         ),
-                        const SizedBox(height: AppSpacing.s2),
-                        Text(
-                          t.forgotPasswordSuccessMessage,
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
-                        ),
-                        const SizedBox(height: AppSpacing.s8),
-                        ElevatedButton(
-                          style: AppButtonStyles.primary(context),
-                          onPressed: () => context.pop(),
-                          child: Text(t.forgotPasswordBackToLogin),
-                        ),
-                      ],
-                    )
-                  : Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Center(child: SealMark.logomark(size: 56, ringColor: colors.brandPrimary)),
-                          const SizedBox(height: AppSpacing.s4),
-                          Text(
-                            t.forgotPasswordTitle,
-                            textAlign: TextAlign.center,
-                            style: textTheme.headlineMedium,
-                          ),
-                          const SizedBox(height: AppSpacing.s1),
-                          Text(
-                            t.forgotPasswordSubtitle,
-                            textAlign: TextAlign.center,
-                            style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
-                          ),
-                          const SizedBox(height: AppSpacing.s8),
-                          if (forgotPasswordState.hasError) ...[
-                            Container(
-                              padding: const EdgeInsets.all(AppSpacing.s3),
-                              decoration: BoxDecoration(
-                                color: colors.errorBg,
-                                borderRadius: AppRadius.mdRadius,
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.error_outline, size: 20, color: colors.errorFg),
-                                  const SizedBox(width: AppSpacing.s2),
-                                  Expanded(
-                                    child: Text(
-                                      _errorMessage(t, forgotPasswordState.error),
-                                      style: textTheme.bodyMedium?.copyWith(color: colors.errorFg),
-                                    ),
-                                  ),
-                                ],
+                        child: Row(
+                          children: [
+                            Icon(Icons.error_outline, size: 20, color: colors.errorFg),
+                            const SizedBox(width: AppSpacing.s2),
+                            Expanded(
+                              child: Text(
+                                _errorMessage(t, forgotPasswordState.error),
+                                style: textTheme.bodyMedium?.copyWith(color: colors.errorFg),
                               ),
                             ),
-                            const SizedBox(height: AppSpacing.s4),
                           ],
-                          TextFormField(
-                            controller: _emailController,
-                            focusNode: _emailFocus,
-                            autovalidateMode: AutovalidateMode.always,
-                            enabled: !isLoading,
-                            keyboardType: TextInputType.emailAddress,
-                            textInputAction: TextInputAction.done,
-                            autofillHints: const [AutofillHints.email],
-                            onChanged: (_) {
-                              if (!_emailDirty) setState(() => _emailDirty = true);
-                            },
-                            validator: _validateEmail,
-                            onFieldSubmitted: (_) => _submit(isLoading),
-                            decoration: InputDecoration(
-                              labelText: t.loginEmailLabel,
-                              hintText: t.loginEmailHint,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.s6),
-                          ElevatedButton(
-                            style: AppButtonStyles.primary(context),
-                            onPressed: () => _submit(isLoading),
-                            child: isLoading
-                                ? SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
-                                  )
-                                : Text(t.forgotPasswordSubmit),
-                          ),
-                        ],
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.s4),
+                    ],
+                    TextFormField(
+                      controller: _emailController,
+                      focusNode: _emailFocus,
+                      autovalidateMode: AutovalidateMode.always,
+                      enabled: !isLoading,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.email],
+                      onChanged: (_) {
+                        if (!_emailDirty) setState(() => _emailDirty = true);
+                      },
+                      validator: _validateEmail,
+                      onFieldSubmitted: (_) => _submit(isLoading),
+                      decoration: InputDecoration(
+                        labelText: t.loginEmailLabel,
+                        hintText: t.loginEmailHint,
                       ),
                     ),
+                    const SizedBox(height: AppSpacing.s6),
+                    ElevatedButton(
+                      style: AppButtonStyles.primary(context),
+                      onPressed: () => _submit(isLoading),
+                      child: isLoading
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
+                            )
+                          : Text(t.forgotPasswordSubmit),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),

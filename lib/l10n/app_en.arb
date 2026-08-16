@@ -150,25 +150,13 @@
   "@forgotPasswordTitle": {
     "description": "Title of the forgot-password screen"
   },
-  "forgotPasswordSubtitle": "Enter the email associated with your account and we'll send you a temporary password.",
+  "forgotPasswordSubtitle": "Enter the email associated with your account and we'll send you a 6-digit code to reset your password.",
   "@forgotPasswordSubtitle": {
     "description": "Explanatory subtitle on the forgot-password screen"
   },
-  "forgotPasswordSubmit": "Send temporary password",
+  "forgotPasswordSubmit": "Send code",
   "@forgotPasswordSubmit": {
     "description": "Submit button label on the forgot-password screen"
-  },
-  "forgotPasswordSuccessTitle": "Check your email",
-  "@forgotPasswordSuccessTitle": {
-    "description": "Title shown after a forgot-password request is accepted"
-  },
-  "forgotPasswordSuccessMessage": "If an account exists for this email, we've sent a temporary password to it. Log in with it, then set a new password.",
-  "@forgotPasswordSuccessMessage": {
-    "description": "Generic success message shown regardless of whether the email is registered, to avoid account enumeration"
-  },
-  "forgotPasswordBackToLogin": "Back to login",
-  "@forgotPasswordBackToLogin": {
-    "description": "Button label returning from the forgot-password success state to the login screen"
   },
   "forgotPasswordTooManyRequests": "Too many attempts. Please wait a while before trying again.",
   "@forgotPasswordTooManyRequests": {
@@ -177,6 +165,77 @@
   "forgotPasswordGenericError": "Something went wrong. Please try again.",
   "@forgotPasswordGenericError": {
     "description": "Error banner shown for network/server failures during forgot-password"
+  },
+
+  "resetPasswordTitle": "Enter verification code",
+  "@resetPasswordTitle": {
+    "description": "Title of the OTP + new-password screen"
+  },
+  "resetPasswordSubtitle": "Enter the 6-digit code sent to {email} and choose a new password.",
+  "@resetPasswordSubtitle": {
+    "description": "Explanatory subtitle on the OTP + new-password screen",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "resetPasswordOtpLabel": "Verification code",
+  "@resetPasswordOtpLabel": {
+    "description": "Label for the OTP field on the reset-password screen"
+  },
+  "resetPasswordOtpHint": "6-digit code",
+  "@resetPasswordOtpHint": {
+    "description": "Placeholder hint for the OTP field"
+  },
+  "resetPasswordErrorOtpRequired": "Enter the verification code",
+  "@resetPasswordErrorOtpRequired": {
+    "description": "Validation error when the OTP field is left empty"
+  },
+  "resetPasswordErrorOtpInvalidLength": "Enter the 6-digit code",
+  "@resetPasswordErrorOtpInvalidLength": {
+    "description": "Validation error when the OTP isn't exactly 6 digits"
+  },
+  "resetPasswordSubmit": "Reset password",
+  "@resetPasswordSubmit": {
+    "description": "Submit button label on the reset-password screen"
+  },
+  "resetPasswordResendCode": "Resend code",
+  "@resetPasswordResendCode": {
+    "description": "Button label to request a new OTP"
+  },
+  "resetPasswordResendCodeCountdown": "Resend code in {seconds}s",
+  "@resetPasswordResendCodeCountdown": {
+    "description": "Disabled resend-code label showing the cooldown remaining",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "resetPasswordResendSuccess": "A new code has been sent.",
+  "@resetPasswordResendSuccess": {
+    "description": "Confirmation shown after successfully requesting a new OTP"
+  },
+  "resetPasswordErrorInvalidOtp": "Incorrect code. Please try again.",
+  "@resetPasswordErrorInvalidOtp": {
+    "description": "Error banner shown when the submitted OTP doesn't match"
+  },
+  "resetPasswordErrorOtpExpired": "This code has expired. Request a new one.",
+  "@resetPasswordErrorOtpExpired": {
+    "description": "Error banner shown when the OTP is correct but past its validity window"
+  },
+  "resetPasswordErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
+  "@resetPasswordErrorTooManyAttempts": {
+    "description": "Error banner shown after too many wrong OTP submissions"
+  },
+  "resetPasswordErrorValidation": "Check the code and password, then try again.",
+  "@resetPasswordErrorValidation": {
+    "description": "Error banner shown when the backend rejects the request as malformed"
+  },
+  "resetPasswordErrorGeneric": "Something went wrong. Please try again.",
+  "@resetPasswordErrorGeneric": {
+    "description": "Error banner shown for network/server failures during reset-password"
   }
 ,
   "navHome": "Home",

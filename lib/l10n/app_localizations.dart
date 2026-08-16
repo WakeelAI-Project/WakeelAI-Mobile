@@ -323,32 +323,14 @@ abstract class AppLocalizations {
   /// Explanatory subtitle on the forgot-password screen
   ///
   /// In en, this message translates to:
-  /// **'Enter the email associated with your account and we\'ll send you a temporary password.'**
+  /// **'Enter the email associated with your account and we\'ll send you a 6-digit code to reset your password.'**
   String get forgotPasswordSubtitle;
 
   /// Submit button label on the forgot-password screen
   ///
   /// In en, this message translates to:
-  /// **'Send temporary password'**
+  /// **'Send code'**
   String get forgotPasswordSubmit;
-
-  /// Title shown after a forgot-password request is accepted
-  ///
-  /// In en, this message translates to:
-  /// **'Check your email'**
-  String get forgotPasswordSuccessTitle;
-
-  /// Generic success message shown regardless of whether the email is registered, to avoid account enumeration
-  ///
-  /// In en, this message translates to:
-  /// **'If an account exists for this email, we\'ve sent a temporary password to it. Log in with it, then set a new password.'**
-  String get forgotPasswordSuccessMessage;
-
-  /// Button label returning from the forgot-password success state to the login screen
-  ///
-  /// In en, this message translates to:
-  /// **'Back to login'**
-  String get forgotPasswordBackToLogin;
 
   /// Error banner shown when the forgot-password endpoint rate-limits the request
   ///
@@ -361,6 +343,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get forgotPasswordGenericError;
+
+  /// Title of the OTP + new-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter verification code'**
+  String get resetPasswordTitle;
+
+  /// Explanatory subtitle on the OTP + new-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to {email} and choose a new password.'**
+  String resetPasswordSubtitle(String email);
+
+  /// Label for the OTP field on the reset-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code'**
+  String get resetPasswordOtpLabel;
+
+  /// Placeholder hint for the OTP field
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit code'**
+  String get resetPasswordOtpHint;
+
+  /// Validation error when the OTP field is left empty
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the verification code'**
+  String get resetPasswordErrorOtpRequired;
+
+  /// Validation error when the OTP isn't exactly 6 digits
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code'**
+  String get resetPasswordErrorOtpInvalidLength;
+
+  /// Submit button label on the reset-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get resetPasswordSubmit;
+
+  /// Button label to request a new OTP
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get resetPasswordResendCode;
+
+  /// Disabled resend-code label showing the cooldown remaining
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code in {seconds}s'**
+  String resetPasswordResendCodeCountdown(int seconds);
+
+  /// Confirmation shown after successfully requesting a new OTP
+  ///
+  /// In en, this message translates to:
+  /// **'A new code has been sent.'**
+  String get resetPasswordResendSuccess;
+
+  /// Error banner shown when the submitted OTP doesn't match
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect code. Please try again.'**
+  String get resetPasswordErrorInvalidOtp;
+
+  /// Error banner shown when the OTP is correct but past its validity window
+  ///
+  /// In en, this message translates to:
+  /// **'This code has expired. Request a new one.'**
+  String get resetPasswordErrorOtpExpired;
+
+  /// Error banner shown after too many wrong OTP submissions
+  ///
+  /// In en, this message translates to:
+  /// **'Too many incorrect attempts. Please request a new code.'**
+  String get resetPasswordErrorTooManyAttempts;
+
+  /// Error banner shown when the backend rejects the request as malformed
+  ///
+  /// In en, this message translates to:
+  /// **'Check the code and password, then try again.'**
+  String get resetPasswordErrorValidation;
+
+  /// Error banner shown for network/server failures during reset-password
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get resetPasswordErrorGeneric;
 
   /// No description provided for @navHome.
   ///

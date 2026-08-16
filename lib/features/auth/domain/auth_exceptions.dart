@@ -53,3 +53,32 @@ class ForgotPasswordFailure implements Exception {
   const ForgotPasswordFailure(this.reason);
   final ForgotPasswordFailureReason reason;
 }
+
+/// Error codes from `POST /api/Auth/reset-password`.
+enum ResetPasswordFailureReason {
+  /// 400 `{"error": "invalid_otp"}` — the code doesn't match what was sent
+  /// (or no code was ever issued for this email, which is deliberately
+  /// indistinguishable from a wrong code to avoid account enumeration).
+  invalidOtp,
+
+  /// 400 `{"error": "otp_expired"}` — the code was correct but is past its
+  /// validity window.
+  otpExpired,
+
+  /// 429 `{"error": "too_many_attempts"}` — too many wrong codes submitted
+  /// for this email; the code has been invalidated and a new one is needed.
+  tooManyAttempts,
+
+  /// 400 `{"error": "validation_error"}` — the new password fails the
+  /// backend's policy (this app also validates client-side first).
+  validationError,
+
+  /// Any other error (network failure, unexpected response shape, etc.).
+  unknown,
+}
+
+/// Thrown when an OTP-based password reset attempt is rejected.
+class ResetPasswordFailure implements Exception {
+  const ResetPasswordFailure(this.reason);
+  final ResetPasswordFailureReason reason;
+}
