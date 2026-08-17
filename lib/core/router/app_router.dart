@@ -7,7 +7,8 @@ import '../../features/auth/application/pending_password_change_provider.dart';
 import '../../features/auth/presentation/change_password_screen.dart';
 import '../../features/auth/presentation/forgot_password_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
-import '../../features/auth/presentation/reset_password_screen.dart';
+import '../../features/auth/presentation/new_password_screen.dart';
+import '../../features/auth/presentation/verify_otp_screen.dart';
 import '../../features/home/presentation/employee_home_screen.dart';
 import '../../features/shell/theme_showcase_screen.dart';
 import '../../features/auth/presentation/welcome_screen.dart';
@@ -59,18 +60,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       final isGoingToLogin = path == '/login';
 
-      // Settings (theme/locale) and the forgot/reset-password flow are
-      // reachable pre-login too, so they're exempt from the unauthenticated
-      // bounce-to-login below.
+      // Settings (theme/locale) and the forgot/verify-otp/new-password flow
+      // are reachable pre-login too, so they're exempt from the
+      // unauthenticated bounce-to-login below.
       final isGoingToSettings = path == '/settings';
       final isGoingToForgotPassword = path == '/forgot-password';
-      final isGoingToResetPassword = path == '/reset-password';
+      final isGoingToVerifyOtp = path == '/verify-otp';
+      final isGoingToNewPassword = path == '/new-password';
 
       if (authState == AuthState.unauthenticated &&
           !isGoingToLogin &&
           !isGoingToSettings &&
           !isGoingToForgotPassword &&
-          !isGoingToResetPassword) {
+          !isGoingToVerifyOtp &&
+          !isGoingToNewPassword) {
         return '/login';
       }
 
@@ -102,12 +105,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) => _buildSlideTransitionPage(context, state, const ForgotPasswordScreen()),
       ),
       GoRoute(
-        path: '/reset-password',
+        path: '/verify-otp',
         pageBuilder: (context, state) => _buildSlideTransitionPage(
           context,
           state,
-          ResetPasswordScreen(email: state.extra as String),
+          VerifyOtpScreen(email: state.extra as String),
         ),
+      ),
+      GoRoute(
+        path: '/new-password',
+        pageBuilder: (context, state) {
+          final args = state.extra as ({String email, String otp});
+          return _buildSlideTransitionPage(
+            context,
+            state,
+            NewPasswordScreen(email: args.email, otp: args.otp),
+          );
+        },
       ),
       GoRoute(
         path: '/welcome', 

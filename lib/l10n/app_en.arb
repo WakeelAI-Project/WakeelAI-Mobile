@@ -167,45 +167,29 @@
     "description": "Error banner shown for network/server failures during forgot-password"
   },
 
-  "resetPasswordTitle": "Enter verification code",
-  "@resetPasswordTitle": {
-    "description": "Title of the OTP + new-password screen"
+  "verifyOtpTitle": "Enter verification code",
+  "@verifyOtpTitle": {
+    "description": "Title of the standalone OTP-entry screen"
   },
-  "resetPasswordSubtitle": "Enter the 6-digit code sent to {email} and choose a new password.",
-  "@resetPasswordSubtitle": {
-    "description": "Explanatory subtitle on the OTP + new-password screen",
+  "verifyOtpSubtitle": "Enter the 6-digit code sent to {email}.",
+  "@verifyOtpSubtitle": {
+    "description": "Explanatory subtitle on the OTP-entry screen",
     "placeholders": {
       "email": {
         "type": "String"
       }
     }
   },
-  "resetPasswordOtpLabel": "Verification code",
-  "@resetPasswordOtpLabel": {
-    "description": "Label for the OTP field on the reset-password screen"
+  "verifyOtpSubmit": "Verify code",
+  "@verifyOtpSubmit": {
+    "description": "Submit button label on the OTP-entry screen"
   },
-  "resetPasswordOtpHint": "6-digit code",
-  "@resetPasswordOtpHint": {
-    "description": "Placeholder hint for the OTP field"
-  },
-  "resetPasswordErrorOtpRequired": "Enter the verification code",
-  "@resetPasswordErrorOtpRequired": {
-    "description": "Validation error when the OTP field is left empty"
-  },
-  "resetPasswordErrorOtpInvalidLength": "Enter the 6-digit code",
-  "@resetPasswordErrorOtpInvalidLength": {
-    "description": "Validation error when the OTP isn't exactly 6 digits"
-  },
-  "resetPasswordSubmit": "Reset password",
-  "@resetPasswordSubmit": {
-    "description": "Submit button label on the reset-password screen"
-  },
-  "resetPasswordResendCode": "Resend code",
-  "@resetPasswordResendCode": {
+  "verifyOtpResendCode": "Resend code",
+  "@verifyOtpResendCode": {
     "description": "Button label to request a new OTP"
   },
-  "resetPasswordResendCodeCountdown": "Resend code in {seconds}s",
-  "@resetPasswordResendCodeCountdown": {
+  "verifyOtpResendCodeCountdown": "Resend code in {seconds}s",
+  "@verifyOtpResendCodeCountdown": {
     "description": "Disabled resend-code label showing the cooldown remaining",
     "placeholders": {
       "seconds": {
@@ -213,29 +197,58 @@
       }
     }
   },
-  "resetPasswordResendSuccess": "A new code has been sent.",
-  "@resetPasswordResendSuccess": {
+  "verifyOtpResendSuccess": "A new code has been sent.",
+  "@verifyOtpResendSuccess": {
     "description": "Confirmation shown after successfully requesting a new OTP"
   },
-  "resetPasswordErrorInvalidOtp": "Incorrect code. Please try again.",
-  "@resetPasswordErrorInvalidOtp": {
+  "verifyOtpErrorInvalidOtp": "Incorrect code. Please try again.",
+  "@verifyOtpErrorInvalidOtp": {
     "description": "Error banner shown when the submitted OTP doesn't match"
   },
-  "resetPasswordErrorOtpExpired": "This code has expired. Request a new one.",
-  "@resetPasswordErrorOtpExpired": {
+  "verifyOtpErrorOtpExpired": "This code has expired. Request a new one.",
+  "@verifyOtpErrorOtpExpired": {
     "description": "Error banner shown when the OTP is correct but past its validity window"
   },
-  "resetPasswordErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
-  "@resetPasswordErrorTooManyAttempts": {
+  "verifyOtpErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
+  "@verifyOtpErrorTooManyAttempts": {
     "description": "Error banner shown after too many wrong OTP submissions"
   },
-  "resetPasswordErrorValidation": "Check the code and password, then try again.",
-  "@resetPasswordErrorValidation": {
-    "description": "Error banner shown when the backend rejects the request as malformed"
+  "verifyOtpErrorGeneric": "Something went wrong. Please try again.",
+  "@verifyOtpErrorGeneric": {
+    "description": "Error banner shown for network/server failures during OTP verification"
   },
-  "resetPasswordErrorGeneric": "Something went wrong. Please try again.",
-  "@resetPasswordErrorGeneric": {
-    "description": "Error banner shown for network/server failures during reset-password"
+
+  "newPasswordTitle": "Set new password",
+  "@newPasswordTitle": {
+    "description": "Title of the new-password screen, shown after OTP verification"
+  },
+  "newPasswordSubtitle": "Choose a new password for your account.",
+  "@newPasswordSubtitle": {
+    "description": "Explanatory subtitle on the new-password screen"
+  },
+  "newPasswordSubmit": "Reset password",
+  "@newPasswordSubmit": {
+    "description": "Submit button label on the new-password screen"
+  },
+  "newPasswordErrorInvalidOtp": "Your code is no longer valid. Please request a new one.",
+  "@newPasswordErrorInvalidOtp": {
+    "description": "Error banner shown if the OTP was invalidated between verification and this final submit"
+  },
+  "newPasswordErrorOtpExpired": "Your code has expired. Please request a new one.",
+  "@newPasswordErrorOtpExpired": {
+    "description": "Error banner shown if the OTP expired between verification and this final submit"
+  },
+  "newPasswordErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
+  "@newPasswordErrorTooManyAttempts": {
+    "description": "Error banner shown after too many wrong OTP submissions"
+  },
+  "newPasswordErrorValidation": "Check your new password and try again.",
+  "@newPasswordErrorValidation": {
+    "description": "Error banner shown when the backend rejects the new password as malformed"
+  },
+  "newPasswordErrorGeneric": "Something went wrong. Please try again.",
+  "@newPasswordErrorGeneric": {
+    "description": "Error banner shown for network/server failures while setting the new password"
   }
 ,
   "navHome": "Home",

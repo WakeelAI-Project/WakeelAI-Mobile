@@ -67,7 +67,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     await ref.read(forgotPasswordControllerProvider.notifier).submit(email: email);
     final state = ref.read(forgotPasswordControllerProvider);
     if (mounted && !state.hasError) {
-      context.push('/reset-password', extra: email);
+      context.push('/verify-otp', extra: email);
     }
   }
 

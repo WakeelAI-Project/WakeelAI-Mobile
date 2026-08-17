@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,55 +8,38 @@ import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/seal_mark.dart';
 import '../../../l10n/app_localizations.dart';
-import '../application/forgot_password_controller.dart';
 import '../application/pending_password_change_provider.dart';
 import '../application/reset_password_controller.dart';
 import '../domain/auth_exceptions.dart';
 
-const _resendCooldown = Duration(seconds: 60);
-
-class ResetPasswordScreen extends ConsumerStatefulWidget {
-  const ResetPasswordScreen({super.key, required this.email});
+class NewPasswordScreen extends ConsumerStatefulWidget {
+  const NewPasswordScreen({super.key, required this.email, required this.otp});
 
   final String email;
+  final String otp;
 
   @override
-  ConsumerState<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  ConsumerState<NewPasswordScreen> createState() => _NewPasswordScreenState();
 }
 
-class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
+class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _otpController = TextEditingController();
   final _newPasswordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _otpFocus = FocusNode();
   final _newPasswordFocus = FocusNode();
   final _confirmPasswordFocus = FocusNode();
 
-  bool _otpTouched = false;
   bool _newPasswordTouched = false;
   bool _confirmPasswordTouched = false;
-  bool _otpDirty = false;
   bool _newPasswordDirty = false;
   bool _confirmPasswordDirty = false;
   bool _isSubmitting = false;
   bool _obscureNewPassword = true;
   bool _obscureConfirmPassword = true;
 
-  Timer? _resendTicker;
-  int _resendSecondsLeft = 0;
-  bool _resendJustSucceeded = false;
-
   @override
   void initState() {
     super.initState();
-    _startResendCooldown();
-    _otpFocus.addListener(() {
-      setState(() {
-        if (_otpFocus.hasFocus) _isSubmitting = false;
-        if (!_otpFocus.hasFocus) _otpTouched = true;
-      });
-    });
     _newPasswordFocus.addListener(() {
       setState(() {
         if (_newPasswordFocus.hasFocus) _isSubmitting = false;
@@ -76,53 +56,11 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
   @override
   void dispose() {
-    _resendTicker?.cancel();
-    _otpFocus.dispose();
     _newPasswordFocus.dispose();
     _confirmPasswordFocus.dispose();
-    _otpController.dispose();
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
-  }
-
-  void _startResendCooldown() {
-    _resendTicker?.cancel();
-    setState(() => _resendSecondsLeft = _resendCooldown.inSeconds);
-    _resendTicker = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
-      setState(() {
-        _resendSecondsLeft -= 1;
-        if (_resendSecondsLeft <= 0) timer.cancel();
-      });
-    });
-  }
-
-  Future<void> _resendCode() async {
-    if (_resendSecondsLeft > 0) return;
-    setState(() => _resendJustSucceeded = false);
-    await ref.read(forgotPasswordControllerProvider.notifier).submit(email: widget.email);
-    if (!mounted) return;
-    final state = ref.read(forgotPasswordControllerProvider);
-    if (!state.hasError) {
-      setState(() => _resendJustSucceeded = true);
-      _startResendCooldown();
-    }
-  }
-
-  String? _validateOtp(String? value) {
-    if (_otpFocus.hasFocus && !_isSubmitting) return null;
-    if (!_otpTouched && !_isSubmitting) return null;
-    if (!_otpDirty && !_isSubmitting) return null;
-
-    final t = AppLocalizations.of(context)!;
-    final otp = value?.trim() ?? '';
-    if (otp.isEmpty) return t.resetPasswordErrorOtpRequired;
-    if (otp.length != 6) return t.resetPasswordErrorOtpInvalidLength;
-    return null;
   }
 
   String? _validateNewPassword(String? value) {
@@ -154,7 +92,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
     await ref.read(resetPasswordControllerProvider.notifier).submit(
           email: widget.email,
-          otp: _otpController.text.trim(),
+          otp: widget.otp,
           newPassword: _newPasswordController.text,
         );
     if (!mounted) return;
@@ -169,18 +107,18 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     if (error is ResetPasswordFailure) {
       switch (error.reason) {
         case ResetPasswordFailureReason.invalidOtp:
-          return t.resetPasswordErrorInvalidOtp;
+          return t.newPasswordErrorInvalidOtp;
         case ResetPasswordFailureReason.otpExpired:
-          return t.resetPasswordErrorOtpExpired;
+          return t.newPasswordErrorOtpExpired;
         case ResetPasswordFailureReason.tooManyAttempts:
-          return t.resetPasswordErrorTooManyAttempts;
+          return t.newPasswordErrorTooManyAttempts;
         case ResetPasswordFailureReason.validationError:
-          return t.resetPasswordErrorValidation;
+          return t.newPasswordErrorValidation;
         case ResetPasswordFailureReason.unknown:
-          return t.resetPasswordErrorGeneric;
+          return t.newPasswordErrorGeneric;
       }
     }
-    return t.resetPasswordErrorGeneric;
+    return t.newPasswordErrorGeneric;
   }
 
   @override
@@ -190,9 +128,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     final t = AppLocalizations.of(context)!;
 
     final resetState = ref.watch(resetPasswordControllerProvider);
-    final resendState = ref.watch(forgotPasswordControllerProvider);
     final isLoading = resetState.isLoading;
-    final isResending = resendState.isLoading;
 
     return Scaffold(
       backgroundColor: colors.bgPage,
@@ -217,13 +153,13 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                     Center(child: SealMark.logomark(size: 56, ringColor: colors.brandPrimary)),
                     const SizedBox(height: AppSpacing.s4),
                     Text(
-                      t.resetPasswordTitle,
+                      t.newPasswordTitle,
                       textAlign: TextAlign.center,
                       style: textTheme.headlineMedium,
                     ),
                     const SizedBox(height: AppSpacing.s1),
                     Text(
-                      t.resetPasswordSubtitle(widget.email),
+                      t.newPasswordSubtitle,
                       textAlign: TextAlign.center,
                       style: textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
                     ),
@@ -250,62 +186,6 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                       ),
                       const SizedBox(height: AppSpacing.s4),
                     ],
-                    if (!resetState.hasError && _resendJustSucceeded) ...[
-                      Container(
-                        padding: const EdgeInsets.all(AppSpacing.s3),
-                        decoration: BoxDecoration(
-                          color: colors.successBg,
-                          borderRadius: AppRadius.mdRadius,
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.check_circle_outline, size: 20, color: colors.successFg),
-                            const SizedBox(width: AppSpacing.s2),
-                            Expanded(
-                              child: Text(
-                                t.resetPasswordResendSuccess,
-                                style: textTheme.bodyMedium?.copyWith(color: colors.successFg),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.s4),
-                    ],
-                    TextFormField(
-                      controller: _otpController,
-                      focusNode: _otpFocus,
-                      autovalidateMode: AutovalidateMode.always,
-                      enabled: !isLoading,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.next,
-                      maxLength: 6,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: const TextStyle(fontSize: 22, letterSpacing: 8),
-                      textAlign: TextAlign.center,
-                      onChanged: (_) {
-                        if (!_otpDirty) setState(() => _otpDirty = true);
-                      },
-                      validator: _validateOtp,
-                      decoration: InputDecoration(
-                        labelText: t.resetPasswordOtpLabel,
-                        hintText: t.resetPasswordOtpHint,
-                        counterText: '',
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.s2),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: (isResending || _resendSecondsLeft > 0) ? null : _resendCode,
-                        child: Text(
-                          _resendSecondsLeft > 0
-                              ? t.resetPasswordResendCodeCountdown(_resendSecondsLeft)
-                              : t.resetPasswordResendCode,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.s2),
                     TextFormField(
                       controller: _newPasswordController,
                       focusNode: _newPasswordFocus,
@@ -364,7 +244,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                               width: 20,
                               child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
                             )
-                          : Text(t.resetPasswordSubmit),
+                          : Text(t.newPasswordSubmit),
                     ),
                   ],
                 ),
