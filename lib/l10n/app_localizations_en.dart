@@ -145,57 +145,68 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong. Please try again.';
 
   @override
-  String get resetPasswordTitle => 'Enter verification code';
+  String get verifyOtpTitle => 'Enter verification code';
 
   @override
-  String resetPasswordSubtitle(String email) {
-    return 'Enter the 6-digit code sent to $email and choose a new password.';
+  String verifyOtpSubtitle(String email) {
+    return 'Enter the 6-digit code sent to $email.';
   }
 
   @override
-  String get resetPasswordOtpLabel => 'Verification code';
+  String get verifyOtpSubmit => 'Verify code';
 
   @override
-  String get resetPasswordOtpHint => '6-digit code';
+  String get verifyOtpResendCode => 'Resend code';
 
   @override
-  String get resetPasswordErrorOtpRequired => 'Enter the verification code';
-
-  @override
-  String get resetPasswordErrorOtpInvalidLength => 'Enter the 6-digit code';
-
-  @override
-  String get resetPasswordSubmit => 'Reset password';
-
-  @override
-  String get resetPasswordResendCode => 'Resend code';
-
-  @override
-  String resetPasswordResendCodeCountdown(int seconds) {
+  String verifyOtpResendCodeCountdown(int seconds) {
     return 'Resend code in ${seconds}s';
   }
 
   @override
-  String get resetPasswordResendSuccess => 'A new code has been sent.';
+  String get verifyOtpResendSuccess => 'A new code has been sent.';
 
   @override
-  String get resetPasswordErrorInvalidOtp =>
-      'Incorrect code. Please try again.';
+  String get verifyOtpErrorInvalidOtp => 'Incorrect code. Please try again.';
 
   @override
-  String get resetPasswordErrorOtpExpired =>
+  String get verifyOtpErrorOtpExpired =>
       'This code has expired. Request a new one.';
 
   @override
-  String get resetPasswordErrorTooManyAttempts =>
+  String get verifyOtpErrorTooManyAttempts =>
       'Too many incorrect attempts. Please request a new code.';
 
   @override
-  String get resetPasswordErrorValidation =>
-      'Check the code and password, then try again.';
+  String get verifyOtpErrorGeneric => 'Something went wrong. Please try again.';
 
   @override
-  String get resetPasswordErrorGeneric =>
+  String get newPasswordTitle => 'Set new password';
+
+  @override
+  String get newPasswordSubtitle => 'Choose a new password for your account.';
+
+  @override
+  String get newPasswordSubmit => 'Reset password';
+
+  @override
+  String get newPasswordErrorInvalidOtp =>
+      'Your code is no longer valid. Please request a new one.';
+
+  @override
+  String get newPasswordErrorOtpExpired =>
+      'Your code has expired. Please request a new one.';
+
+  @override
+  String get newPasswordErrorTooManyAttempts =>
+      'Too many incorrect attempts. Please request a new code.';
+
+  @override
+  String get newPasswordErrorValidation =>
+      'Check your new password and try again.';
+
+  @override
+  String get newPasswordErrorGeneric =>
       'Something went wrong. Please try again.';
 
   @override

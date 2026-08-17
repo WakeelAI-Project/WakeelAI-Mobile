@@ -38,12 +38,19 @@ abstract class AuthApiClient {
   /// backend intentionally returns the same generic response whether or not
   /// [email] is registered, so callers should show a generic "check your
   /// email" message regardless of outcome. Triggers a one-time 6-digit OTP
-  /// emailed to [email], which [resetPassword] then consumes.
+  /// emailed to [email], which [verifyOtp]/[resetPassword] then consume.
   Future<void> forgotPassword({required String email});
 
-  /// `POST /api/Auth/reset-password`. Verifies [otp] (issued by
+  /// `POST /api/Auth/verify-otp`. Checks [otp] without consuming it or
+  /// changing the password — lets the UI confirm the code on its own
+  /// screen before asking for a new password. The OTP record (and its
+  /// attempt counter) is shared with [resetPassword], so this still counts
+  /// toward the same brute-force limit.
+  Future<void> verifyOtp({required String email, required String otp});
+
+  /// `POST /api/Auth/reset-password`. Re-verifies [otp] (issued by
   /// [forgotPassword]) and, if valid, sets the account's password to
-  /// [newPassword] in one step.
+  /// [newPassword], consuming the OTP.
   Future<void> resetPassword({required String email, required String otp, required String newPassword});
 }
 
@@ -138,6 +145,33 @@ class DioAuthApiClient implements AuthApiClient {
         return ForgotPasswordFailureReason.tooManyRequests;
       default:
         return ForgotPasswordFailureReason.unknown;
+    }
+  }
+
+  @override
+  Future<void> verifyOtp({required String email, required String otp}) async {
+    try {
+      await _dio.post<void>(
+        '/api/Auth/verify-otp',
+        data: {'email': email, 'otp': otp},
+      );
+    } on DioException catch (e) {
+      throw VerifyOtpFailure(_verifyOtpReasonFor(e));
+    }
+  }
+
+  VerifyOtpFailureReason _verifyOtpReasonFor(DioException e) {
+    final body = e.response?.data;
+    final errorCode = body is Map ? body['error'] as String? : null;
+    switch (errorCode) {
+      case 'invalid_otp':
+        return VerifyOtpFailureReason.invalidOtp;
+      case 'otp_expired':
+        return VerifyOtpFailureReason.otpExpired;
+      case 'too_many_attempts':
+        return VerifyOtpFailureReason.tooManyAttempts;
+      default:
+        return VerifyOtpFailureReason.unknown;
     }
   }
 

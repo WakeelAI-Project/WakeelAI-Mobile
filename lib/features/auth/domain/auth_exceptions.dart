@@ -54,6 +54,30 @@ class ForgotPasswordFailure implements Exception {
   final ForgotPasswordFailureReason reason;
 }
 
+/// Error codes from `POST /api/Auth/verify-otp`.
+enum VerifyOtpFailureReason {
+  /// 400 `{"error": "invalid_otp"}` — same enumeration-safe semantics as
+  /// [ResetPasswordFailureReason.invalidOtp].
+  invalidOtp,
+
+  /// 400 `{"error": "otp_expired"}`.
+  otpExpired,
+
+  /// 429 `{"error": "too_many_attempts"}` — the code has been invalidated;
+  /// the user must request a new one via forgot-password.
+  tooManyAttempts,
+
+  /// Any other error (network failure, unexpected response shape, etc.).
+  unknown,
+}
+
+/// Thrown when standalone OTP verification (before the new-password step)
+/// is rejected.
+class VerifyOtpFailure implements Exception {
+  const VerifyOtpFailure(this.reason);
+  final VerifyOtpFailureReason reason;
+}
+
 /// Error codes from `POST /api/Auth/reset-password`.
 enum ResetPasswordFailureReason {
   /// 400 `{"error": "invalid_otp"}` — the code doesn't match what was sent
