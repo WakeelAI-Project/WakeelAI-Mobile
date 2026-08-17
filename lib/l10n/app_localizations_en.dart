@@ -210,6 +210,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong. Please try again.';
 
   @override
+  String get sessionExpiredTitle => 'Session expired';
+
+  @override
+  String get sessionExpiredMessage =>
+      'Your session has expired. Please log in again.';
+
+  @override
+  String get sessionExpiredOk => 'OK';
+
+  @override
   String get navHome => 'Home';
 
   @override

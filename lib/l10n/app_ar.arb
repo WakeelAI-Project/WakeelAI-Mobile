@@ -62,7 +62,11 @@
   "newPasswordErrorOtpExpired": "انتهت صلاحية الرمز. يرجى طلب رمز جديد.",
   "newPasswordErrorTooManyAttempts": "محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.",
   "newPasswordErrorValidation": "تحقق من كلمة المرور الجديدة وحاول مرة أخرى.",
-  "newPasswordErrorGeneric": "حدث خطأ ما. حاول مرة أخرى."
+  "newPasswordErrorGeneric": "حدث خطأ ما. حاول مرة أخرى.",
+
+  "sessionExpiredTitle": "انتهت الجلسة",
+  "sessionExpiredMessage": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
+  "sessionExpiredOk": "حسناً"
 ,
   "navHome": "الرئيسية",
   "navChat": "المحادثة",

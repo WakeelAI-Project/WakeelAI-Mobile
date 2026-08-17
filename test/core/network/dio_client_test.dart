@@ -26,7 +26,7 @@ void main() {
 
     setUp(() {
       tokenStorage = FakeTokenStorage();
-      interceptor = AuthInterceptor(tokenStorage, Dio(), () async {});
+      interceptor = AuthInterceptor(tokenStorage, Dio(), (reason) async {});
     });
 
     test('should add Authorization header if token exists', () async {

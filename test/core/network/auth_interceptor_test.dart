@@ -36,7 +36,7 @@ void main() {
     test('attaches Authorization header when token is present', () async {
       // Arrange
       final fakeStorage = _FakeTokenStorage()..accessToken = 'fake-jwt-token';
-      final interceptor = AuthInterceptor(fakeStorage, Dio(), () async {});
+      final interceptor = AuthInterceptor(fakeStorage, Dio(), (reason) async {});
       
       final options = RequestOptions(path: '/test-endpoint');
       final handler = _FakeRequestHandler();
@@ -51,7 +51,7 @@ void main() {
     test('does not attach Authorization header when token is null', () async {
       // Arrange
       final fakeStorage = _FakeTokenStorage()..accessToken = null;
-      final interceptor = AuthInterceptor(fakeStorage, Dio(), () async {});
+      final interceptor = AuthInterceptor(fakeStorage, Dio(), (reason) async {});
       
       final options = RequestOptions(path: '/test-endpoint');
       final handler = _FakeRequestHandler();
@@ -66,7 +66,7 @@ void main() {
     test('does not attach Authorization header when token is empty', () async {
       // Arrange
       final fakeStorage = _FakeTokenStorage()..accessToken = '';
-      final interceptor = AuthInterceptor(fakeStorage, Dio(), () async {});
+      final interceptor = AuthInterceptor(fakeStorage, Dio(), (reason) async {});
       
       final options = RequestOptions(path: '/test-endpoint');
       final handler = _FakeRequestHandler();

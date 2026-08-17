@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../navigation/navigator_key.dart';
 import '../../features/auth/application/auth_state_provider.dart';
 import '../../features/auth/application/pending_password_change_provider.dart';
 import '../../features/auth/presentation/change_password_screen.dart';
@@ -44,6 +45,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final pendingPasswordChange = ref.watch(pendingPasswordChangeProvider);
 
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/welcome',
     redirect: (context, state) {
       if (authState == AuthState.loading) return '/splash';

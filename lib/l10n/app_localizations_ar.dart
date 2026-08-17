@@ -208,6 +208,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newPasswordErrorGeneric => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
+  String get sessionExpiredTitle => 'انتهت الجلسة';
+
+  @override
+  String get sessionExpiredMessage =>
+      'انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.';
+
+  @override
+  String get sessionExpiredOk => 'حسناً';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override

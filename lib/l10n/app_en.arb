@@ -249,6 +249,19 @@
   "newPasswordErrorGeneric": "Something went wrong. Please try again.",
   "@newPasswordErrorGeneric": {
     "description": "Error banner shown for network/server failures while setting the new password"
+  },
+
+  "sessionExpiredTitle": "Session expired",
+  "@sessionExpiredTitle": {
+    "description": "Title of the dialog shown when a forced logout is triggered by a failed token refresh"
+  },
+  "sessionExpiredMessage": "Your session has expired. Please log in again.",
+  "@sessionExpiredMessage": {
+    "description": "Body text of the session-expired dialog"
+  },
+  "sessionExpiredOk": "OK",
+  "@sessionExpiredOk": {
+    "description": "Dismiss button on the session-expired dialog"
   }
 ,
   "navHome": "Home",
