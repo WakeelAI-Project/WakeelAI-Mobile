@@ -124,6 +124,92 @@ class AppLocalizationsEn extends AppLocalizations {
       'Something went wrong. Please try again.';
 
   @override
+  String get loginForgotPasswordLink => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle => 'Reset your password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter the email associated with your account and we\'ll send you a 6-digit code to reset your password.';
+
+  @override
+  String get forgotPasswordSubmit => 'Send code';
+
+  @override
+  String get forgotPasswordTooManyRequests =>
+      'Too many attempts. Please wait a while before trying again.';
+
+  @override
+  String get forgotPasswordGenericError =>
+      'Something went wrong. Please try again.';
+
+  @override
+  String get verifyOtpTitle => 'Enter verification code';
+
+  @override
+  String verifyOtpSubtitle(String email) {
+    return 'Enter the 6-digit code sent to $email.';
+  }
+
+  @override
+  String get verifyOtpSubmit => 'Verify code';
+
+  @override
+  String get verifyOtpResendCode => 'Resend code';
+
+  @override
+  String verifyOtpResendCodeCountdown(int seconds) {
+    return 'Resend code in ${seconds}s';
+  }
+
+  @override
+  String get verifyOtpResendSuccess => 'A new code has been sent.';
+
+  @override
+  String get verifyOtpErrorInvalidOtp => 'Incorrect code. Please try again.';
+
+  @override
+  String get verifyOtpErrorOtpExpired =>
+      'This code has expired. Request a new one.';
+
+  @override
+  String get verifyOtpErrorTooManyAttempts =>
+      'Too many incorrect attempts. Please request a new code.';
+
+  @override
+  String get verifyOtpErrorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get newPasswordTitle => 'Set new password';
+
+  @override
+  String get newPasswordSubtitle => 'Choose a new password for your account.';
+
+  @override
+  String get newPasswordSubmit => 'Reset password';
+
+  @override
+  String get newPasswordErrorInvalidOtp =>
+      'Your code is no longer valid. Please request a new one.';
+
+  @override
+  String get newPasswordErrorOtpExpired =>
+      'Your code has expired. Please request a new one.';
+
+  @override
+  String get newPasswordErrorTooManyAttempts =>
+      'Too many incorrect attempts. Please request a new code.';
+
+  @override
+  String get newPasswordErrorValidation =>
+      'Check your new password and try again.';
+
+  @override
+  String get newPasswordErrorGeneric =>
+      'Something went wrong. Please try again.';
+
+  @override
   String get sessionExpiredTitle => 'Session expired';
 
   @override

@@ -142,6 +142,115 @@
     "description": "Error banner shown for network/server failures during change-password"
   },
 
+  "loginForgotPasswordLink": "Forgot password?",
+  "@loginForgotPasswordLink": {
+    "description": "Clickable link on the login screen leading to the forgot-password screen"
+  },
+  "forgotPasswordTitle": "Reset your password",
+  "@forgotPasswordTitle": {
+    "description": "Title of the forgot-password screen"
+  },
+  "forgotPasswordSubtitle": "Enter the email associated with your account and we'll send you a 6-digit code to reset your password.",
+  "@forgotPasswordSubtitle": {
+    "description": "Explanatory subtitle on the forgot-password screen"
+  },
+  "forgotPasswordSubmit": "Send code",
+  "@forgotPasswordSubmit": {
+    "description": "Submit button label on the forgot-password screen"
+  },
+  "forgotPasswordTooManyRequests": "Too many attempts. Please wait a while before trying again.",
+  "@forgotPasswordTooManyRequests": {
+    "description": "Error banner shown when the forgot-password endpoint rate-limits the request"
+  },
+  "forgotPasswordGenericError": "Something went wrong. Please try again.",
+  "@forgotPasswordGenericError": {
+    "description": "Error banner shown for network/server failures during forgot-password"
+  },
+
+  "verifyOtpTitle": "Enter verification code",
+  "@verifyOtpTitle": {
+    "description": "Title of the standalone OTP-entry screen"
+  },
+  "verifyOtpSubtitle": "Enter the 6-digit code sent to {email}.",
+  "@verifyOtpSubtitle": {
+    "description": "Explanatory subtitle on the OTP-entry screen",
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyOtpSubmit": "Verify code",
+  "@verifyOtpSubmit": {
+    "description": "Submit button label on the OTP-entry screen"
+  },
+  "verifyOtpResendCode": "Resend code",
+  "@verifyOtpResendCode": {
+    "description": "Button label to request a new OTP"
+  },
+  "verifyOtpResendCodeCountdown": "Resend code in {seconds}s",
+  "@verifyOtpResendCodeCountdown": {
+    "description": "Disabled resend-code label showing the cooldown remaining",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyOtpResendSuccess": "A new code has been sent.",
+  "@verifyOtpResendSuccess": {
+    "description": "Confirmation shown after successfully requesting a new OTP"
+  },
+  "verifyOtpErrorInvalidOtp": "Incorrect code. Please try again.",
+  "@verifyOtpErrorInvalidOtp": {
+    "description": "Error banner shown when the submitted OTP doesn't match"
+  },
+  "verifyOtpErrorOtpExpired": "This code has expired. Request a new one.",
+  "@verifyOtpErrorOtpExpired": {
+    "description": "Error banner shown when the OTP is correct but past its validity window"
+  },
+  "verifyOtpErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
+  "@verifyOtpErrorTooManyAttempts": {
+    "description": "Error banner shown after too many wrong OTP submissions"
+  },
+  "verifyOtpErrorGeneric": "Something went wrong. Please try again.",
+  "@verifyOtpErrorGeneric": {
+    "description": "Error banner shown for network/server failures during OTP verification"
+  },
+
+  "newPasswordTitle": "Set new password",
+  "@newPasswordTitle": {
+    "description": "Title of the new-password screen, shown after OTP verification"
+  },
+  "newPasswordSubtitle": "Choose a new password for your account.",
+  "@newPasswordSubtitle": {
+    "description": "Explanatory subtitle on the new-password screen"
+  },
+  "newPasswordSubmit": "Reset password",
+  "@newPasswordSubmit": {
+    "description": "Submit button label on the new-password screen"
+  },
+  "newPasswordErrorInvalidOtp": "Your code is no longer valid. Please request a new one.",
+  "@newPasswordErrorInvalidOtp": {
+    "description": "Error banner shown if the OTP was invalidated between verification and this final submit"
+  },
+  "newPasswordErrorOtpExpired": "Your code has expired. Please request a new one.",
+  "@newPasswordErrorOtpExpired": {
+    "description": "Error banner shown if the OTP expired between verification and this final submit"
+  },
+  "newPasswordErrorTooManyAttempts": "Too many incorrect attempts. Please request a new code.",
+  "@newPasswordErrorTooManyAttempts": {
+    "description": "Error banner shown after too many wrong OTP submissions"
+  },
+  "newPasswordErrorValidation": "Check your new password and try again.",
+  "@newPasswordErrorValidation": {
+    "description": "Error banner shown when the backend rejects the new password as malformed"
+  },
+  "newPasswordErrorGeneric": "Something went wrong. Please try again.",
+  "@newPasswordErrorGeneric": {
+    "description": "Error banner shown for network/server failures while setting the new password"
+  },
+
   "sessionExpiredTitle": "Session expired",
   "@sessionExpiredTitle": {
     "description": "Title of the dialog shown when a forced logout is triggered by a failed token refresh"

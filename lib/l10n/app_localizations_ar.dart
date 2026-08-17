@@ -124,6 +124,90 @@ class AppLocalizationsAr extends AppLocalizations {
   String get changePasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
+  String get loginForgotPasswordLink => 'هل نسيت كلمة المرور؟';
+
+  @override
+  String get forgotPasswordTitle => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك رمزًا مكونًا من 6 أرقام لإعادة تعيين كلمة المرور.';
+
+  @override
+  String get forgotPasswordSubmit => 'إرسال الرمز';
+
+  @override
+  String get forgotPasswordTooManyRequests =>
+      'محاولات كثيرة جدًا. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.';
+
+  @override
+  String get forgotPasswordGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get verifyOtpTitle => 'أدخل رمز التحقق';
+
+  @override
+  String verifyOtpSubtitle(String email) {
+    return 'أدخل الرمز المكون من 6 أرقام المرسل إلى $email.';
+  }
+
+  @override
+  String get verifyOtpSubmit => 'تحقق من الرمز';
+
+  @override
+  String get verifyOtpResendCode => 'إعادة إرسال الرمز';
+
+  @override
+  String verifyOtpResendCodeCountdown(int seconds) {
+    return 'إعادة إرسال الرمز خلال $seconds ثانية';
+  }
+
+  @override
+  String get verifyOtpResendSuccess => 'تم إرسال رمز جديد.';
+
+  @override
+  String get verifyOtpErrorInvalidOtp => 'رمز غير صحيح. حاول مرة أخرى.';
+
+  @override
+  String get verifyOtpErrorOtpExpired =>
+      'انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا.';
+
+  @override
+  String get verifyOtpErrorTooManyAttempts =>
+      'محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.';
+
+  @override
+  String get verifyOtpErrorGeneric => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
+  String get newPasswordTitle => 'تعيين كلمة مرور جديدة';
+
+  @override
+  String get newPasswordSubtitle => 'اختر كلمة مرور جديدة لحسابك.';
+
+  @override
+  String get newPasswordSubmit => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get newPasswordErrorInvalidOtp =>
+      'لم يعد الرمز صالحًا. يرجى طلب رمز جديد.';
+
+  @override
+  String get newPasswordErrorOtpExpired =>
+      'انتهت صلاحية الرمز. يرجى طلب رمز جديد.';
+
+  @override
+  String get newPasswordErrorTooManyAttempts =>
+      'محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.';
+
+  @override
+  String get newPasswordErrorValidation =>
+      'تحقق من كلمة المرور الجديدة وحاول مرة أخرى.';
+
+  @override
+  String get newPasswordErrorGeneric => 'حدث خطأ ما. حاول مرة أخرى.';
+
+  @override
   String get sessionExpiredTitle => 'انتهت الجلسة';
 
   @override

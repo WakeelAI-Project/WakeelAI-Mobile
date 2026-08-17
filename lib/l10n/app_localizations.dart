@@ -308,6 +308,150 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again.'**
   String get changePasswordGenericError;
 
+  /// Clickable link on the login screen leading to the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgotPasswordLink;
+
+  /// Title of the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reset your password'**
+  String get forgotPasswordTitle;
+
+  /// Explanatory subtitle on the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email associated with your account and we\'ll send you a 6-digit code to reset your password.'**
+  String get forgotPasswordSubtitle;
+
+  /// Submit button label on the forgot-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Send code'**
+  String get forgotPasswordSubmit;
+
+  /// Error banner shown when the forgot-password endpoint rate-limits the request
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a while before trying again.'**
+  String get forgotPasswordTooManyRequests;
+
+  /// Error banner shown for network/server failures during forgot-password
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get forgotPasswordGenericError;
+
+  /// Title of the standalone OTP-entry screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter verification code'**
+  String get verifyOtpTitle;
+
+  /// Explanatory subtitle on the OTP-entry screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to {email}.'**
+  String verifyOtpSubtitle(String email);
+
+  /// Submit button label on the OTP-entry screen
+  ///
+  /// In en, this message translates to:
+  /// **'Verify code'**
+  String get verifyOtpSubmit;
+
+  /// Button label to request a new OTP
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get verifyOtpResendCode;
+
+  /// Disabled resend-code label showing the cooldown remaining
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code in {seconds}s'**
+  String verifyOtpResendCodeCountdown(int seconds);
+
+  /// Confirmation shown after successfully requesting a new OTP
+  ///
+  /// In en, this message translates to:
+  /// **'A new code has been sent.'**
+  String get verifyOtpResendSuccess;
+
+  /// Error banner shown when the submitted OTP doesn't match
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect code. Please try again.'**
+  String get verifyOtpErrorInvalidOtp;
+
+  /// Error banner shown when the OTP is correct but past its validity window
+  ///
+  /// In en, this message translates to:
+  /// **'This code has expired. Request a new one.'**
+  String get verifyOtpErrorOtpExpired;
+
+  /// Error banner shown after too many wrong OTP submissions
+  ///
+  /// In en, this message translates to:
+  /// **'Too many incorrect attempts. Please request a new code.'**
+  String get verifyOtpErrorTooManyAttempts;
+
+  /// Error banner shown for network/server failures during OTP verification
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get verifyOtpErrorGeneric;
+
+  /// Title of the new-password screen, shown after OTP verification
+  ///
+  /// In en, this message translates to:
+  /// **'Set new password'**
+  String get newPasswordTitle;
+
+  /// Explanatory subtitle on the new-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a new password for your account.'**
+  String get newPasswordSubtitle;
+
+  /// Submit button label on the new-password screen
+  ///
+  /// In en, this message translates to:
+  /// **'Reset password'**
+  String get newPasswordSubmit;
+
+  /// Error banner shown if the OTP was invalidated between verification and this final submit
+  ///
+  /// In en, this message translates to:
+  /// **'Your code is no longer valid. Please request a new one.'**
+  String get newPasswordErrorInvalidOtp;
+
+  /// Error banner shown if the OTP expired between verification and this final submit
+  ///
+  /// In en, this message translates to:
+  /// **'Your code has expired. Please request a new one.'**
+  String get newPasswordErrorOtpExpired;
+
+  /// Error banner shown after too many wrong OTP submissions
+  ///
+  /// In en, this message translates to:
+  /// **'Too many incorrect attempts. Please request a new code.'**
+  String get newPasswordErrorTooManyAttempts;
+
+  /// Error banner shown when the backend rejects the new password as malformed
+  ///
+  /// In en, this message translates to:
+  /// **'Check your new password and try again.'**
+  String get newPasswordErrorValidation;
+
+  /// Error banner shown for network/server failures while setting the new password
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get newPasswordErrorGeneric;
+
   /// Title of the dialog shown when a forced logout is triggered by a failed token refresh
   ///
   /// In en, this message translates to:

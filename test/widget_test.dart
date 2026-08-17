@@ -42,6 +42,27 @@ class _FakeAuthApiClient implements AuthApiClient {
       throw const ChangePasswordFailure(ChangePasswordFailureReason.invalidCurrentPassword);
     }
   }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    await Future.delayed(const Duration(milliseconds: 50));
+  }
+
+  @override
+  Future<void> verifyOtp({required String email, required String otp}) async {
+    await Future.delayed(const Duration(milliseconds: 50));
+    if (otp != '123456') {
+      throw const VerifyOtpFailure(VerifyOtpFailureReason.invalidOtp);
+    }
+  }
+
+  @override
+  Future<void> resetPassword({required String email, required String otp, required String newPassword}) async {
+    await Future.delayed(const Duration(milliseconds: 50));
+    if (otp != '123456') {
+      throw const ResetPasswordFailure(ResetPasswordFailureReason.invalidOtp);
+    }
+  }
 }
 
 class _FakeTokenStorage implements TokenStorage {

@@ -37,6 +37,33 @@
   "changePasswordUserNotFound": "تعذر العثور على حسابك. يرجى تسجيل الدخول مرة أخرى.",
   "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى.",
 
+  "loginForgotPasswordLink": "هل نسيت كلمة المرور؟",
+  "forgotPasswordTitle": "إعادة تعيين كلمة المرور",
+  "forgotPasswordSubtitle": "أدخل البريد الإلكتروني المرتبط بحسابك وسنرسل لك رمزًا مكونًا من 6 أرقام لإعادة تعيين كلمة المرور.",
+  "forgotPasswordSubmit": "إرسال الرمز",
+  "forgotPasswordTooManyRequests": "محاولات كثيرة جدًا. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى.",
+  "forgotPasswordGenericError": "حدث خطأ ما. حاول مرة أخرى.",
+
+  "verifyOtpTitle": "أدخل رمز التحقق",
+  "verifyOtpSubtitle": "أدخل الرمز المكون من 6 أرقام المرسل إلى {email}.",
+  "verifyOtpSubmit": "تحقق من الرمز",
+  "verifyOtpResendCode": "إعادة إرسال الرمز",
+  "verifyOtpResendCodeCountdown": "إعادة إرسال الرمز خلال {seconds} ثانية",
+  "verifyOtpResendSuccess": "تم إرسال رمز جديد.",
+  "verifyOtpErrorInvalidOtp": "رمز غير صحيح. حاول مرة أخرى.",
+  "verifyOtpErrorOtpExpired": "انتهت صلاحية هذا الرمز. اطلب رمزًا جديدًا.",
+  "verifyOtpErrorTooManyAttempts": "محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.",
+  "verifyOtpErrorGeneric": "حدث خطأ ما. حاول مرة أخرى.",
+
+  "newPasswordTitle": "تعيين كلمة مرور جديدة",
+  "newPasswordSubtitle": "اختر كلمة مرور جديدة لحسابك.",
+  "newPasswordSubmit": "إعادة تعيين كلمة المرور",
+  "newPasswordErrorInvalidOtp": "لم يعد الرمز صالحًا. يرجى طلب رمز جديد.",
+  "newPasswordErrorOtpExpired": "انتهت صلاحية الرمز. يرجى طلب رمز جديد.",
+  "newPasswordErrorTooManyAttempts": "محاولات غير صحيحة كثيرة جدًا. يرجى طلب رمز جديد.",
+  "newPasswordErrorValidation": "تحقق من كلمة المرور الجديدة وحاول مرة أخرى.",
+  "newPasswordErrorGeneric": "حدث خطأ ما. حاول مرة أخرى.",
+
   "sessionExpiredTitle": "انتهت الجلسة",
   "sessionExpiredMessage": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
   "sessionExpiredOk": "حسناً"
