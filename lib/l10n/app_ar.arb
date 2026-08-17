@@ -35,7 +35,11 @@
   "changePasswordErrorPasswordMismatch": "كلمتا المرور غير متطابقتين",
   "changePasswordInvalidCurrentPassword": "كلمة المرور المؤقتة لم تعد صالحة. يرجى تسجيل الدخول مرة أخرى.",
   "changePasswordUserNotFound": "تعذر العثور على حسابك. يرجى تسجيل الدخول مرة أخرى.",
-  "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى."
+  "changePasswordGenericError": "حدث خطأ ما. حاول مرة أخرى.",
+
+  "sessionExpiredTitle": "انتهت الجلسة",
+  "sessionExpiredMessage": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
+  "sessionExpiredOk": "حسناً"
 ,
   "navHome": "الرئيسية",
   "navChat": "المحادثة",

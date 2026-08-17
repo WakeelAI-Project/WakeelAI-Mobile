@@ -308,6 +308,24 @@ abstract class AppLocalizations {
   /// **'Something went wrong. Please try again.'**
   String get changePasswordGenericError;
 
+  /// Title of the dialog shown when a forced logout is triggered by a failed token refresh
+  ///
+  /// In en, this message translates to:
+  /// **'Session expired'**
+  String get sessionExpiredTitle;
+
+  /// Body text of the session-expired dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please log in again.'**
+  String get sessionExpiredMessage;
+
+  /// Dismiss button on the session-expired dialog
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get sessionExpiredOk;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

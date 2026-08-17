@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wakeel_ai_app/core/theme/app_colors.dart';
@@ -14,6 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
+  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -33,8 +36,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
 
     _controller.forward();
 
-    // Navigate to home after animation + brief pause
-    Future.delayed(const Duration(milliseconds: 2500), () {
+    // Navigate to home after animation + brief pause. Stored so it can be
+    // cancelled on dispose — otherwise it outlives the widget (e.g. in
+    // tests where the tree is torn down before it fires).
+    _navigationTimer = Timer(const Duration(milliseconds: 2500), () {
       if (mounted) {
         context.go('/home');
       }
@@ -43,6 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with SingleTickerProvider
 
   @override
   void dispose() {
+    _navigationTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
