@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/leave_api_client.dart';
 import '../domain/leave_request_exceptions.dart';
 import '../domain/leave_type.dart';
+import '../domain/leave_request.dart';
 
 /// Façade over [LeaveApiClient] for the AI Chat feature's `leave_draft`
 /// result card: submit/cancel a draft — regardless of whether it was
@@ -26,6 +27,20 @@ import '../domain/leave_type.dart';
 class LeaveRequestService {
   LeaveRequestService(this._client);
   final LeaveApiClient _client;
+
+  /// Checks if a request is still a draft. Returns false if submitted, cancelled, or deleted.
+  Future<bool> isLeaveDraft(String requestId) async {
+    try {
+      final request = await _client.getLeaveRequest(requestId);
+      return request.status == LeaveStatus.draft;
+    } on DioException catch (e) {
+      final reason = _draftReasonFor(e);
+      if (reason == LeaveDraftFailureReason.notFound) {
+        return false;
+      }
+      rethrow;
+    }
+  }
 
   /// `PATCH /api/leave-requests/{requestId}/submit`. Throws
   /// [LeaveDraftException] on failure (404 not-found or 409 not-a-draft).

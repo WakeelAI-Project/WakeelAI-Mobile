@@ -68,3 +68,6 @@ android/local.properties
 # ...except bundled app assets (e.g. the sample PDF used for the in-app
 # document preview demo), which need to be tracked.
 !assets/**/*.pdf
+
+# Output files
+*_out.txt

@@ -17,9 +17,11 @@ import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/leaves/presentation/my_leave_requests_screen.dart';
 import '../../features/leaves/presentation/new_leave_request_screen.dart';
+
 import '../../features/documents/presentation/documents_screen.dart';
 import '../../features/documents/presentation/document_detail_screen.dart';
 import '../../features/shell/presentation/main_navigation_scaffold.dart';
+import '../../features/chat/presentation/chat_screen.dart';
 
 Page<dynamic> _buildSlideTransitionPage(BuildContext context, GoRouterState state, Widget child) {
   return CustomTransitionPage(
@@ -171,7 +173,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/chat',
                 pageBuilder: (context, state) => const NoTransitionPage(
-                  child: Scaffold(body: Center(child: Text('Chat - Coming Soon'))),
+                  child: ChatScreen(),
                 ),
               ),
             ],

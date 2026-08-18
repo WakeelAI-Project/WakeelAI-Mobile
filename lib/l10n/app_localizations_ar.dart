@@ -420,4 +420,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'طلب جديد';
+
+  @override
+  String get chatDrawerNewChat => 'محادثة جديدة';
+
+  @override
+  String get chatDrawerRecentConversations => 'المحادثات الأخيرة';
+
+  @override
+  String get chatDrawerNoPreviousChats => 'لا توجد محادثات سابقة.';
+
+  @override
+  String get chatDrawerToday => 'اليوم';
+
+  @override
+  String get chatDrawerYesterday => 'أمس';
+
+  @override
+  String get chatDrawerPrevious7Days => 'آخر 7 أيام';
+
+  @override
+  String get chatDrawerOlder => 'أقدم';
+
+  @override
+  String get chatComposerPlaceholder => 'أرسل رسالة إلى وكيل AI...';
+
+  @override
+  String get chatEmptyStateTitle => 'كيف يمكنني مساعدتك اليوم؟';
+
+  @override
+  String get chatSamplePromptLeaveBalance => 'ما هو رصيد إجازاتي؟';
+
+  @override
+  String get chatScreenTitle => 'اسأل وكيل AI';
+
+  @override
+  String get chatBubbleFailedToSend => 'فشل الإرسال. يرجى المحاولة مرة أخرى.';
 }
