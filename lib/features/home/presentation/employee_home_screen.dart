@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
@@ -245,26 +246,26 @@ class EmployeeHomeScreen extends ConsumerWidget {
                   children: [
                     QuickActionCard(
                       title: l10n.quickActionChat,
-                      icon: Symbols.assistant,
+                      icon: LucideIcons.bot,
                       onTap: () {},
                     ),
                     QuickActionCard(
                       title: l10n.quickActionLeaves,
-                      icon: Symbols.calendar_month,
+                      icon: LucideIcons.calendarDays,
                       onTap: () {
                         context.go('/leaves');
                       },
                     ),
                     QuickActionCard(
                       title: l10n.quickActionDocs,
-                      icon: Symbols.description,
+                      icon: LucideIcons.fileText,
                       onTap: () {
                         context.go('/docs');
                       },
                     ),
                     QuickActionCard(
                       title: l10n.quickActionProfile,
-                      icon: Symbols.account_circle,
+                      icon: LucideIcons.circleUserRound,
                       onTap: () {
                         context.push('/profile');
                       },

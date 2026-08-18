@@ -421,4 +421,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'New Request';
+
+  @override
+  String get chatDrawerNewChat => 'New Chat';
+
+  @override
+  String get chatDrawerRecentConversations => 'Recent Conversations';
+
+  @override
+  String get chatDrawerNoPreviousChats => 'No previous chats.';
+
+  @override
+  String get chatDrawerToday => 'Today';
+
+  @override
+  String get chatDrawerYesterday => 'Yesterday';
+
+  @override
+  String get chatDrawerPrevious7Days => 'Previous 7 Days';
+
+  @override
+  String get chatDrawerOlder => 'Older';
+
+  @override
+  String get chatComposerPlaceholder => 'Message Wakeel AI...';
+
+  @override
+  String get chatEmptyStateTitle => 'How can I help you today?';
+
+  @override
+  String get chatSamplePromptLeaveBalance => 'What is my leave balance?';
+
+  @override
+  String get chatScreenTitle => 'Ask Wakeel AI';
+
+  @override
+  String get chatBubbleFailedToSend => 'Failed to send. Please try again.';
 }

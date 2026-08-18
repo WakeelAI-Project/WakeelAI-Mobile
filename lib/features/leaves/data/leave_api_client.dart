@@ -37,6 +37,7 @@ class CreateLeaveDraftResult {
 
 abstract class LeaveApiClient {
   Future<LeaveRequestsPage> getLeaveRequests({String? status, int page = 1, int limit = 20});
+  Future<LeaveRequest> getLeaveRequest(String id);
   Future<void> submitDraft(String id);
   Future<void> cancelDraft(String id);
 
@@ -82,6 +83,16 @@ class DioLeaveApiClient implements LeaveApiClient {
           .toList();
       final total = data['total'] as int? ?? items.length;
       return LeaveRequestsPage(items: items, page: page, hasMore: page * limit < total);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<LeaveRequest> getLeaveRequest(String id) async {
+    try {
+      final response = await _dio.get<Map<String, dynamic>>('/api/leave-requests/$id');
+      return LeaveRequest.fromJson(response.data ?? const {});
     } catch (e) {
       rethrow;
     }

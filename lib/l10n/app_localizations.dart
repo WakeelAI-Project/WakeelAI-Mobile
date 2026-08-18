@@ -835,6 +835,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Request'**
   String get myLeaveRequestsFabLabel;
+
+  /// No description provided for @chatDrawerNewChat.
+  ///
+  /// In en, this message translates to:
+  /// **'New Chat'**
+  String get chatDrawerNewChat;
+
+  /// No description provided for @chatDrawerRecentConversations.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Conversations'**
+  String get chatDrawerRecentConversations;
+
+  /// No description provided for @chatDrawerNoPreviousChats.
+  ///
+  /// In en, this message translates to:
+  /// **'No previous chats.'**
+  String get chatDrawerNoPreviousChats;
+
+  /// No description provided for @chatDrawerToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get chatDrawerToday;
+
+  /// No description provided for @chatDrawerYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get chatDrawerYesterday;
+
+  /// No description provided for @chatDrawerPrevious7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous 7 Days'**
+  String get chatDrawerPrevious7Days;
+
+  /// No description provided for @chatDrawerOlder.
+  ///
+  /// In en, this message translates to:
+  /// **'Older'**
+  String get chatDrawerOlder;
+
+  /// No description provided for @chatComposerPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Message Wakeel AI...'**
+  String get chatComposerPlaceholder;
+
+  /// No description provided for @chatEmptyStateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How can I help you today?'**
+  String get chatEmptyStateTitle;
+
+  /// No description provided for @chatSamplePromptLeaveBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'What is my leave balance?'**
+  String get chatSamplePromptLeaveBalance;
+
+  /// No description provided for @chatScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Wakeel AI'**
+  String get chatScreenTitle;
+
+  /// No description provided for @chatBubbleFailedToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send. Please try again.'**
+  String get chatBubbleFailedToSend;
 }
 
 class _AppLocalizationsDelegate

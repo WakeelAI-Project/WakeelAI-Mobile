@@ -349,6 +349,17 @@
   "newLeaveRequestErrorValidation": "Check the request details and try again.",
   "newLeaveRequestErrorInsufficientBalance": "Your remaining leave balance isn't enough to cover these dates.",
   "newLeaveRequestErrorGeneric": "Something went wrong. Please try again.",
-  "myLeaveRequestsFabLabel": "New Request"
-
+  "myLeaveRequestsFabLabel": "New Request",
+  "chatDrawerNewChat": "New Chat",
+  "chatDrawerRecentConversations": "Recent Conversations",
+  "chatDrawerNoPreviousChats": "No previous chats.",
+  "chatDrawerToday": "Today",
+  "chatDrawerYesterday": "Yesterday",
+  "chatDrawerPrevious7Days": "Previous 7 Days",
+  "chatDrawerOlder": "Older",
+  "chatComposerPlaceholder": "Message Wakeel AI...",
+  "chatEmptyStateTitle": "How can I help you today?",
+  "chatSamplePromptLeaveBalance": "What is my leave balance?",
+  "chatScreenTitle": "Ask Wakeel AI",
+  "chatBubbleFailedToSend": "Failed to send. Please try again."
 }
