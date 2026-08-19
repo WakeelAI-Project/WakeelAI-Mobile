@@ -48,6 +48,9 @@ class _FakeLeaveApiClient implements LeaveApiClient {
   }
 
   @override
+  Future<LeaveRequest> getLeaveRequest(String id) => throw UnimplementedError();
+
+  @override
   Future<void> submitDraft(String id) async {}
 
   @override

@@ -40,8 +40,8 @@ class ChatDrawer extends ConsumerWidget {
     // Sidebar uses bgSidebar which is dark Navy-950 in both themes.
     // So text must be textOnNavy, and we'll use a slightly dimmed version for secondary text.
     final primaryTextColor = colors.textOnNavy;
-    final secondaryTextColor = colors.textOnNavy.withOpacity(0.7);
-    final dividerColor = colors.textOnNavy.withOpacity(0.1);
+    final secondaryTextColor = colors.textOnNavy.withValues(alpha: 0.7);
+    final dividerColor = colors.textOnNavy.withValues(alpha: 0.1);
 
     return Drawer(
       backgroundColor: colors.bgSidebar,
@@ -83,8 +83,8 @@ class ChatDrawer extends ConsumerWidget {
                   // We explicitly set the background to a lighter color on the dark sidebar
                   // or use secondary which might look better. Let's use brandPrimary logic
                   // but ensure text is visible.
-                  backgroundColor: MaterialStateProperty.all(colors.brandPrimary),
-                  foregroundColor: MaterialStateProperty.all(colors.onBrandPrimary),
+                  backgroundColor: WidgetStateProperty.all(colors.brandPrimary),
+                  foregroundColor: WidgetStateProperty.all(colors.onBrandPrimary),
                 ),
               ),
             ),
