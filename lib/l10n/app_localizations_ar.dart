@@ -256,15 +256,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String homeLeaveSubtitleUnlimited(int used) {
-    return 'المستخدم: $used أيام (بدون حد)';
-  }
+  String get homeLeaveSubtitleNotAvailable => 'لا يوجد استحقاق ممنوح';
 
   @override
   String get homeLeaveAvailable => 'متاح';
 
   @override
-  String get homeLeaveUnlimited => 'غير محدود';
+  String get homeLeaveNotAvailable => 'غير متاح';
 
   @override
   String get leaveTypeAnnual => 'سنوية';

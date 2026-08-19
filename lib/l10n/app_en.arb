@@ -286,16 +286,9 @@
       }
     }
   },
-  "homeLeaveSubtitleUnlimited": "Used: {used} days (no limit)",
-  "@homeLeaveSubtitleUnlimited": {
-    "placeholders": {
-      "used": {
-        "type": "int"
-      }
-    }
-  },
+  "homeLeaveSubtitleNotAvailable": "No entitlement granted",
   "homeLeaveAvailable": "Available",
-  "homeLeaveUnlimited": "Unlimited",
+  "homeLeaveNotAvailable": "Not available",
   "leaveTypeAnnual": "Annual",
   "leaveTypeSick": "Sick",
   "leaveTypeUnpaid": "Unpaid",

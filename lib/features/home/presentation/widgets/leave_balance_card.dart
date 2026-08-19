@@ -33,20 +33,22 @@ class LeaveBalanceCard extends StatelessWidget {
     if (rawLeaveType.toLowerCase() == 'unpaid') displayLeaveType = l10n.leaveTypeUnpaid;
 
     final int? total = leaveBalance.totalDays;
-    final int used = leaveBalance.usedDays;
     final int? currentBalance = leaveBalance.balance;
-    final bool isUnlimited = total == null || currentBalance == null;
+    // No entitlement granted for this leave type (e.g. Unpaid before HR
+    // grants an allotment) — total/remaining are 0 or, for legacy data
+    // predating that default, still null.
+    final bool isUnavailable = total == null || currentBalance == null || total == 0;
 
-    final double progress = !isUnlimited && total > 0 ? (currentBalance / total).clamp(0.0, 1.0) : 0.0;
-    
+    final double progress = !isUnavailable ? (currentBalance / total).clamp(0.0, 1.0) : 0.0;
+
     // Determine status badge — every branch below assigns both, so these
     // are never actually null by the time they're used.
     AppStatus badgeStatus;
     String badgeLabel;
 
-    if (isUnlimited) {
-      badgeStatus = AppStatus.success;
-      badgeLabel = l10n.homeLeaveUnlimited;
+    if (isUnavailable) {
+      badgeStatus = AppStatus.info;
+      badgeLabel = l10n.homeLeaveNotAvailable;
     } else if (currentBalance == 0) {
       badgeStatus = AppStatus.error;
       badgeLabel = l10n.homeLeaveNoneLeft;
@@ -70,8 +72,8 @@ class LeaveBalanceCard extends StatelessWidget {
       progressColor = colors.brandPrimary; // Default
     }
 
-    final subtitleText = isUnlimited 
-        ? l10n.homeLeaveSubtitleUnlimited(used) 
+    final subtitleText = isUnavailable
+        ? l10n.homeLeaveSubtitleNotAvailable
         : l10n.homeLeaveSubtitle(currentBalance, total);
 
     return Container(
@@ -117,7 +119,7 @@ class LeaveBalanceCard extends StatelessWidget {
                 ClipRRect(
                   borderRadius: AppRadius.fullRadius,
                   child: LinearProgressIndicator(
-                    value: isUnlimited ? 1.0 : progress,
+                    value: progress,
                     minHeight: 8,
                     backgroundColor: colors.borderDefault,
                     valueColor: AlwaysStoppedAnimation<Color>(progressColor),
