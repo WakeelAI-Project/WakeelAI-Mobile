@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:wakeel_ai_app/features/leaves/data/leave_api_client.dart';
+import 'package:wakeel_ai_app/features/leaves/domain/leave_request.dart';
 import 'package:wakeel_ai_app/features/leaves/domain/leave_request_exceptions.dart';
 import 'package:wakeel_ai_app/features/leaves/domain/leave_type.dart';
 import 'package:wakeel_ai_app/features/leaves/application/leave_request_service.dart';
@@ -45,6 +46,11 @@ class _FakeLeaveApiClient implements LeaveApiClient {
 
   @override
   Future<LeaveRequestsPage> getLeaveRequests({String? status, int page = 1, int limit = 20}) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<LeaveRequest> getLeaveRequest(String id) {
     throw UnimplementedError();
   }
 
