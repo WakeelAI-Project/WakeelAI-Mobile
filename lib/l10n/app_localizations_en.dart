@@ -258,15 +258,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String homeLeaveSubtitleUnlimited(int used) {
-    return 'Used: $used days (no limit)';
-  }
+  String get homeLeaveSubtitleNotAvailable => 'No entitlement granted';
 
   @override
   String get homeLeaveAvailable => 'Available';
 
   @override
-  String get homeLeaveUnlimited => 'Unlimited';
+  String get homeLeaveNotAvailable => 'Not available';
 
   @override
   String get leaveTypeAnnual => 'Annual';

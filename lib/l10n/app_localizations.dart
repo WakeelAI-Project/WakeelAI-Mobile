@@ -542,11 +542,11 @@ abstract class AppLocalizations {
   /// **'{remaining} of {total} days left'**
   String homeLeaveSubtitle(int remaining, int total);
 
-  /// No description provided for @homeLeaveSubtitleUnlimited.
+  /// No description provided for @homeLeaveSubtitleNotAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Used: {used} days (no limit)'**
-  String homeLeaveSubtitleUnlimited(int used);
+  /// **'No entitlement granted'**
+  String get homeLeaveSubtitleNotAvailable;
 
   /// No description provided for @homeLeaveAvailable.
   ///
@@ -554,11 +554,11 @@ abstract class AppLocalizations {
   /// **'Available'**
   String get homeLeaveAvailable;
 
-  /// No description provided for @homeLeaveUnlimited.
+  /// No description provided for @homeLeaveNotAvailable.
   ///
   /// In en, this message translates to:
-  /// **'Unlimited'**
-  String get homeLeaveUnlimited;
+  /// **'Not available'**
+  String get homeLeaveNotAvailable;
 
   /// No description provided for @leaveTypeAnnual.
   ///
