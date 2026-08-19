@@ -10,6 +10,7 @@ import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_button_styles.dart';
 import '../application/employee_provider.dart';
+import 'widgets/current_leave_card.dart';
 import 'widgets/leave_balance_card.dart';
 import 'widgets/quick_action_card.dart';
 import 'package:go_router/go_router.dart';
@@ -152,6 +153,19 @@ class EmployeeHomeScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+                ),
+              ),
+
+              // Current Leave Section — only shown while a leave is actually in progress today.
+              SliverToBoxAdapter(
+                child: profileAsync.maybeWhen(
+                  data: (profile) => profile.currentLeave == null
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4),
+                          child: CurrentLeaveCard(currentLeave: profile.currentLeave!),
+                        ),
+                  orElse: () => const SizedBox.shrink(),
                 ),
               ),
 

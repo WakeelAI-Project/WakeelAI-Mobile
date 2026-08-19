@@ -83,6 +83,8 @@
   "homeLeaveSubtitleNotAvailable": "لا يوجد استحقاق ممنوح",
   "homeLeaveAvailable": "متاح",
   "homeLeaveNotAvailable": "غير متاح",
+  "homeCurrentLeaveTitle": "في إجازة الآن",
+  "homeCurrentLeaveSubtitle": "{leaveType} — اليوم {elapsed} من {total}",
   "leaveTypeAnnual": "سنوية",
   "leaveTypeSick": "مرضية",
   "leaveTypeUnpaid": "بدون راتب",

@@ -35,6 +35,32 @@ class LeaveBalance {
   }
 }
 
+class CurrentLeave {
+  final String leaveType;
+  final String startDate;
+  final String endDate;
+  final int totalDays;
+  final int elapsedDays;
+
+  CurrentLeave({
+    required this.leaveType,
+    required this.startDate,
+    required this.endDate,
+    required this.totalDays,
+    required this.elapsedDays,
+  });
+
+  factory CurrentLeave.fromJson(Map<String, dynamic> json) {
+    return CurrentLeave(
+      leaveType: json['leave_type'] as String? ?? '',
+      startDate: json['start_date'] as String? ?? '',
+      endDate: json['end_date'] as String? ?? '',
+      totalDays: (json['total_days'] as num?)?.toInt() ?? 0,
+      elapsedDays: (json['elapsed_days'] as num?)?.toInt() ?? 0,
+    );
+  }
+}
+
 class EmployeeProfile {
   final String userId;
   final String recordId;
@@ -49,6 +75,7 @@ class EmployeeProfile {
   final String contractType;
   final String employmentStatus;
   final List<LeaveBalance> leaveBalances;
+  final CurrentLeave? currentLeave;
 
   EmployeeProfile({
     required this.userId,
@@ -64,6 +91,7 @@ class EmployeeProfile {
     required this.contractType,
     required this.employmentStatus,
     required this.leaveBalances,
+    this.currentLeave,
   });
 
   factory EmployeeProfile.fromJson(Map<String, dynamic> json) {
@@ -90,6 +118,10 @@ class EmployeeProfile {
           }
         });
         return list;
+      }(),
+      currentLeave: () {
+        final cl = json['current_leave'] as Map<String, dynamic>?;
+        return cl == null ? null : CurrentLeave.fromJson(cl);
       }(),
     );
   }

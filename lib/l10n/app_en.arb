@@ -289,6 +289,21 @@
   "homeLeaveSubtitleNotAvailable": "No entitlement granted",
   "homeLeaveAvailable": "Available",
   "homeLeaveNotAvailable": "Not available",
+  "homeCurrentLeaveTitle": "On Leave Now",
+  "homeCurrentLeaveSubtitle": "{leaveType} — Day {elapsed} of {total}",
+  "@homeCurrentLeaveSubtitle": {
+    "placeholders": {
+      "leaveType": {
+        "type": "String"
+      },
+      "elapsed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "leaveTypeAnnual": "Annual",
   "leaveTypeSick": "Sick",
   "leaveTypeUnpaid": "Unpaid",

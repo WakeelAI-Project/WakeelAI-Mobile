@@ -265,6 +265,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeLeaveNotAvailable => 'غير متاح';
 
   @override
+  String get homeCurrentLeaveTitle => 'في إجازة الآن';
+
+  @override
+  String homeCurrentLeaveSubtitle(String leaveType, int elapsed, int total) {
+    return '$leaveType — اليوم $elapsed من $total';
+  }
+
+  @override
   String get leaveTypeAnnual => 'سنوية';
 
   @override

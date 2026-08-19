@@ -267,6 +267,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeLeaveNotAvailable => 'Not available';
 
   @override
+  String get homeCurrentLeaveTitle => 'On Leave Now';
+
+  @override
+  String homeCurrentLeaveSubtitle(String leaveType, int elapsed, int total) {
+    return '$leaveType — Day $elapsed of $total';
+  }
+
+  @override
   String get leaveTypeAnnual => 'Annual';
 
   @override
