@@ -8,6 +8,7 @@ import 'package:wakeel_ai_app/core/theme/app_theme.dart';
 import 'package:wakeel_ai_app/features/home/application/employee_provider.dart';
 import 'package:wakeel_ai_app/features/home/domain/employee_profile.dart';
 import 'package:wakeel_ai_app/features/home/presentation/employee_home_screen.dart';
+import 'package:wakeel_ai_app/features/home/presentation/widgets/current_leave_card.dart';
 import 'package:wakeel_ai_app/features/home/presentation/widgets/leave_balance_card.dart';
 
 void main() {
@@ -79,6 +80,38 @@ void main() {
     
     expect(find.byType(LeaveBalanceCard), findsWidgets);
     expect(find.text('Annual'), findsOneWidget);
+    expect(find.byType(CurrentLeaveCard), findsNothing);
+  });
+
+  testWidgets('an active approved leave renders the current-leave progress card', (tester) async {
+    final profile = EmployeeProfile(
+      userId: 'u1',
+      recordId: 'r1',
+      fullName: 'Ahmed Youssef',
+      email: 'ahmed@acme.com',
+      departmentId: 'd1',
+      department: 'Engineering',
+      nationalId: '1234567890',
+      jobTitle: 'Dev',
+      salary: 1000,
+      hireDate: '2026-01-01',
+      contractType: 'Full-time',
+      employmentStatus: 'Active',
+      leaveBalances: const [],
+      currentLeave: CurrentLeave(
+        leaveType: 'Annual',
+        startDate: '2026-08-17',
+        endDate: '2026-08-21',
+        totalDays: 5,
+        elapsedDays: 3,
+      ),
+    );
+
+    await tester.pumpWidget(createWidgetUnderTest(AsyncValue.data(profile)));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CurrentLeaveCard), findsOneWidget);
+    expect(find.text('Annual — Day 3 of 5'), findsOneWidget);
   });
 
   testWidgets('pull-to-refresh triggers a refetch (smoke test)', (tester) async {

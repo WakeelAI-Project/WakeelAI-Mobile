@@ -560,6 +560,18 @@ abstract class AppLocalizations {
   /// **'Not available'**
   String get homeLeaveNotAvailable;
 
+  /// No description provided for @homeCurrentLeaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'On Leave Now'**
+  String get homeCurrentLeaveTitle;
+
+  /// No description provided for @homeCurrentLeaveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{leaveType} — Day {elapsed} of {total}'**
+  String homeCurrentLeaveSubtitle(String leaveType, int elapsed, int total);
+
   /// No description provided for @leaveTypeAnnual.
   ///
   /// In en, this message translates to:
