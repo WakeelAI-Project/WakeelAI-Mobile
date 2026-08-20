@@ -9,6 +9,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_button_styles.dart';
+import '../../profile/presentation/widgets/profile_avatar.dart';
 import '../application/employee_provider.dart';
 import 'widgets/current_leave_card.dart';
 import 'widgets/leave_balance_card.dart';
@@ -83,21 +84,12 @@ class EmployeeHomeScreen extends ConsumerWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                context.push('/profile');
-                              },
-                              child: CircleAvatar(
-                                radius: 24,
-                                backgroundColor: colors.textPrimary,
-                                child: Text(
-                                  _getInitials(profile.fullName),
-                                  style: AppTypography.textLg(false).copyWith(
-                                        color: colors.bgCard,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
+                            ProfileAvatar(
+                              photoUrl: profile.photoUrl,
+                              initials: _getInitials(profile.fullName),
+                              radius: 24,
+                              showEditBadge: false,
+                              onTap: () => context.push('/profile'),
                             ),
                             const SizedBox(width: AppSpacing.s2),
                             IconButton(

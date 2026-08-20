@@ -9,37 +9,50 @@ import '../../application/profile_photo_controller.dart';
 import 'full_screen_photo_viewer.dart';
 import 'profile_photo_sheet.dart';
 
-/// The employee's avatar (photo or initials) with a small edit-pen badge.
-/// Tapping the photo itself opens a full-screen view; tapping the pen opens
-/// the "Add Profile Photo" bottom sheet.
+/// The employee's avatar (photo or initials), reused anywhere in the app
+/// that shows the current user.
+///
+/// By default it shows the edit-pen badge (tapping the photo opens a
+/// full-screen view; tapping the pen opens the "Add Profile Photo" bottom
+/// sheet) — this is the profile-page presentation. Pass [showEditBadge]:
+/// false and an [onTap] for a read-only, tappable avatar elsewhere in the
+/// app (e.g. navigating to the profile page from the home screen).
 class ProfileAvatar extends ConsumerWidget {
   const ProfileAvatar({
     super.key,
     required this.photoUrl,
     required this.initials,
     this.radius = 40,
+    this.showEditBadge = true,
+    this.onTap,
   });
 
   final String? photoUrl;
   final String initials;
   final double radius;
+  final bool showEditBadge;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final resolvedUrl = resolvePhotoUrl(photoUrl);
-    final isBusy = ref.watch(profilePhotoControllerProvider).isLoading;
+    final isBusy = showEditBadge && ref.watch(profilePhotoControllerProvider).isLoading;
+    final badgeOverhang = showEditBadge ? 8.0 : 0.0;
+
+    final effectiveOnTap = onTap ??
+        (resolvedUrl == null
+            ? null
+            : () => Navigator.of(context).push(FullScreenPhotoViewer.route(resolvedUrl)));
 
     return SizedBox(
-      width: radius * 2 + 8,
-      height: radius * 2 + 8,
+      width: radius * 2 + badgeOverhang,
+      height: radius * 2 + badgeOverhang,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
           GestureDetector(
-            onTap: resolvedUrl == null
-                ? null
-                : () => Navigator.of(context).push(FullScreenPhotoViewer.route(resolvedUrl)),
+            onTap: effectiveOnTap,
             child: resolvedUrl == null
                 ? _InitialsCircle(initials: initials, radius: radius, colors: colors)
                 : ClipOval(
@@ -70,22 +83,23 @@ class ProfileAvatar extends ConsumerWidget {
                 ),
               ),
             ),
-          PositionedDirectional(
-            bottom: 0,
-            end: 0,
-            child: GestureDetector(
-              onTap: isBusy ? null : () => showProfilePhotoSheet(context, ref, hasPhoto: resolvedUrl != null),
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: colors.brandPrimary,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: colors.bgCard, width: 2),
+          if (showEditBadge)
+            PositionedDirectional(
+              bottom: 0,
+              end: 0,
+              child: GestureDetector(
+                onTap: isBusy ? null : () => showProfilePhotoSheet(context, ref, hasPhoto: resolvedUrl != null),
+                child: Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: colors.brandPrimary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: colors.bgCard, width: 2),
+                  ),
+                  child: Icon(LucideIcons.pencil, size: 14, color: colors.onBrandPrimary),
                 ),
-                child: Icon(LucideIcons.pencil, size: 14, color: colors.onBrandPrimary),
               ),
             ),
-          ),
         ],
       ),
     );
