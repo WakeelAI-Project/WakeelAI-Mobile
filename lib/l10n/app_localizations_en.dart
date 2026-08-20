@@ -317,6 +317,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileFailedToLoad => 'Failed to load profile';
 
   @override
+  String get profilePhotoSheetTitle => 'Add Profile Photo';
+
+  @override
+  String get profilePhotoTakePhoto => 'Take Photo';
+
+  @override
+  String get profilePhotoChooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get profilePhotoRemove => 'Remove Profile Photo';
+
+  @override
+  String get profilePhotoCropTitle => 'Crop Photo';
+
+  @override
+  String get profilePhotoUploadError =>
+      'Couldn\'t update your photo. Please try again.';
+
+  @override
+  String get profilePhotoRemoveError =>
+      'Couldn\'t remove your photo. Please try again.';
+
+  @override
+  String get profilePhotoTooLarge =>
+      'Photo is too large. Please choose a smaller image.';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override

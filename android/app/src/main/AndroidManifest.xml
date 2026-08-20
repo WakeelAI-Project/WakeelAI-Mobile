@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Needed to take a profile photo directly from the camera (image_picker). -->
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application
         android:label="wakeel_ai_app"
         android:name="${applicationName}"
@@ -30,6 +32,11 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Required by image_cropper's underlying uCrop library. -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Ucrop.CropTheme"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

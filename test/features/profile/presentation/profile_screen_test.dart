@@ -3,13 +3,57 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
+
+import 'dart:io';
 
 import 'package:wakeel_ai_app/core/storage/token_storage.dart';
 import 'package:wakeel_ai_app/core/theme/app_theme.dart';
 import 'package:wakeel_ai_app/features/home/application/employee_provider.dart';
+import 'package:wakeel_ai_app/features/home/data/employee_api_client.dart';
 import 'package:wakeel_ai_app/features/home/domain/employee_profile.dart';
 import 'package:wakeel_ai_app/features/profile/presentation/profile_screen.dart';
+import 'package:wakeel_ai_app/features/profile/presentation/widgets/full_screen_photo_viewer.dart';
+
+class _FakeEmployeeApiClient implements EmployeeApiClient {
+  _FakeEmployeeApiClient(this.profile);
+
+  EmployeeProfile profile;
+  bool removeCalled = false;
+  bool uploadCalled = false;
+
+  @override
+  Future<EmployeeProfile> getEmployeeProfile() async => profile;
+
+  @override
+  Future<EmployeeProfile> removePhoto() async {
+    removeCalled = true;
+    profile = EmployeeProfile(
+      userId: profile.userId,
+      recordId: profile.recordId,
+      fullName: profile.fullName,
+      email: profile.email,
+      departmentId: profile.departmentId,
+      department: profile.department,
+      nationalId: profile.nationalId,
+      jobTitle: profile.jobTitle,
+      salary: profile.salary,
+      hireDate: profile.hireDate,
+      contractType: profile.contractType,
+      employmentStatus: profile.employmentStatus,
+      leaveBalances: profile.leaveBalances,
+      photoUrl: null,
+    );
+    return profile;
+  }
+
+  @override
+  Future<EmployeeProfile> uploadPhoto(File file) async {
+    uploadCalled = true;
+    return profile;
+  }
+}
 
 class _FakeTokenStorage implements TokenStorage {
   bool cleared = false;
@@ -146,5 +190,95 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(fakeTokenStorage.cleared, isTrue);
+  });
+
+  group('profile photo', () {
+    Widget createWidgetUnderTestWithClient(_FakeEmployeeApiClient client) {
+      return ProviderScope(
+        overrides: [
+          employeeApiClientProvider.overrideWithValue(client),
+          tokenStorageProvider.overrideWithValue(_FakeTokenStorage()),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          theme: AppTheme.build(brightness: Brightness.light, highContrast: false, isArabic: false),
+          home: const ProfileScreen(),
+        ),
+      );
+    }
+
+    testWidgets('with no photo, the sheet offers Take Photo / Choose from Gallery but not Remove', (tester) async {
+      final client = _FakeEmployeeApiClient(profile);
+      await tester.pumpWidget(createWidgetUnderTestWithClient(client));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(LucideIcons.pencil));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Add Profile Photo'), findsOneWidget);
+      expect(find.text('Take Photo'), findsOneWidget);
+      expect(find.text('Choose from Gallery'), findsOneWidget);
+      expect(find.text('Remove Profile Photo'), findsNothing);
+    });
+
+    testWidgets('with a photo, the sheet offers Remove Profile Photo, which calls removePhoto', (tester) async {
+      final withPhoto = EmployeeProfile(
+        userId: profile.userId,
+        recordId: profile.recordId,
+        fullName: profile.fullName,
+        email: profile.email,
+        departmentId: profile.departmentId,
+        department: profile.department,
+        nationalId: profile.nationalId,
+        jobTitle: profile.jobTitle,
+        salary: profile.salary,
+        hireDate: profile.hireDate,
+        contractType: profile.contractType,
+        employmentStatus: profile.employmentStatus,
+        leaveBalances: profile.leaveBalances,
+        photoUrl: '/uploads/profile-photos/avatar.jpg',
+      );
+      final client = _FakeEmployeeApiClient(withPhoto);
+      await tester.pumpWidget(createWidgetUnderTestWithClient(client));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byIcon(LucideIcons.pencil));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Remove Profile Photo'), findsOneWidget);
+
+      await tester.tap(find.text('Remove Profile Photo'));
+      await tester.pumpAndSettle();
+
+      expect(client.removeCalled, isTrue);
+    });
+
+    testWidgets('tapping the photo (not the pen) opens the full-screen viewer', (tester) async {
+      final withPhoto = EmployeeProfile(
+        userId: profile.userId,
+        recordId: profile.recordId,
+        fullName: profile.fullName,
+        email: profile.email,
+        departmentId: profile.departmentId,
+        department: profile.department,
+        nationalId: profile.nationalId,
+        jobTitle: profile.jobTitle,
+        salary: profile.salary,
+        hireDate: profile.hireDate,
+        contractType: profile.contractType,
+        employmentStatus: profile.employmentStatus,
+        leaveBalances: profile.leaveBalances,
+        photoUrl: '/uploads/profile-photos/avatar.jpg',
+      );
+      final client = _FakeEmployeeApiClient(withPhoto);
+      await tester.pumpWidget(createWidgetUnderTestWithClient(client));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(CircleAvatar));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(FullScreenPhotoViewer), findsOneWidget);
+    });
   });
 }
