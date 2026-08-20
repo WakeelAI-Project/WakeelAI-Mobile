@@ -1,0 +1,62 @@
+name: Release to Firebase App Distribution
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.4"
+          channel: "stable"
+
+      - run: flutter pub get
+
+      - run: flutter analyze
+
+      - run: flutter test
+
+  build_and_distribute:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.44.4"
+          channel: "stable"
+
+      - run: flutter pub get
+
+      - name: Decode release keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > android/upload-keystore.jks
+
+      - name: Write key.properties
+        run: |
+          cat > android/key.properties <<EOF
+          storeFile=upload-keystore.jks
+          storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}
+          keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}
+          EOF
+
+      # pubspec.yaml pins a fixed build number; override it with the run
+      # number so every release gets a strictly-increasing Android
+      # versionCode, otherwise Android refuses to install it as an update.
+      - name: Build release APK
+        run: flutter build apk --release --build-number=${{ github.run_number }}
+
+      - name: Distribute via Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          groups: ${{ secrets.FIREBASE_TESTER_GROUP }}
+          file: build/app/outputs/flutter-apk/app-release.apk
+          releaseNotes: "${{ github.ref_name }} @ ${{ github.sha }} — ${{ github.event.head_commit.message }}"
