@@ -4,12 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+
 import 'package:wakeel_ai_app/core/theme/app_theme.dart';
 import 'package:wakeel_ai_app/features/home/application/employee_provider.dart';
 import 'package:wakeel_ai_app/features/home/domain/employee_profile.dart';
 import 'package:wakeel_ai_app/features/home/presentation/employee_home_screen.dart';
 import 'package:wakeel_ai_app/features/home/presentation/widgets/current_leave_card.dart';
 import 'package:wakeel_ai_app/features/home/presentation/widgets/leave_balance_card.dart';
+import 'package:wakeel_ai_app/features/profile/presentation/widgets/profile_avatar.dart';
 
 void main() {
   Widget createWidgetUnderTest(AsyncValue<EmployeeProfile> state) {
@@ -81,6 +84,34 @@ void main() {
     expect(find.byType(LeaveBalanceCard), findsWidgets);
     expect(find.text('Annual'), findsOneWidget);
     expect(find.byType(CurrentLeaveCard), findsNothing);
+  });
+
+  testWidgets('success state with a profile photo shows it in a read-only avatar', (tester) async {
+    final profile = EmployeeProfile(
+      userId: 'u1',
+      recordId: 'r1',
+      fullName: 'Ahmed Youssef',
+      email: 'ahmed@acme.com',
+      departmentId: 'd1',
+      department: 'Engineering',
+      nationalId: '1234567890',
+      jobTitle: 'Dev',
+      salary: 1000,
+      hireDate: '2026-01-01',
+      contractType: 'Full-time',
+      employmentStatus: 'Active',
+      leaveBalances: const [],
+      photoUrl: '/uploads/photos/u1.jpg',
+    );
+
+    await tester.pumpWidget(createWidgetUnderTest(AsyncValue.data(profile)));
+    await tester.pumpAndSettle();
+
+    final avatar = tester.widget<ProfileAvatar>(find.byType(ProfileAvatar));
+    expect(avatar.photoUrl, '/uploads/photos/u1.jpg');
+    expect(avatar.showEditBadge, isFalse);
+    // The edit-pen badge (and the sheet it opens) only belongs on the profile page.
+    expect(find.byIcon(LucideIcons.pencil), findsNothing);
   });
 
   testWidgets('an active approved leave renders the current-leave progress card', (tester) async {
