@@ -315,6 +315,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileFailedToLoad => 'تعذر تحميل الملف الشخصي';
 
   @override
+  String get profilePhotoSheetTitle => 'إضافة صورة شخصية';
+
+  @override
+  String get profilePhotoTakePhoto => 'التقاط صورة';
+
+  @override
+  String get profilePhotoChooseFromGallery => 'اختيار من المعرض';
+
+  @override
+  String get profilePhotoRemove => 'إزالة الصورة الشخصية';
+
+  @override
+  String get profilePhotoCropTitle => 'قص الصورة';
+
+  @override
+  String get profilePhotoUploadError => 'تعذر تحديث صورتك. حاول مرة أخرى.';
+
+  @override
+  String get profilePhotoRemoveError => 'تعذر إزالة صورتك. حاول مرة أخرى.';
+
+  @override
+  String get profilePhotoTooLarge =>
+      'الصورة كبيرة جدًا. الرجاء اختيار صورة أصغر.';
+
+  @override
   String get settingsTitle => 'الإعدادات';
 
   @override

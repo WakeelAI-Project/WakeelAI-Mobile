@@ -13,7 +13,7 @@ import 'package:wakeel_ai_app/features/auth/application/auth_state_provider.dart
 ///
 /// Override at build/run time with `--dart-define=API_BASE_URL=...` to
 /// point at a locally-run backend during development.
-const String _apiBaseUrl = String.fromEnvironment(
+const String apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: 'https://wakeel-ai-api.runasp.net',
 );
@@ -159,7 +159,7 @@ class AuthInterceptor extends QueuedInterceptor {
 final dioClientProvider = Provider<Dio>((ref) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: _apiBaseUrl,
+      baseUrl: apiBaseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
     ),
@@ -167,7 +167,7 @@ final dioClientProvider = Provider<Dio>((ref) {
 
   final dioForRefresh = Dio(
     BaseOptions(
-      baseUrl: _apiBaseUrl,
+      baseUrl: apiBaseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
     ),

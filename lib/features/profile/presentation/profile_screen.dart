@@ -13,6 +13,7 @@ import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/logout_confirmation.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../home/application/employee_provider.dart';
+import 'widgets/profile_avatar.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -66,16 +67,9 @@ class ProfileScreen extends ConsumerWidget {
               Center(
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: colors.textPrimary,
-                      child: Text(
-                        _getInitials(profile.fullName),
-                        style: AppTypography.text2xl(false).copyWith(
-                              color: colors.bgCard,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+                    ProfileAvatar(
+                      photoUrl: profile.photoUrl,
+                      initials: _getInitials(profile.fullName),
                     ),
                     const SizedBox(height: AppSpacing.s3),
                     Text(

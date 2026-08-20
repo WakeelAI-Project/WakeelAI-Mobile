@@ -1,3 +1,14 @@
+import 'package:wakeel_ai_app/core/network/dio_client.dart';
+
+/// Resolves a possibly root-relative photo URL (e.g. "/uploads/profile-photos/x.jpg",
+/// as returned by the backend) against the API host so it's directly loadable
+/// by [Image.network]. Already-absolute URLs are returned unchanged.
+String? resolvePhotoUrl(String? photoUrl) {
+  if (photoUrl == null || photoUrl.isEmpty) return null;
+  if (photoUrl.startsWith('http://') || photoUrl.startsWith('https://')) return photoUrl;
+  return '$apiBaseUrl$photoUrl';
+}
+
 class LeaveBalance {
   final String leaveType;
   final int? totalDays;
@@ -76,6 +87,7 @@ class EmployeeProfile {
   final String employmentStatus;
   final List<LeaveBalance> leaveBalances;
   final CurrentLeave? currentLeave;
+  final String? photoUrl;
 
   EmployeeProfile({
     required this.userId,
@@ -92,6 +104,7 @@ class EmployeeProfile {
     required this.employmentStatus,
     required this.leaveBalances,
     this.currentLeave,
+    this.photoUrl,
   });
 
   factory EmployeeProfile.fromJson(Map<String, dynamic> json) {
@@ -123,6 +136,7 @@ class EmployeeProfile {
         final cl = json['current_leave'] as Map<String, dynamic>?;
         return cl == null ? null : CurrentLeave.fromJson(cl);
       }(),
+      photoUrl: json['photo_url'] as String?,
     );
   }
 }

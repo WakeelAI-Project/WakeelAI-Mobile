@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,6 +9,8 @@ import '../domain/employee_exceptions.dart';
 
 abstract class EmployeeApiClient {
   Future<EmployeeProfile> getEmployeeProfile();
+  Future<EmployeeProfile> uploadPhoto(File file);
+  Future<EmployeeProfile> removePhoto();
 }
 
 class DioEmployeeApiClient implements EmployeeApiClient {
@@ -29,6 +33,33 @@ class DioEmployeeApiClient implements EmployeeApiClient {
         EmployeeFailureReason.unknown,
         'Unexpected error: $e',
       );
+    }
+  }
+
+  @override
+  Future<EmployeeProfile> uploadPhoto(File file) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path, filename: file.uri.pathSegments.last),
+      });
+      final response = await _dio.post('/api/employees/me/photo', data: formData);
+      return EmployeeProfile.fromJson(response.data);
+    } on DioException catch (e) {
+      throw EmployeeFailure(_reasonFor(e), 'Failed to upload photo');
+    } catch (e) {
+      throw EmployeeFailure(EmployeeFailureReason.unknown, 'Unexpected error: $e');
+    }
+  }
+
+  @override
+  Future<EmployeeProfile> removePhoto() async {
+    try {
+      final response = await _dio.delete('/api/employees/me/photo');
+      return EmployeeProfile.fromJson(response.data);
+    } on DioException catch (e) {
+      throw EmployeeFailure(_reasonFor(e), 'Failed to remove photo');
+    } catch (e) {
+      throw EmployeeFailure(EmployeeFailureReason.unknown, 'Unexpected error: $e');
     }
   }
 

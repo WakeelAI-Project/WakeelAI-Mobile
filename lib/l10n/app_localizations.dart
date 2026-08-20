@@ -656,6 +656,54 @@ abstract class AppLocalizations {
   /// **'Failed to load profile'**
   String get profileFailedToLoad;
 
+  /// No description provided for @profilePhotoSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Profile Photo'**
+  String get profilePhotoSheetTitle;
+
+  /// No description provided for @profilePhotoTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get profilePhotoTakePhoto;
+
+  /// No description provided for @profilePhotoChooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get profilePhotoChooseFromGallery;
+
+  /// No description provided for @profilePhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Profile Photo'**
+  String get profilePhotoRemove;
+
+  /// No description provided for @profilePhotoCropTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Photo'**
+  String get profilePhotoCropTitle;
+
+  /// No description provided for @profilePhotoUploadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update your photo. Please try again.'**
+  String get profilePhotoUploadError;
+
+  /// No description provided for @profilePhotoRemoveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t remove your photo. Please try again.'**
+  String get profilePhotoRemoveError;
+
+  /// No description provided for @profilePhotoTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo is too large. Please choose a smaller image.'**
+  String get profilePhotoTooLarge;
+
   /// No description provided for @settingsTitle.
   ///
   /// In en, this message translates to:
