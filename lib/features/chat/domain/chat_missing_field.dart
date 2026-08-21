@@ -19,7 +19,7 @@ class ChatMissingField {
   factory ChatMissingField.fromJson(Map<String, dynamic> json) {
     try {
       final file = io.File('C:\\Users\\USER\\Desktop\\WakeelAI-Mobile\\missing_fields_log.txt');
-      file.writeAsStringSync(convert.jsonEncode(json) + '\n', mode: io.FileMode.append);
+      file.writeAsStringSync('${convert.jsonEncode(json)}\n', mode: io.FileMode.append);
     } catch (_) {}
 
     // 1. Fallback for input_type
