@@ -60,7 +60,7 @@ class _MissingFieldsFormState extends ConsumerState<MissingFieldsForm> {
           final url = await ref.read(leaveRequestServiceProvider).uploadLeaveAttachment(val);
           processedValues[f.name] = url;
         } else if (f.type == 'date' && val is DateTime) {
-          processedValues[f.name] = val.toIso8601String();
+          processedValues[f.name] = DateFormat('yyyy-MM-dd').format(val);
         } else {
           processedValues[f.name] = val;
         }

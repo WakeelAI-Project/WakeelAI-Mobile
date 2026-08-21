@@ -138,7 +138,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     },
                   ),
           ),
-          ChatComposer(onSend: _handleSend),
+          ChatComposer(
+            onSend: _handleSend,
+            isLoading: state.isAiResponding,
+          ),
         ],
       ),
     );

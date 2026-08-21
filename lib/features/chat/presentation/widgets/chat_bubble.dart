@@ -186,7 +186,19 @@ class ChatBubble extends ConsumerWidget {
                   MissingFieldsForm(
                     fields: message.missingFields!,
                     onSubmit: (fieldValues) async {
-                      await ref.read(chatProvider.notifier).sendMessage('Providing requested details...', fieldValues: fieldValues);
+                      // Map the internal keys back to the human-readable labels for the message text
+                      final labelMap = { for (var f in message.missingFields!) f.name : f.label };
+                      final details = fieldValues.entries.map((e) {
+                        final label = labelMap[e.key] ?? e.key;
+                        return '$label (${e.key}): ${e.value}';
+                      }).join('\n');
+                      
+                      final msg = 'Providing requested details:\n$details';
+                      
+                      // Sending structured data as required by the backend API.
+                      // If the backend drops older fields (like start_date) when this is sent,
+                      // the backend intent-router's state merging bug is still present.
+                      await ref.read(chatProvider.notifier).sendMessage(msg, fieldValues: fieldValues);
                     },
                   ),
                 ],
