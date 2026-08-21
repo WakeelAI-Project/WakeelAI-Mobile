@@ -1,3 +1,6 @@
+import 'dart:io' as io;
+import 'dart:convert' as convert;
+
 class ChatMissingField {
   final String name;
   final String label;
@@ -14,10 +17,20 @@ class ChatMissingField {
   });
 
   factory ChatMissingField.fromJson(Map<String, dynamic> json) {
-    String t = json['type'] ?? 'text';
-    final nameLower = (json['name']?.toString().toLowerCase() ?? '');
+    try {
+      final file = io.File('C:\\Users\\USER\\Desktop\\WakeelAI-Mobile\\missing_fields_log.txt');
+      file.writeAsStringSync(convert.jsonEncode(json) + '\n', mode: io.FileMode.append);
+    } catch (_) {}
+
+    // 1. Fallback for input_type
+    String t = json['input_type'] ?? json['type'] ?? 'text';
+
+    // 2. Fallback for field_name
+    final nameVal = json['field_name'] ?? json['name'] ?? '';
+    final nameLower = nameVal.toString().toLowerCase();
     final labelLower = (json['label']?.toString().toLowerCase() ?? '');
-    
+
+    // ... [Keep existing type inference logic] ...
     // Fallback: AI sometimes provides type "string" for documents/reports and dates.
     if (t == 'string' || t == 'text') {
       if (nameLower.contains('file') || nameLower.contains('document') || nameLower.contains('report') || nameLower.contains('certificate') ||
@@ -29,7 +42,7 @@ class ChatMissingField {
     }
 
     return ChatMissingField(
-      name: json['name'] ?? '',
+      name: nameVal, // <-- Use the newly extracted nameVal
       label: json['label'] ?? '',
       type: t,
       required: json['required'] ?? false,

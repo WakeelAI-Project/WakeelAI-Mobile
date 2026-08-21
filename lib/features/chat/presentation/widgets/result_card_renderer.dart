@@ -18,6 +18,7 @@ class ResultCardRenderer extends ConsumerStatefulWidget {
 
 class _ResultCardRendererState extends ConsumerState<ResultCardRenderer> {
   bool _isLoading = false;
+  bool _isVerifying = false;
   String? _error;
   late bool _handled;
 
@@ -26,14 +27,15 @@ class _ResultCardRendererState extends ConsumerState<ResultCardRenderer> {
     super.initState();
     _handled = widget.card.payload['handled'] == true;
     if (!_handled && widget.card.type == 'leave_draft') {
-      _verifyDraftStatus();
+      final requestId = widget.card.payload['request_id'] as String?;
+      if (requestId != null) {
+        _isVerifying = true;
+        _verifyDraftStatus(requestId);
+      }
     }
   }
 
-  Future<void> _verifyDraftStatus() async {
-    final requestId = widget.card.payload['request_id'] as String?;
-    if (requestId == null) return;
-    
+  Future<void> _verifyDraftStatus(String requestId) async {
     try {
       final isDraft = await ref.read(leaveRequestServiceProvider).isLeaveDraft(requestId);
       if (!isDraft) {
@@ -46,6 +48,12 @@ class _ResultCardRendererState extends ConsumerState<ResultCardRenderer> {
       }
     } catch (e) {
       // Ignore verification errors; default to showing the actionable state.
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isVerifying = false;
+        });
+      }
     }
   }
 
@@ -191,7 +199,18 @@ class _ResultCardRendererState extends ConsumerState<ResultCardRenderer> {
             ),
           ],
           const SizedBox(height: 16),
-          if (!_handled)
+          if (_isVerifying)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+            )
+          else if (!_handled)
             Row(
               children: [
                 Expanded(

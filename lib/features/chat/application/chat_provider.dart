@@ -18,6 +18,13 @@ class ChatState {
     this.currentPage = 1,
   });
 
+  bool get isAiResponding {
+    return messages.any((m) => 
+      m.role == MessageRole.assistant && 
+      (m.status == MessageStatus.sending || m.status == MessageStatus.streaming)
+    );
+  }
+
   ChatState copyWith({
     List<ChatMessage>? messages,
     bool? isLoadingHistory,
