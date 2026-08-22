@@ -4,7 +4,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../core/theme/app_button_styles.dart';
@@ -12,6 +11,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/utils/app_date_format.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
 import '../application/leave_draft_creation_controller.dart';
@@ -165,8 +165,6 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
     final colors = Theme.of(context).extension<AppColors>()!;
     final t = AppLocalizations.of(context)!;
     final isArabic = t.localeName == 'ar';
-    final locale = isArabic ? 'ar' : 'en';
-    final dateFormat = DateFormat.yMMMEd(locale);
 
     final creationState = ref.watch(leaveDraftCreationControllerProvider);
     final isLoading = creationState.isLoading;
@@ -239,7 +237,6 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
                       label: t.newLeaveRequestStartDateLabel,
                       hint: t.newLeaveRequestSelectDateHint,
                       value: _startDate,
-                      dateFormat: dateFormat,
                       isArabic: isArabic,
                       colors: colors,
                       enabled: !isLoading,
@@ -252,7 +249,6 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
                       label: t.newLeaveRequestEndDateLabel,
                       hint: t.newLeaveRequestSelectDateHint,
                       value: _endDate,
-                      dateFormat: dateFormat,
                       isArabic: isArabic,
                       colors: colors,
                       enabled: !isLoading,
@@ -347,7 +343,6 @@ class _DateField extends StatelessWidget {
     required this.label,
     required this.hint,
     required this.value,
-    required this.dateFormat,
     required this.isArabic,
     required this.colors,
     required this.enabled,
@@ -357,7 +352,6 @@ class _DateField extends StatelessWidget {
   final String label;
   final String hint;
   final DateTime? value;
-  final DateFormat dateFormat;
   final bool isArabic;
   final AppColors colors;
   final bool enabled;
@@ -384,7 +378,7 @@ class _DateField extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    value != null ? dateFormat.format(value!) : hint,
+                    value != null ? AppDateFormat.date(value!, isArabic: isArabic) : hint,
                     style: AppTypography.textSm(isArabic).copyWith(
                           color: value != null ? colors.textPrimary : colors.textSecondary,
                         ),

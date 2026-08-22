@@ -10,6 +10,7 @@ import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_shadows.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/utils/app_date_format.dart';
 import '../../../core/widgets/logout_confirmation.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../home/application/employee_provider.dart';
@@ -26,9 +27,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   static String _formatHireDate(String isoDate, bool isArabic) {
-    final parsed = DateTime.tryParse(isoDate);
-    if (parsed == null) return isoDate;
-    return DateFormat.yMMMd(isArabic ? 'ar' : 'en').format(parsed);
+    return AppDateFormat.dateFromApi(isoDate, isArabic: isArabic);
   }
 
   static String _formatSalary(int salary, bool isArabic) {

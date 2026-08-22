@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -13,6 +12,7 @@ import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/utils/app_date_format.dart';
 import '../../../core/widgets/status_badge.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
@@ -228,7 +228,7 @@ class _DocumentDetailBody extends StatelessWidget {
               const SizedBox(width: AppSpacing.s2),
               Expanded(
                 child: Text(
-                  DateFormat.yMMMd(isArabic ? 'ar' : 'en').format(document.createdAt),
+                  AppDateFormat.date(document.createdAt, isArabic: isArabic),
                   style: AppTypography.textSm(isArabic).copyWith(color: colors.textSecondary),
                 ),
               ),

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_button_styles.dart';
+import '../../../../core/utils/app_date_format.dart';
 import '../../../../core/widgets/seal_mark.dart';
 import '../../application/chat_provider.dart';
 import '../../application/conversation_provider.dart';
@@ -131,7 +131,7 @@ class ChatDrawer extends ConsumerWidget {
                             }
 
                             final conversation = conversationState.conversations[index];
-                            final timeString = DateFormat('MMM d, yyyy').format(conversation.updatedAt);
+                            final timeString = AppDateFormat.date(conversation.updatedAt, isArabic: l10n.localeName == 'ar');
                             
                             final currentGroup = _getGroupName(conversation.updatedAt, l10n);
                             final previousGroup = index > 0 

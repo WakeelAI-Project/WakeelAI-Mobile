@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/app_date_format.dart';
 import '../../domain/chat_message.dart';
 import 'citation_chip.dart';
 import 'missing_fields_form.dart';
@@ -46,7 +46,8 @@ class ChatBubble extends ConsumerWidget {
   }
 
   Widget _buildUserBubble(BuildContext context, AppColors colors, WidgetRef ref) {
-    final timeString = DateFormat('h:mm a').format(message.timestamp);
+    final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
+    final timeString = AppDateFormat.time(message.timestamp, isArabic: isArabic);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -160,7 +161,7 @@ class ChatBubble extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 4.0),
                       child: Text(
-                        DateFormat('h:mm a').format(message.timestamp),
+                        AppDateFormat.time(message.timestamp, isArabic: AppLocalizations.of(context)!.localeName == 'ar'),
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: colors.textSecondary,
                           fontSize: 11,
