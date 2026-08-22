@@ -203,6 +203,24 @@ class _DocumentDetailBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.s4,
+            AppSpacing.s3,
+            AppSpacing.s4,
+            0,
+          ),
+          // The AppBar title truncates to one line for a clean header — the
+          // full title (which can legitimately be long) always gets shown
+          // here in full, wrapping across lines rather than being cut off.
+          child: Text(
+            document.title,
+            style: AppTypography.textLg(isArabic).copyWith(
+                  color: colors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+          ),
+        ),
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s3),
           child: Row(
             children: [
