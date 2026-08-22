@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Needed for every API call the app makes (login, documents, chat, etc.).
+         Release builds only ever merge android/app/src/main — unlike the
+         debug/profile manifests, which get this for free from the Flutter
+         template — so it must be declared explicitly here too. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Needed to take a profile photo directly from the camera (image_picker). -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
