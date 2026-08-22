@@ -259,7 +259,9 @@ class EmployeeHomeScreen extends ConsumerWidget {
                     QuickActionCard(
                       title: l10n.quickActionChat,
                       icon: LucideIcons.bot,
-                      onTap: () {},
+                      onTap: () {
+                        context.go('/chat');
+                      },
                     ),
                     QuickActionCard(
                       title: l10n.quickActionLeaves,

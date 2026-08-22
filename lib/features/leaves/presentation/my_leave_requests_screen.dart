@@ -164,7 +164,16 @@ class _MyLeaveRequestsScreenState extends ConsumerState<MyLeaveRequestsScreen> {
                         )
                       : ListView.builder(
                           controller: _scrollController,
-                          padding: const EdgeInsets.all(AppSpacing.s4),
+                          // Extra bottom inset so the floating "New Request"
+                          // button (which the Scaffold layers on top of the
+                          // body rather than reserving space for) doesn't
+                          // sit over the last card's content.
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpacing.s4,
+                            AppSpacing.s4,
+                            AppSpacing.s4,
+                            AppSpacing.s4 + AppSpacing.s16,
+                          ),
                           itemCount: state.items.length + (state.hasMore ? 1 : 0),
                           itemBuilder: (context, index) {
                             if (index >= state.items.length) {

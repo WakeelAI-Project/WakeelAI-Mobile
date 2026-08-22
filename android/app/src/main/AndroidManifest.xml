@@ -53,5 +53,18 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- Needed for url_launcher's canLaunchUrl/launchUrl (used to open leave
+             attachments and chat citations in an external app) to see any apps
+             at all on Android 11+: without this, package-visibility rules hide
+             every other app from PackageManager queries, so canLaunchUrl always
+             returns false even when a capable browser is installed. -->
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="http"/>
+        </intent>
     </queries>
 </manifest>

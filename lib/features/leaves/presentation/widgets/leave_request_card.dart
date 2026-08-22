@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/network/dio_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -21,6 +23,18 @@ class LeaveRequestCard extends ConsumerWidget {
   });
 
   final LeaveRequest request;
+
+  /// Opens the attachment (which may be a PDF, image, or any file type the
+  /// leave request form accepts) in an external app rather than an in-app
+  /// viewer, since the backend imposes no fixed type — the OS already knows
+  /// how to preview whatever this URL actually points to.
+  Future<void> _openAttachment(String attachmentUrl) async {
+    final resolvedUrl = attachmentUrl.startsWith('http') ? attachmentUrl : '$apiBaseUrl$attachmentUrl';
+    final uri = Uri.parse(resolvedUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,9 +77,10 @@ class LeaveRequestCard extends ConsumerWidget {
         color: Colors.transparent,
         borderRadius: AppRadius.lgRadius,
         child: InkWell(
-          onTap: () {
-            // detail screen navigation
-          },
+          // There's no separate leave-detail screen — this card already
+          // shows everything the API returns for a request. The one real
+          // action available is opening the attachment, when present.
+          onTap: request.attachmentUrl != null ? () => _openAttachment(request.attachmentUrl!) : null,
           borderRadius: AppRadius.lgRadius,
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.s4),
@@ -100,9 +115,7 @@ class LeaveRequestCard extends ConsumerWidget {
                 if (request.attachmentUrl != null) ...[
                   const SizedBox(height: AppSpacing.s3),
                   GestureDetector(
-                    onTap: () {
-                      // Open attachment
-                    },
+                    onTap: () => _openAttachment(request.attachmentUrl!),
                     child: Row(
                       children: [
                         Icon(Symbols.attach_file, size: 16, color: colors.brandPrimary),
