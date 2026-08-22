@@ -144,6 +144,8 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
         iconTheme: IconThemeData(color: colors.textPrimary),
         title: Text(
           asyncDocument.valueOrNull?.title ?? '',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: AppTypography.textXl(isArabic).copyWith(color: colors.textPrimary),
         ),
       ),
@@ -241,7 +243,7 @@ class _DocumentDetailBody extends StatelessWidget {
                     style: AppButtonStyles.secondary(context),
                     onPressed: isWorking ? null : onShare,
                     icon: const Icon(Symbols.share),
-                    label: const Text('Share'),
+                    label: const Text('Share', maxLines: 1, overflow: TextOverflow.ellipsis),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.s3),
@@ -256,7 +258,7 @@ class _DocumentDetailBody extends StatelessWidget {
                             child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
                           )
                         : const Icon(Symbols.download),
-                    label: const Text('Download'),
+                    label: const Text('Download', maxLines: 1, overflow: TextOverflow.ellipsis),
                   ),
                 ),
               ],

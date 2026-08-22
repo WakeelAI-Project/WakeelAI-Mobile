@@ -100,11 +100,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   color: colors.brandPrimary,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  l10n.chatScreenTitle,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: colors.brandPrimary,
-                    fontWeight: FontWeight.w600,
+                Expanded(
+                  child: Text(
+                    l10n.chatScreenTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: colors.brandPrimary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],

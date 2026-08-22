@@ -302,7 +302,7 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
                       onPressed: isLoading ? null : _pickAttachment,
                       style: AppButtonStyles.secondary(context),
                       icon: const Icon(Symbols.attach_file, size: 18),
-                      label: Text(t.newLeaveRequestAttachmentButton),
+                      label: Text(t.newLeaveRequestAttachmentButton, maxLines: 1, overflow: TextOverflow.ellipsis),
                     ),
                     const SizedBox(width: AppSpacing.s3),
                     Expanded(
@@ -332,7 +332,7 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2, color: colors.onBrandPrimary),
                       )
-                    : Text(t.newLeaveRequestSubmitButton),
+                    : Text(t.newLeaveRequestSubmitButton, maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ],
           ),

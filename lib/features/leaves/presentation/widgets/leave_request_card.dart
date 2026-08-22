@@ -75,13 +75,18 @@ class LeaveRequestCard extends ConsumerWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      displayLeaveType,
-                      style: AppTypography.textBase(isArabic).copyWith(
-                            color: colors.textPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    Flexible(
+                      child: Text(
+                        displayLeaveType,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.textBase(isArabic).copyWith(
+                              color: colors.textPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
+                    const SizedBox(width: AppSpacing.s2),
                     StatusBadge(label: translatedStatus, status: getStatusBadge(request.status)),
                   ],
                 ),
@@ -102,13 +107,17 @@ class LeaveRequestCard extends ConsumerWidget {
                       children: [
                         Icon(Symbols.attach_file, size: 16, color: colors.brandPrimary),
                         const SizedBox(width: AppSpacing.s1),
-                        Text(
-                          Uri.parse(request.attachmentUrl!).pathSegments.isNotEmpty
-                              ? Uri.parse(request.attachmentUrl!).pathSegments.last
-                              : request.attachmentUrl!,
-                          style: AppTypography.textSm(isArabic).copyWith(
-                            color: colors.brandPrimary,
-                            decoration: TextDecoration.underline,
+                        Flexible(
+                          child: Text(
+                            Uri.parse(request.attachmentUrl!).pathSegments.isNotEmpty
+                                ? Uri.parse(request.attachmentUrl!).pathSegments.last
+                                : request.attachmentUrl!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: AppTypography.textSm(isArabic).copyWith(
+                              color: colors.brandPrimary,
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
                       ],

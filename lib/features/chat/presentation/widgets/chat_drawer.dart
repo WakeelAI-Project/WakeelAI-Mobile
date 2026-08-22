@@ -60,11 +60,15 @@ class ChatDrawer extends ConsumerWidget {
                     size: 32,
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    l10n.appName,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: primaryTextColor,
-                      fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: Text(
+                      l10n.appName,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: primaryTextColor,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ],
@@ -78,7 +82,7 @@ class ChatDrawer extends ConsumerWidget {
                   Navigator.of(context).pop(); // Close drawer
                 },
                 icon: const Icon(LucideIcons.plus),
-                label: Text(l10n.chatDrawerNewChat),
+                label: Text(l10n.chatDrawerNewChat, maxLines: 1, overflow: TextOverflow.ellipsis),
                 style: AppButtonStyles.primary(context).copyWith(
                   // We explicitly set the background to a lighter color on the dark sidebar
                   // or use secondary which might look better. Let's use brandPrimary logic

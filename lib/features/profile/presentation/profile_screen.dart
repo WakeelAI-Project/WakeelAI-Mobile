@@ -213,12 +213,17 @@ class _ProfileDetailRow extends StatelessWidget {
               style: AppTypography.textSm(isArabic).copyWith(color: colors.textSecondary),
             ),
           ),
-          Text(
-            value,
-            style: AppTypography.textBase(isArabic).copyWith(
-                  color: colors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                ),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: AppTypography.textBase(isArabic).copyWith(
+                    color: colors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
           ),
         ],
       ),
