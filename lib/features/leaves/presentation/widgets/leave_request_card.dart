@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/app_date_format.dart';
 import '../../../../core/theme/app_shadows.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -107,7 +108,9 @@ class LeaveRequestCard extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.s1),
                 Text(
-                  '${request.startDate} — ${request.endDate} (${request.daysRequested} Days)',
+                  '${AppDateFormat.dateFromApi(request.startDate, isArabic: isArabic)} — '
+                  '${AppDateFormat.dateFromApi(request.endDate, isArabic: isArabic)} '
+                  '(${request.daysRequested} Days)',
                   style: AppTypography.textSm(isArabic).copyWith(
                         color: colors.textSecondary,
                       ),

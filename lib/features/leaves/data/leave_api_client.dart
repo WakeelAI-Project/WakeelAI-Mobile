@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../core/network/dio_client.dart';
+import '../../../core/utils/app_date_format.dart';
 import '../domain/leave_request.dart';
 import '../domain/leave_type.dart';
 
@@ -63,8 +63,6 @@ abstract class LeaveApiClient {
 class DioLeaveApiClient implements LeaveApiClient {
   DioLeaveApiClient(this._dio);
   final Dio _dio;
-
-  static final _dateFormat = DateFormat('yyyy-MM-dd');
 
   @override
   Future<LeaveRequestsPage> getLeaveRequests({String? status, int page = 1, int limit = 20}) async {
@@ -143,8 +141,8 @@ class DioLeaveApiClient implements LeaveApiClient {
     // snake_case attributes used for this same DTO's JSON body elsewhere.
     final formDataMap = <String, dynamic>{
       'LeaveType': leaveType.apiValue,
-      'StartDate': _dateFormat.format(startDate),
-      'EndDate': _dateFormat.format(endDate),
+      'StartDate': AppDateFormat.toApi(startDate),
+      'EndDate': AppDateFormat.toApi(endDate),
     };
     if (reason != null && reason.isNotEmpty) {
       formDataMap['Reason'] = reason;

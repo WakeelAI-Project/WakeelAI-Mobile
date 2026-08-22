@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:intl/intl.dart';
+import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/utils/app_date_format.dart';
 import '../../domain/chat_missing_field.dart';
 import '../../../leaves/application/leave_request_service.dart';
 
@@ -60,7 +61,7 @@ class _MissingFieldsFormState extends ConsumerState<MissingFieldsForm> {
           final url = await ref.read(leaveRequestServiceProvider).uploadLeaveAttachment(val);
           processedValues[f.name] = url;
         } else if (f.type == 'date' && val is DateTime) {
-          processedValues[f.name] = DateFormat('yyyy-MM-dd').format(val);
+          processedValues[f.name] = AppDateFormat.toApi(val);
         } else {
           processedValues[f.name] = val;
         }
@@ -190,6 +191,7 @@ class _DateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
     return InkWell(
       onTap: () async {
         final d = await showDatePicker(
@@ -206,7 +208,7 @@ class _DateSelector extends StatelessWidget {
           border: const OutlineInputBorder(),
         ),
         child: Text(
-          initialDate != null ? DateFormat.yMd().format(initialDate!) : 'Select Date',
+          initialDate != null ? AppDateFormat.date(initialDate!, isArabic: isArabic) : 'Select Date',
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
