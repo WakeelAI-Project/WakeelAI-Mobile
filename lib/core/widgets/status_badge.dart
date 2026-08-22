@@ -29,6 +29,8 @@ class StatusBadge extends StatelessWidget {
       decoration: BoxDecoration(color: bg, borderRadius: AppRadius.fullRadius),
       child: Text(
         label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(color: fg, fontWeight: FontWeight.w600),
       ),
     );

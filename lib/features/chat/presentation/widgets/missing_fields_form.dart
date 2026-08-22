@@ -207,6 +207,8 @@ class _DateSelector extends StatelessWidget {
         ),
         child: Text(
           initialDate != null ? DateFormat.yMd().format(initialDate!) : 'Select Date',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
@@ -237,6 +239,8 @@ class _FileSelector extends StatelessWidget {
         ),
         child: Text(
           selectedFile != null ? selectedFile!.path.split(Platform.pathSeparator).last : 'Select File',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

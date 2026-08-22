@@ -47,12 +47,16 @@ class CurrentLeaveCard extends StatelessWidget {
             children: [
               Icon(LucideIcons.calendarClock, color: colors.infoFg, size: 20),
               const SizedBox(width: AppSpacing.s2),
-              Text(
-                l10n.homeCurrentLeaveTitle,
-                style: AppTypography.textLg(isArabic).copyWith(
-                      color: colors.infoFg,
-                      fontWeight: FontWeight.w600,
-                    ),
+              Flexible(
+                child: Text(
+                  l10n.homeCurrentLeaveTitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTypography.textLg(isArabic).copyWith(
+                        color: colors.infoFg,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
               ),
             ],
           ),

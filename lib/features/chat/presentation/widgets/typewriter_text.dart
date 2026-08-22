@@ -88,6 +88,13 @@ class _TypewriterTextState extends State<TypewriterText> {
           color: colors.borderDefault,
           width: 1,
         ),
+        // Default is FlexColumnWidth, which squeezes every column to fit the
+        // chat bubble no matter how wide the content is — long headers like
+        // "Remaining Days" end up wrapping one letter per line. Intrinsic
+        // sizing lets each column size to its content and makes the package
+        // wrap the table in horizontal scroll instead (see MarkdownBuilder's
+        // 'table' case), so wide tables scroll rather than break words.
+        tableColumnWidth: const IntrinsicColumnWidth(),
       ),
     );
   }

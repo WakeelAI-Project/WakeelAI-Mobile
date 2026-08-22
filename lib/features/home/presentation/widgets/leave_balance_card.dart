@@ -98,13 +98,18 @@ class LeaveBalanceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      displayLeaveType,
-                      style: AppTypography.textLg(isArabic).copyWith(
-                            color: colors.brandPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    Flexible(
+                      child: Text(
+                        displayLeaveType,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTypography.textLg(isArabic).copyWith(
+                              color: colors.brandPrimary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
                     ),
+                    const SizedBox(width: AppSpacing.s2),
                     StatusBadge(label: badgeLabel, status: badgeStatus),
                   ],
                 ),

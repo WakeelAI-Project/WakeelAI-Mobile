@@ -63,23 +63,29 @@ class EmployeeHomeScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${_getGreeting(context, l10n)}${Directionality.of(context) == TextDirection.rtl ? '،' : ','}',
-                              style: AppTypography.textBase(isArabic).copyWith(
-                                    color: colors.textSecondary,
-                                  ),
-                            ),
-                            const SizedBox(height: AppSpacing.s1),
-                            Text(
-                              profile.fullName.split(' ').first,
-                              style: AppTypography.text2xl(isArabic).copyWith(
-                                    color: colors.textPrimary,
-                                  ),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${_getGreeting(context, l10n)}${Directionality.of(context) == TextDirection.rtl ? '،' : ','}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTypography.textBase(isArabic).copyWith(
+                                      color: colors.textSecondary,
+                                    ),
+                              ),
+                              const SizedBox(height: AppSpacing.s1),
+                              Text(
+                                profile.fullName.split(' ').first,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTypography.text2xl(isArabic).copyWith(
+                                      color: colors.textPrimary,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,

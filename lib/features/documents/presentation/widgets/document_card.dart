@@ -73,6 +73,7 @@ class DocumentCard extends StatelessWidget {
                     children: [
                       Text(
                         document.title,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTypography.textBase(isArabic).copyWith(
                               color: colors.textPrimary,
