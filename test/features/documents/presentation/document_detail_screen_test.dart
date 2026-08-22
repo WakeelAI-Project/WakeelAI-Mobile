@@ -25,6 +25,9 @@ class _FakeDocumentsRepository implements DocumentsRepository {
     // No-op — the widget test stubs out DocumentPdfPreview via
     // pdfPreviewBuilder, so nothing ever reads the downloaded file.
   }
+
+  @override
+  String resolvePdfUrl(String pdfUrl) => 'https://example.test$pdfUrl';
 }
 
 void main() {

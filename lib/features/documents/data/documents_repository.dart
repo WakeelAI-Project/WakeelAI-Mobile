@@ -22,6 +22,12 @@ abstract class DocumentsRepository {
   /// screen reaching for [dioClientProvider] directly — so widget tests can
   /// fake it instead of making a real network call.
   Future<void> downloadPdf({required String pdfUrl, required String savePath});
+
+  /// Resolves a document's `pdf_url` to an absolute URL. Needed by callers
+  /// (like the native Android download manager, used to save a copy into
+  /// the public Downloads folder) that fetch the file outside of this app's
+  /// Dio client and therefore need a full URL rather than a host-relative one.
+  String resolvePdfUrl(String pdfUrl);
 }
 
 /// Backs `GET /api/Documents` (server-scoped to the caller's own documents
@@ -83,9 +89,11 @@ class DioDocumentsRepository implements DocumentsRepository {
 
   @override
   Future<void> downloadPdf({required String pdfUrl, required String savePath}) async {
-    final fullUrl = pdfUrl.startsWith('http') ? pdfUrl : '${_dio.options.baseUrl}$pdfUrl';
-    await _dio.download(fullUrl, savePath);
+    await _dio.download(resolvePdfUrl(pdfUrl), savePath);
   }
+
+  @override
+  String resolvePdfUrl(String pdfUrl) => pdfUrl.startsWith('http') ? pdfUrl : '${_dio.options.baseUrl}$pdfUrl';
 }
 
 final documentsRepositoryProvider = Provider<DocumentsRepository>((ref) {

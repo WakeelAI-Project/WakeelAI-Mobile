@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -81,14 +82,23 @@ class _DocumentDetailScreenState extends ConsumerState<DocumentDetailScreen> {
     return file.path;
   }
 
+  /// Saves a copy into the device's public Downloads folder — unlike
+  /// [_ensureLocalCopy], which caches into this app's private sandbox
+  /// storage (fine for in-app preview/share, but invisible to the user in
+  /// Files/Downloads, and gone if the app is uninstalled).
   Future<void> _download(WakeelDocument document) async {
     if (_isWorking) return;
+    final pdfUrl = document.pdfUrl;
+    if (pdfUrl == null) return;
     setState(() => _isWorking = true);
     try {
-      await _ensureLocalCopy(document);
+      final fullUrl = ref.read(documentsRepositoryProvider).resolvePdfUrl(pdfUrl);
+      final file = await FileDownloader.downloadFile(url: fullUrl, name: _fileNameFor(document));
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Saved to your device.')),
+        SnackBar(
+          content: Text(file != null ? 'Saved to your device.' : 'Download failed. Please try again.'),
+        ),
       );
     } catch (_) {
       if (!mounted) return;

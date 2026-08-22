@@ -49,6 +49,9 @@ class _FakeDocumentsRepository implements DocumentsRepository {
 
   @override
   Future<void> downloadPdf({required String pdfUrl, required String savePath}) async {}
+
+  @override
+  String resolvePdfUrl(String pdfUrl) => 'https://example.test$pdfUrl';
 }
 
 void main() {
