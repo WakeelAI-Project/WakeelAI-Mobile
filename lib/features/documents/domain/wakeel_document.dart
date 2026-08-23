@@ -13,10 +13,9 @@ enum DocumentStatus {
 /// Broad bucket used only to pick a filter-chip icon/label. The backend's
 /// `document_type` is a free-form string set by whoever created the
 /// template (HR) — there is no canonical enum shared across the .NET and AI
-/// services (see Wakeel_AI_Employee_App_User_Stories_v11.md Appendix A,
-/// "Canonical documentType enum", still an open cross-team gap). Matching by
-/// keyword rather than exact value lets the UI degrade gracefully instead of
-/// silently mismatching HR's naming.
+/// services, still an open cross-team gap. Matching by keyword rather than
+/// exact value lets the UI degrade gracefully instead of silently
+/// mismatching HR's naming.
 enum DocumentTypeCategory {
   contract,
   warningLetter,

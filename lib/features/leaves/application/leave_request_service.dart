@@ -12,8 +12,7 @@ import '../domain/leave_request.dart';
 /// result card: submit/cancel a draft — regardless of whether it was
 /// created via the direct-entry form or by the AI itself — and pre-upload a
 /// Sick-leave medical report before handing its `url` to the AI via
-/// `field_values` (see Wakeel_AI_Employee_App_User_Stories_v11.md Story E5
-/// and "Requirements for LeaveRequestService (AI Chat Integration)").
+/// `field_values`.
 ///
 /// Submit/cancel deliberately call the plain employee-facing
 /// `/api/leave-requests/{id}/...` endpoints (already used by
