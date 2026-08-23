@@ -280,6 +280,7 @@
   "@updateAvailableLater": {
     "description": "Button on the update-available dialog that dismisses it without downloading"
   },
+  "stillWorkingNotice": "Still working… the server may be waking up.",
   "navHome": "Home",
   "navChat": "Chat",
   "navLeaves": "Leaves",

@@ -233,6 +233,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateAvailableLater => 'Later';
 
   @override
+  String get stillWorkingNotice =>
+      'Still working… the server may be waking up.';
+
+  @override
   String get navHome => 'Home';
 
   @override

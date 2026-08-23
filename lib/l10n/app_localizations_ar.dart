@@ -231,6 +231,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get updateAvailableLater => 'لاحقًا';
 
   @override
+  String get stillWorkingNotice => 'ما زلنا نعمل… قد يكون الخادم قيد التشغيل.';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override

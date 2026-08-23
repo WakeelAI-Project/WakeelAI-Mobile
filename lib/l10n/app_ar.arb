@@ -72,6 +72,7 @@
   "updateAvailableMessage": "يتوفر إصدار جديد من وكيل AI. حمّله للحصول على أحدث الميزات والإصلاحات.",
   "updateAvailableDownload": "تحميل",
   "updateAvailableLater": "لاحقًا",
+  "stillWorkingNotice": "ما زلنا نعمل… قد يكون الخادم قيد التشغيل.",
   "navHome": "الرئيسية",
   "navChat": "المحادثة",
   "navLeaves": "الإجازات",

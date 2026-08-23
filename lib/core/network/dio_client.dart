@@ -18,6 +18,21 @@ const String apiBaseUrl = String.fromEnvironment(
   defaultValue: 'https://wakeel-ai-api.runasp.net',
 );
 
+/// Default connect/receive timeout for every API call.
+///
+/// The backend sleeps when idle (MonsterASP.NET / Render free tiers), and a
+/// cold start regularly costs well over ten seconds — the previous budget —
+/// so the first request of a session used to fail and make the app look
+/// dead. Thirty seconds covers a cold start while still failing fast enough
+/// to stay a plausible "no connection" signal. `/api/ai/chat` overrides its
+/// own receiveTimeout (65s) in [ChatApiClient], since a model response is
+/// slow for reasons that have nothing to do with a sleeping host.
+const Duration apiRequestTimeout = Duration(seconds: 30);
+
+/// How long a request may run before the UI reassures the user it hasn't
+/// stalled. See [StillWorkingNotice].
+const Duration slowRequestHintDelay = Duration(seconds: 8);
+
 /// Why [AuthInterceptor] forced a logout, so the caller can react
 /// differently — e.g. only a genuinely expired session should interrupt the
 /// user with an explanatory dialog before redirecting to `/login`.
@@ -160,16 +175,16 @@ final dioClientProvider = Provider<Dio>((ref) {
   final dio = Dio(
     BaseOptions(
       baseUrl: apiBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: apiRequestTimeout,
+      receiveTimeout: apiRequestTimeout,
     ),
   );
 
   final dioForRefresh = Dio(
     BaseOptions(
       baseUrl: apiBaseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      connectTimeout: apiRequestTimeout,
+      receiveTimeout: apiRequestTimeout,
     ),
   );
 

@@ -494,6 +494,12 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get updateAvailableLater;
 
+  /// No description provided for @stillWorkingNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Still working… the server may be waking up.'**
+  String get stillWorkingNotice;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
