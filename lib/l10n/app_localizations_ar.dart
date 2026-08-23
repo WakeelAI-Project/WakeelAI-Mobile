@@ -281,6 +281,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeLeaveNotAvailable => 'غير متاح';
 
   @override
+  String get homeLeaveUnlimited => 'غير محدود';
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return 'تم استخدام $used يوم · بدون حد';
+  }
+
+  @override
   String get homeCurrentLeaveTitle => 'في إجازة الآن';
 
   @override

@@ -83,6 +83,9 @@ void main() {
     
     expect(find.byType(LeaveBalanceCard), findsWidgets);
     expect(find.text('Annual'), findsOneWidget);
+    // FIX-01: a null total_days (Unpaid here) must render as "Unlimited",
+    // never as 0, "null", or a crash.
+    expect(find.text('Unlimited'), findsOneWidget);
     expect(find.byType(CurrentLeaveCard), findsNothing);
   });
 

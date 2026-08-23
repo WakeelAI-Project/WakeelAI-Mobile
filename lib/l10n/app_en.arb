@@ -306,6 +306,15 @@
   "homeLeaveSubtitleNotAvailable": "No entitlement granted",
   "homeLeaveAvailable": "Available",
   "homeLeaveNotAvailable": "Not available",
+  "homeLeaveUnlimited": "Unlimited",
+  "homeLeaveSubtitleUnlimited": "{used} days used · no cap",
+  "@homeLeaveSubtitleUnlimited": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      }
+    }
+  },
   "homeCurrentLeaveTitle": "On Leave Now",
   "homeCurrentLeaveSubtitle": "{leaveType} — Day {elapsed} of {total}",
   "@homeCurrentLeaveSubtitle": {

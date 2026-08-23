@@ -32,32 +32,44 @@ class LeaveBalanceCard extends StatelessWidget {
     if (rawLeaveType.toLowerCase() == 'sick') displayLeaveType = l10n.leaveTypeSick;
     if (rawLeaveType.toLowerCase() == 'unpaid') displayLeaveType = l10n.leaveTypeUnpaid;
 
-    final int? total = leaveBalance.totalDays;
-    final int? currentBalance = leaveBalance.balance;
-    // No entitlement granted for this leave type (e.g. Unpaid before HR
-    // grants an allotment) — total/remaining are 0 or, for legacy data
-    // predating that default, still null.
-    final bool isUnavailable = total == null || currentBalance == null || total == 0;
+    final int? totalRaw = leaveBalance.totalDays;
+    final int? currentBalanceRaw = leaveBalance.balance;
+    // A null total_days means this leave type is genuinely uncapped (Sick,
+    // Unpaid) — never coerced to 0, and never treated the same as "no
+    // entitlement granted yet" (a real 0, e.g. Annual before 6 months of
+    // service).
+    final bool isUncapped = totalRaw == null;
 
-    final double progress = !isUnavailable ? (currentBalance / total).clamp(0.0, 1.0) : 0.0;
-
-    // Determine status badge — every branch below assigns both, so these
-    // are never actually null by the time they're used.
+    double progress = 0.0;
     AppStatus badgeStatus;
     String badgeLabel;
+    String subtitleText;
 
-    if (isUnavailable) {
+    if (isUncapped) {
+      badgeStatus = AppStatus.success;
+      badgeLabel = l10n.homeLeaveUnlimited;
+      subtitleText = l10n.homeLeaveSubtitleUnlimited(leaveBalance.usedDays);
+    } else if (currentBalanceRaw == null || totalRaw == 0) {
       badgeStatus = AppStatus.info;
       badgeLabel = l10n.homeLeaveNotAvailable;
-    } else if (currentBalance == 0) {
-      badgeStatus = AppStatus.error;
-      badgeLabel = l10n.homeLeaveNoneLeft;
-    } else if (progress <= 0.3) {
-      badgeStatus = AppStatus.warning;
-      badgeLabel = l10n.homeLeaveLowBalance;
+      subtitleText = l10n.homeLeaveSubtitleNotAvailable;
     } else {
-      badgeStatus = AppStatus.success;
-      badgeLabel = l10n.homeLeaveAvailable;
+      // Both promoted to non-null int here by the checks above.
+      final int total = totalRaw;
+      final int currentBalance = currentBalanceRaw;
+      progress = (currentBalance / total).clamp(0.0, 1.0);
+      subtitleText = l10n.homeLeaveSubtitle(currentBalance, total);
+
+      if (currentBalance == 0) {
+        badgeStatus = AppStatus.error;
+        badgeLabel = l10n.homeLeaveNoneLeft;
+      } else if (progress <= 0.3) {
+        badgeStatus = AppStatus.warning;
+        badgeLabel = l10n.homeLeaveLowBalance;
+      } else {
+        badgeStatus = AppStatus.success;
+        badgeLabel = l10n.homeLeaveAvailable;
+      }
     }
 
     // Determine progress color
@@ -71,10 +83,6 @@ class LeaveBalanceCard extends StatelessWidget {
     } else {
       progressColor = colors.brandPrimary; // Default
     }
-
-    final subtitleText = isUnavailable
-        ? l10n.homeLeaveSubtitleNotAvailable
-        : l10n.homeLeaveSubtitle(currentBalance, total);
 
     return Container(
       margin: const EdgeInsets.only(bottom: AppSpacing.s3),

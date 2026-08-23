@@ -590,6 +590,18 @@ abstract class AppLocalizations {
   /// **'Not available'**
   String get homeLeaveNotAvailable;
 
+  /// No description provided for @homeLeaveUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get homeLeaveUnlimited;
+
+  /// No description provided for @homeLeaveSubtitleUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} days used · no cap'**
+  String homeLeaveSubtitleUnlimited(int used);
+
   /// No description provided for @homeCurrentLeaveTitle.
   ///
   /// In en, this message translates to:

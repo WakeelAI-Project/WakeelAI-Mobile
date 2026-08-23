@@ -284,6 +284,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeLeaveNotAvailable => 'Not available';
 
   @override
+  String get homeLeaveUnlimited => 'Unlimited';
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return '$used days used · no cap';
+  }
+
+  @override
   String get homeCurrentLeaveTitle => 'On Leave Now';
 
   @override
