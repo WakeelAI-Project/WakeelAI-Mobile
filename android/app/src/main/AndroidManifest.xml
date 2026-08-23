@@ -7,7 +7,7 @@
     <!-- Needed to take a profile photo directly from the camera (image_picker). -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <application
-        android:label="wakeel_ai_app"
+        android:label="WakeelAI"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
