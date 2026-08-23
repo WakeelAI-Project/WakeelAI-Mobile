@@ -4,15 +4,12 @@ import '../theme/app_colors.dart';
 
 /// The Wakeel AI signature seal mark (design system §9).
 ///
-/// Used in exactly two places, by design: the sidebar/header [logomark]
-/// and the inline [citation] marker next to every AI legal citation (e.g.
-/// "Article 84 · Labor Law 14/2025"). Do not reuse it elsewhere — its
-/// meaning as "this claim is stamped/verifiable" depends on scarcity.
+/// Used in exactly one place, by design: the inline [citation] marker next
+/// to every AI legal citation (e.g. "Article 84 · Labor Law 14/2025"). Do
+/// not reuse it elsewhere — its meaning as "this claim is stamped/
+/// verifiable" depends on scarcity. For the app's logo, see [BrandMark].
 class SealMark extends StatelessWidget {
   const SealMark({super.key, this.size = 40, this.ringColor, this.innerColor});
-
-  /// Sized for the sidebar header logomark.
-  const SealMark.logomark({super.key, this.size = 40, this.ringColor, this.innerColor});
 
   /// Sized for an inline citation marker, next to citation text.
   const SealMark.citation({super.key, this.size = 16, this.ringColor, this.innerColor});

@@ -6,7 +6,7 @@ import '../../../core/theme/app_button_styles.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
-import '../../../core/widgets/seal_mark.dart';
+import '../../../core/widgets/brand_mark.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/forgot_password_controller.dart';
 import '../domain/auth_exceptions.dart';
@@ -112,7 +112,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Center(child: SealMark.logomark(size: 56, ringColor: colors.brandPrimary)),
+                    Center(child: BrandMark(size: 56, fillColor: colors.brandPrimary)),
                     const SizedBox(height: AppSpacing.s4),
                     Text(
                       t.forgotPasswordTitle,
