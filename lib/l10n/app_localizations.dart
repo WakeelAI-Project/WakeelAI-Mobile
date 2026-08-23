@@ -470,6 +470,30 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get sessionExpiredOk;
 
+  /// Title of the dialog shown when a newer app version is available for download
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailableTitle;
+
+  /// Body text of the update-available dialog
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Wakeel AI is available. Download it to get the latest features and fixes.'**
+  String get updateAvailableMessage;
+
+  /// Button on the update-available dialog that opens the download link
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get updateAvailableDownload;
+
+  /// Button on the update-available dialog that dismisses it without downloading
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get updateAvailableLater;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:

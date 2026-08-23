@@ -264,6 +264,22 @@
     "description": "Dismiss button on the session-expired dialog"
   }
 ,
+  "updateAvailableTitle": "Update available",
+  "@updateAvailableTitle": {
+    "description": "Title of the dialog shown when a newer app version is available for download"
+  },
+  "updateAvailableMessage": "A new version of Wakeel AI is available. Download it to get the latest features and fixes.",
+  "@updateAvailableMessage": {
+    "description": "Body text of the update-available dialog"
+  },
+  "updateAvailableDownload": "Download",
+  "@updateAvailableDownload": {
+    "description": "Button on the update-available dialog that opens the download link"
+  },
+  "updateAvailableLater": "Later",
+  "@updateAvailableLater": {
+    "description": "Button on the update-available dialog that dismisses it without downloading"
+  },
   "navHome": "Home",
   "navChat": "Chat",
   "navLeaves": "Leaves",

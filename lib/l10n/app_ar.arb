@@ -68,6 +68,10 @@
   "sessionExpiredMessage": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى.",
   "sessionExpiredOk": "حسناً"
 ,
+  "updateAvailableTitle": "يتوفر تحديث",
+  "updateAvailableMessage": "يتوفر إصدار جديد من وكيل AI. حمّله للحصول على أحدث الميزات والإصلاحات.",
+  "updateAvailableDownload": "تحميل",
+  "updateAvailableLater": "لاحقًا",
   "navHome": "الرئيسية",
   "navChat": "المحادثة",
   "navLeaves": "الإجازات",

@@ -220,6 +220,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionExpiredOk => 'OK';
 
   @override
+  String get updateAvailableTitle => 'Update available';
+
+  @override
+  String get updateAvailableMessage =>
+      'A new version of Wakeel AI is available. Download it to get the latest features and fixes.';
+
+  @override
+  String get updateAvailableDownload => 'Download';
+
+  @override
+  String get updateAvailableLater => 'Later';
+
+  @override
   String get navHome => 'Home';
 
   @override
