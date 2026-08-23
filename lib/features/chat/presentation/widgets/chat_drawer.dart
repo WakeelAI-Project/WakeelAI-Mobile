@@ -6,7 +6,7 @@ import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_button_styles.dart';
 import '../../../../core/utils/app_date_format.dart';
-import '../../../../core/widgets/seal_mark.dart';
+import '../../../../core/widgets/brand_mark.dart';
 import '../../application/chat_provider.dart';
 import '../../application/conversation_provider.dart';
 
@@ -54,9 +54,9 @@ class ChatDrawer extends ConsumerWidget {
               padding: const EdgeInsets.all(24.0),
               child: Row(
                 children: [
-                  SealMark.logomark(
-                    ringColor: primaryTextColor,
-                    innerColor: colors.accent,
+                  BrandMark(
+                    fillColor: primaryTextColor,
+                    strokeColor: colors.accent,
                     size: 32,
                   ),
                   const SizedBox(width: 12),

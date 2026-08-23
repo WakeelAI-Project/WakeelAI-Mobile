@@ -10,6 +10,7 @@ import '../../core/theme/app_shadows.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_typography.dart';
 import '../../core/widgets/ai_badge.dart';
+import '../../core/widgets/brand_mark.dart';
 import '../../core/widgets/seal_mark.dart';
 import '../../core/widgets/status_badge.dart';
 import '../../l10n/app_localizations.dart';
@@ -191,7 +192,7 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s4, vertical: AppSpacing.s4),
       child: Row(
         children: [
-          const SealMark.logomark(),
+          const BrandMark(),
           const SizedBox(width: AppSpacing.s3),
           Expanded(
             child: Column(
