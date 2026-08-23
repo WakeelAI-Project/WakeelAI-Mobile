@@ -896,6 +896,12 @@ abstract class AppLocalizations {
   /// **'Leave request submitted'**
   String get newLeaveRequestSuccessMessage;
 
+  /// No description provided for @newLeaveRequestSavedNotSubmittedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was saved as a draft but could not be submitted. Open it from your requests list and press Submit.'**
+  String get newLeaveRequestSavedNotSubmittedMessage;
+
   /// No description provided for @newLeaveRequestErrorValidation.
   ///
   /// In en, this message translates to:
@@ -919,6 +925,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Request'**
   String get myLeaveRequestsFabLabel;
+
+  /// No description provided for @leaveRequestDraftNotSentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This draft hasn\'t been sent to HR yet.'**
+  String get leaveRequestDraftNotSentHint;
 
   /// No description provided for @chatDrawerNewChat.
   ///

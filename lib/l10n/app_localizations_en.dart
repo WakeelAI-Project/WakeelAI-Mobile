@@ -454,6 +454,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newLeaveRequestSuccessMessage => 'Leave request submitted';
 
   @override
+  String get newLeaveRequestSavedNotSubmittedMessage =>
+      'Your request was saved as a draft but could not be submitted. Open it from your requests list and press Submit.';
+
+  @override
   String get newLeaveRequestErrorValidation =>
       'Check the request details and try again.';
 
@@ -467,6 +471,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'New Request';
+
+  @override
+  String get leaveRequestDraftNotSentHint =>
+      'This draft hasn\'t been sent to HR yet.';
 
   @override
   String get chatDrawerNewChat => 'New Chat';

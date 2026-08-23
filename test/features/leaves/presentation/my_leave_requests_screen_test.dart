@@ -150,6 +150,14 @@ void main() {
     expect(client.requestedStatuses.last, 'Pending');
   });
 
+  testWidgets('a Draft card spells out that it has not reached HR', (tester) async {
+    await tester.pumpWidget(createWidgetUnderTest(_FakeLeaveApiClient(total: 2)));
+    await tester.pumpAndSettle();
+
+    // req-0 is the only Draft in the fake's data; req-1 is Pending.
+    expect(find.text("This draft hasn't been sent to HR yet."), findsOneWidget);
+  });
+
   testWidgets('Submit on a Draft card flips it to Pending', (tester) async {
     final client = _FakeLeaveApiClient(total: 1);
     await tester.pumpWidget(createWidgetUnderTest(client));

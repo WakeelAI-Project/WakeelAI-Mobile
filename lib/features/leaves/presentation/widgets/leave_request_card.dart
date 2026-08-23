@@ -156,7 +156,12 @@ class LeaveRequestCard extends ConsumerWidget {
                   ),
                 ],
                 if (request.status == LeaveStatus.draft) ...[
-                  const SizedBox(height: AppSpacing.s4),
+                  const SizedBox(height: AppSpacing.s3),
+                  Text(
+                    l10n.leaveRequestDraftNotSentHint,
+                    style: AppTypography.textXs(isArabic).copyWith(color: colors.textSecondary),
+                  ),
+                  const SizedBox(height: AppSpacing.s3),
                   Row(
                     children: [
                       Expanded(

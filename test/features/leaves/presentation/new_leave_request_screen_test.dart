@@ -22,11 +22,13 @@ DioException _errorResponse(String errorCode, int statusCode) {
 }
 
 class _FakeLeaveApiClient implements LeaveApiClient {
-  _FakeLeaveApiClient({this.createResult, this.createError});
+  _FakeLeaveApiClient({this.createResult, this.createError, this.submitError});
 
   CreateLeaveDraftResult? createResult;
   DioException? createError;
+  DioException? submitError;
   bool createCalled = false;
+  String? submittedId;
 
   @override
   Future<LeaveRequestsPage> getLeaveRequests({String? status, int page = 1, int limit = 20}) {
@@ -37,7 +39,10 @@ class _FakeLeaveApiClient implements LeaveApiClient {
   Future<LeaveRequest> getLeaveRequest(String id) => throw UnimplementedError();
 
   @override
-  Future<void> submitDraft(String id) => throw UnimplementedError();
+  Future<void> submitDraft(String id) async {
+    submittedId = id;
+    if (submitError != null) throw submitError!;
+  }
 
   @override
   Future<void> cancelDraft(String id) => throw UnimplementedError();
@@ -138,7 +143,7 @@ void main() {
     expect(find.text('Please attach a medical report for sick leave'), findsOneWidget);
   });
 
-  testWidgets('successful submit calls the client and pops', (tester) async {
+  testWidgets('successful submit creates the draft, submits it, and pops', (tester) async {
     final client = _FakeLeaveApiClient(
       createResult: const CreateLeaveDraftResult(requestId: 'req-1', status: 'Draft', daysRequested: 1),
     );
@@ -152,11 +157,45 @@ void main() {
     await _confirmDatePicker(tester, 'Select date'); // end
 
     await tester.tap(find.text('Submit Request'));
-    await tester.pumpAndSettle();
+    await tester.pump(); // let the snackbar appear before it auto-dismisses
 
     expect(client.createCalled, isTrue);
+    // POST alone only ever produces a Draft — the submit call is what makes
+    // the request Pending and therefore visible to HR.
+    expect(client.submittedId, 'req-1');
+    expect(find.text('Leave request submitted'), findsWidgets);
+
+    await tester.pumpAndSettle();
     // Popped back to the start screen.
     expect(find.text('open'), findsOneWidget);
+  });
+
+  testWidgets('a draft that could not be submitted does not claim success', (tester) async {
+    final client = _FakeLeaveApiClient(
+      createResult: const CreateLeaveDraftResult(requestId: 'req-1', status: 'Draft', daysRequested: 1),
+      submitError: _errorResponse('not_a_draft', 409),
+    );
+    await tester.pumpWidget(_wrapWithRouter(client));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('open'));
+    await tester.pumpAndSettle();
+
+    await _confirmDatePicker(tester, 'Select date'); // start
+    await _confirmDatePicker(tester, 'Select date'); // end
+
+    await tester.tap(find.text('Submit Request'));
+    await tester.pump();
+
+    expect(client.submittedId, 'req-1');
+    expect(find.text('Leave request submitted'), findsNothing);
+    expect(
+      find.text(
+        'Your request was saved as a draft but could not be submitted. '
+        'Open it from your requests list and press Submit.',
+      ),
+      findsWidgets,
+    );
   });
 
   testWidgets('server validation error surfaces its banner', (tester) async {

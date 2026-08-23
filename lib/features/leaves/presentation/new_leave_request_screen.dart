@@ -121,7 +121,7 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
     }
 
     final reason = _reasonController.text.trim();
-    final result = await ref.read(leaveDraftCreationControllerProvider.notifier).submit(
+    final outcome = await ref.read(leaveDraftCreationControllerProvider.notifier).submit(
           leaveType: _selectedLeaveType,
           startDate: _startDate!,
           endDate: _endDate!,
@@ -129,9 +129,16 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
           attachment: _attachment,
         );
 
-    if (result != null && mounted) {
+    if (outcome != null && mounted) {
+      // "Submitted" is only claimed once the request actually reached
+      // Pending; a draft that couldn't be submitted says exactly that.
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(t.newLeaveRequestSuccessMessage)),
+        SnackBar(
+          content: Text(
+            outcome.submitted ? t.newLeaveRequestSuccessMessage : t.newLeaveRequestSavedNotSubmittedMessage,
+          ),
+          duration: Duration(seconds: outcome.submitted ? 4 : 8),
+        ),
       );
       context.pop(true);
     }

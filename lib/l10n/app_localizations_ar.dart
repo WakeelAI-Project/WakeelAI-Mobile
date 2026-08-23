@@ -452,6 +452,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newLeaveRequestSuccessMessage => 'تم إرسال طلب الإجازة';
 
   @override
+  String get newLeaveRequestSavedNotSubmittedMessage =>
+      'تم حفظ طلبك كمسودة ولكن تعذّر إرساله. افتحه من قائمة طلباتك واضغط إرسال.';
+
+  @override
   String get newLeaveRequestErrorValidation =>
       'تحقق من تفاصيل الطلب وحاول مرة أخرى.';
 
@@ -464,6 +468,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'طلب جديد';
+
+  @override
+  String get leaveRequestDraftNotSentHint =>
+      'لم يتم إرسال هذه المسودة إلى الموارد البشرية بعد.';
 
   @override
   String get chatDrawerNewChat => 'محادثة جديدة';
