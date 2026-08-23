@@ -17,7 +17,10 @@ import 'update_provider.dart';
 /// version doesn't prompt again on the next app start.
 Future<void> showUpdateAvailableDialog(WidgetRef ref, int versionCode) async {
   final context = rootNavigatorKey.currentContext;
-  if (context == null) return;
+  if (context == null) {
+    debugPrint('showUpdateAvailableDialog: rootNavigatorKey has no attached context yet, skipping.');
+    return;
+  }
 
   final l10n = AppLocalizations.of(context)!;
   final colors = Theme.of(context).extension<AppColors>()!;
