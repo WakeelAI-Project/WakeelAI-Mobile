@@ -124,6 +124,11 @@ class DioLeaveApiClient implements LeaveApiClient {
     if (url == null) {
       throw DioException(requestOptions: response.requestOptions, response: response);
     }
+    if (url.startsWith('/')) {
+      final baseUrl = _dio.options.baseUrl;
+      final cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.substring(0, baseUrl.length - 1) : baseUrl;
+      return '$cleanBaseUrl$url';
+    }
     return url;
   }
 
