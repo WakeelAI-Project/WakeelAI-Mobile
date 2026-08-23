@@ -120,8 +120,115 @@ class _ResultCardRendererState extends ConsumerState<ResultCardRenderer> {
       return _buildCalculationCard(context);
     } else if (widget.card.type == 'leave_draft') {
       return _buildLeaveDraftCard(context);
+    } else if (widget.card.type == 'confirmation') {
+      return _buildConfirmationCard(context);
+    } else if (widget.card.type == 'needs_disambiguation') {
+      return _buildDisambiguationCard(context);
     }
     return const SizedBox.shrink();
+  }
+
+  // FIX-05: a confirmation prompt before an irreversible action (e.g.
+  // submitting/cancelling a leave draft resolved from a typed "send it") -
+  // resolved by the user's next chat turn, not a direct REST call, since the
+  // assistant re-runs its own resolution on that reply.
+  Widget _buildConfirmationCard(BuildContext context) {
+    final colors = Theme.of(context).extension<AppColors>()!;
+    final message = widget.card.payload['message'] as String? ?? 'Are you sure you want to proceed?';
+    final confirmPrompt = widget.card.payload['confirm_prompt'] as String? ?? 'Yes, confirm';
+    final cancelPrompt = widget.card.payload['cancel_prompt'] as String? ?? 'No, cancel';
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colors.bgCard,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.borderDefault),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            message,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.textPrimary),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () => ref.read(chatProvider.notifier).sendMessage(cancelPrompt),
+                  child: const Text('Cancel'),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () => ref.read(chatProvider.notifier).sendMessage(confirmPrompt),
+                  child: const Text('Confirm'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // A typed "send it" / "cancel it" matched more than one draft - the
+  // assistant lists the candidates and the user picks one as their next
+  // chat turn.
+  Widget _buildDisambiguationCard(BuildContext context) {
+    final colors = Theme.of(context).extension<AppColors>()!;
+    final message = widget.card.payload['message'] as String? ?? 'Which one did you mean?';
+    final options = (widget.card.payload['options'] as List?) ?? const [];
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colors.bgCard,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.borderDefault),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            message,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.textPrimary),
+          ),
+          const SizedBox(height: 12),
+          for (var i = 0; i < options.length; i++) ...[
+            if (i > 0) const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => ref.read(chatProvider.notifier).sendMessage(_describeOption(options[i], i)),
+                child: Text(_describeOption(options[i], i), textAlign: TextAlign.start),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _describeOption(dynamic rawOption, int index) {
+    if (rawOption is! Map) return 'Option ${index + 1}';
+    final option = rawOption;
+    final label = option['label'] as String?;
+    if (label != null && label.isNotEmpty) return label;
+
+    final leaveType = option['leave_type'] as String?;
+    final startDate = option['start_date'] as String?;
+    final endDate = option['end_date'] as String?;
+    final parts = [
+      leaveType,
+      if (startDate != null && endDate != null) '$startDate - $endDate',
+    ].whereType<String>().toList();
+    return parts.isNotEmpty ? parts.join(' · ') : 'Option ${index + 1}';
   }
 
   Widget _buildCalculationCard(BuildContext context) {
