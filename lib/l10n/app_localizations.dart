@@ -932,6 +932,36 @@ abstract class AppLocalizations {
   /// **'This draft hasn\'t been sent to HR yet.'**
   String get leaveRequestDraftNotSentHint;
 
+  /// No description provided for @leaveRequestSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get leaveRequestSubmitButton;
+
+  /// No description provided for @leaveRequestWithdrawButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw request'**
+  String get leaveRequestWithdrawButton;
+
+  /// No description provided for @leaveRequestWithdrawConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw request'**
+  String get leaveRequestWithdrawConfirmTitle;
+
+  /// No description provided for @leaveRequestWithdrawConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This request will be withdrawn before HR reviews it, and any reserved leave balance released. You can submit a new request afterwards.'**
+  String get leaveRequestWithdrawConfirmMessage;
+
+  /// No description provided for @leaveRequestWithdrawConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get leaveRequestWithdrawConfirmAction;
+
   /// No description provided for @chatDrawerNewChat.
   ///
   /// In en, this message translates to:

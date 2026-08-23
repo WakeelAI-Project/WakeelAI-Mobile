@@ -474,6 +474,22 @@ class AppLocalizationsAr extends AppLocalizations {
       'لم يتم إرسال هذه المسودة إلى الموارد البشرية بعد.';
 
   @override
+  String get leaveRequestSubmitButton => 'إرسال';
+
+  @override
+  String get leaveRequestWithdrawButton => 'سحب الطلب';
+
+  @override
+  String get leaveRequestWithdrawConfirmTitle => 'سحب الطلب';
+
+  @override
+  String get leaveRequestWithdrawConfirmMessage =>
+      'سيتم سحب هذا الطلب قبل مراجعته من الموارد البشرية، وسيُفرج عن أي رصيد إجازة محجوز. يمكنك تقديم طلب جديد بعد ذلك.';
+
+  @override
+  String get leaveRequestWithdrawConfirmAction => 'سحب';
+
+  @override
   String get chatDrawerNewChat => 'محادثة جديدة';
 
   @override

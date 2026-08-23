@@ -29,6 +29,47 @@ class LeaveRequestCard extends ConsumerWidget {
   /// leave request form accepts) in an external app rather than an in-app
   /// viewer, since the backend imposes no fixed type — the OS already knows
   /// how to preview whatever this URL actually points to.
+  /// Confirms before withdrawing an already-submitted (Pending) request —
+  /// same shape as [confirmLogout], the app's existing destructive-action
+  /// confirmation.
+  Future<void> _confirmWithdraw(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final colors = Theme.of(context).extension<AppColors>()!;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: colors.bgCard,
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgRadius),
+        title: Text(
+          l10n.leaveRequestWithdrawConfirmTitle,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: colors.textPrimary),
+        ),
+        content: Text(
+          l10n.leaveRequestWithdrawConfirmMessage,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: colors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(l10n.cancel, style: TextStyle(color: colors.textSecondary)),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              l10n.leaveRequestWithdrawConfirmAction,
+              style: TextStyle(color: colors.errorFg, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await ref.read(leaveRequestsProvider.notifier).withdrawRequest(request.id);
+    }
+  }
+
   Future<void> _openAttachment(String attachmentUrl) async {
     final resolvedUrl = attachmentUrl.startsWith('http') ? attachmentUrl : '$apiBaseUrl$attachmentUrl';
     final uri = Uri.parse(resolvedUrl);
@@ -170,7 +211,7 @@ class LeaveRequestCard extends ConsumerWidget {
                           onPressed: () {
                             ref.read(leaveRequestsProvider.notifier).submitDraft(request.id);
                           },
-                          child: const Text('Submit'),
+                          child: Text(l10n.leaveRequestSubmitButton, maxLines: 1, overflow: TextOverflow.ellipsis),
                         ),
                       ),
                       const SizedBox(width: AppSpacing.s3),
@@ -180,10 +221,24 @@ class LeaveRequestCard extends ConsumerWidget {
                           onPressed: () {
                             ref.read(leaveRequestsProvider.notifier).cancelDraft(request.id);
                           },
-                          child: const Text('Cancel'),
+                          child: Text(l10n.cancel, maxLines: 1, overflow: TextOverflow.ellipsis),
                         ),
                       ),
                     ],
+                  ),
+                ],
+                // Only a request HR hasn't acted on yet can be pulled back;
+                // Approved/Rejected/Cancelled cards deliberately offer no
+                // action here.
+                if (request.status == LeaveStatus.pending) ...[
+                  const SizedBox(height: AppSpacing.s4),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: AppButtonStyles.secondary(context),
+                      onPressed: () => _confirmWithdraw(context, ref),
+                      child: Text(l10n.leaveRequestWithdrawButton, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    ),
                   ),
                 ],
               ],

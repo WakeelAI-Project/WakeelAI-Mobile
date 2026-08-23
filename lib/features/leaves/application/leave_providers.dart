@@ -169,6 +169,14 @@ class LeaveRequestsNotifier extends AutoDisposeNotifier<LeaveRequestsState> {
     await client.cancelDraft(id);
     await refresh();
   }
+
+  /// Withdraws a request the employee has already submitted but HR hasn't
+  /// reviewed yet. It hits the same `DELETE /api/leave-requests/{id}`
+  /// endpoint as [cancelDraft] — the backend's cancel handler accepts
+  /// Pending as well as Draft, releasing any reserved balance and notifying
+  /// HR — so this exists purely to name the employee-facing action for what
+  /// it is at the call site.
+  Future<void> withdrawRequest(String id) => cancelDraft(id);
 }
 
 final leaveRequestsProvider = AutoDisposeNotifierProvider<LeaveRequestsNotifier, LeaveRequestsState>(

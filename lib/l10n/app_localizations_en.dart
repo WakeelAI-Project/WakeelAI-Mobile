@@ -477,6 +477,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'This draft hasn\'t been sent to HR yet.';
 
   @override
+  String get leaveRequestSubmitButton => 'Submit';
+
+  @override
+  String get leaveRequestWithdrawButton => 'Withdraw request';
+
+  @override
+  String get leaveRequestWithdrawConfirmTitle => 'Withdraw request';
+
+  @override
+  String get leaveRequestWithdrawConfirmMessage =>
+      'This request will be withdrawn before HR reviews it, and any reserved leave balance released. You can submit a new request afterwards.';
+
+  @override
+  String get leaveRequestWithdrawConfirmAction => 'Withdraw';
+
+  @override
   String get chatDrawerNewChat => 'New Chat';
 
   @override
