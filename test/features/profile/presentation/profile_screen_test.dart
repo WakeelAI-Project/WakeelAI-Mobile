@@ -53,6 +53,9 @@ class _FakeEmployeeApiClient implements EmployeeApiClient {
     uploadCalled = true;
     return profile;
   }
+
+  @override
+  Future<EmployeeProfile> updateTimeZone(String timeZoneId) async => profile;
 }
 
 class _FakeTokenStorage implements TokenStorage {

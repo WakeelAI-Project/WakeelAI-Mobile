@@ -88,6 +88,7 @@ class EmployeeProfile {
   final List<LeaveBalance> leaveBalances;
   final CurrentLeave? currentLeave;
   final String? photoUrl;
+  final String? timeZoneId;
 
   EmployeeProfile({
     required this.userId,
@@ -105,6 +106,7 @@ class EmployeeProfile {
     required this.leaveBalances,
     this.currentLeave,
     this.photoUrl,
+    this.timeZoneId,
   });
 
   factory EmployeeProfile.fromJson(Map<String, dynamic> json) {
@@ -137,6 +139,7 @@ class EmployeeProfile {
         return cl == null ? null : CurrentLeave.fromJson(cl);
       }(),
       photoUrl: json['photo_url'] as String?,
+      timeZoneId: json['timezone_id'] as String?,
     );
   }
 }

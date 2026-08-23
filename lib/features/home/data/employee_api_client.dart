@@ -11,6 +11,14 @@ abstract class EmployeeApiClient {
   Future<EmployeeProfile> getEmployeeProfile();
   Future<EmployeeProfile> uploadPhoto(File file);
   Future<EmployeeProfile> removePhoto();
+
+  /// `PATCH /api/employees/me/timezone`. Reports the device's current IANA
+  /// time zone (e.g. "Africa/Cairo") so date-sensitive calculations on the
+  /// backend (currently only CurrentLeave's elapsed-days count) use the
+  /// employee's own local day boundary instead of UTC's. Safe to call
+  /// unconditionally on every login/app-start — the backend just overwrites
+  /// the stored value, so there's nothing to keep in sync locally.
+  Future<EmployeeProfile> updateTimeZone(String timeZoneId);
 }
 
 class DioEmployeeApiClient implements EmployeeApiClient {
@@ -58,6 +66,21 @@ class DioEmployeeApiClient implements EmployeeApiClient {
       return EmployeeProfile.fromJson(response.data);
     } on DioException catch (e) {
       throw EmployeeFailure(_reasonFor(e), 'Failed to remove photo');
+    } catch (e) {
+      throw EmployeeFailure(EmployeeFailureReason.unknown, 'Unexpected error: $e');
+    }
+  }
+
+  @override
+  Future<EmployeeProfile> updateTimeZone(String timeZoneId) async {
+    try {
+      final response = await _dio.patch(
+        '/api/employees/me/timezone',
+        data: {'timezone_id': timeZoneId},
+      );
+      return EmployeeProfile.fromJson(response.data);
+    } on DioException catch (e) {
+      throw EmployeeFailure(_reasonFor(e), 'Failed to update time zone');
     } catch (e) {
       throw EmployeeFailure(EmployeeFailureReason.unknown, 'Unexpected error: $e');
     }
