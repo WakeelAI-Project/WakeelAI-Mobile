@@ -218,6 +218,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sessionExpiredOk => 'حسناً';
 
   @override
+  String get updateAvailableTitle => 'يتوفر تحديث';
+
+  @override
+  String get updateAvailableMessage =>
+      'يتوفر إصدار جديد من وكيل AI. حمّله للحصول على أحدث الميزات والإصلاحات.';
+
+  @override
+  String get updateAvailableDownload => 'تحميل';
+
+  @override
+  String get updateAvailableLater => 'لاحقًا';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override
