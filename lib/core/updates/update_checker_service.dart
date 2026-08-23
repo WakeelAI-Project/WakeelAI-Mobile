@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 /// GitHub's release notes carry a machine-readable `versionCode: N` line
 /// (written by release.yml alongside the human-readable notes) since the
@@ -38,6 +39,11 @@ class UpdateCheckerService {
   /// Returns the latest release's versionCode, or null on any failure
   /// (offline, GitHub rate-limited, malformed notes, etc.) — checking for
   /// updates must never be able to break app startup.
+  ///
+  /// Every failure is logged via [debugPrint] (visible in `flutter logs`/
+  /// `adb logcat`) rather than swallowed outright — api.github.com is
+  /// unauthenticated here and rate-limited to 60 req/hour per IP, so a
+  /// silent null is otherwise indistinguishable from "already up to date".
   Future<int?> fetchLatestVersionCode() async {
     try {
       final response = await _dio.get<Map<String, dynamic>>(
@@ -47,8 +53,18 @@ class UpdateCheckerService {
           receiveTimeout: const Duration(seconds: 5),
         ),
       );
-      return parseVersionCodeFromReleaseNotes(response.data?['body'] as String?);
-    } catch (_) {
+      final versionCode = parseVersionCodeFromReleaseNotes(response.data?['body'] as String?);
+      if (versionCode == null) {
+        debugPrint('UpdateCheckerService: latest release notes had no parseable versionCode.');
+      }
+      return versionCode;
+    } on DioException catch (e) {
+      debugPrint(
+        'UpdateCheckerService: check failed (${e.response?.statusCode ?? e.type}) — ${e.message}',
+      );
+      return null;
+    } catch (e) {
+      debugPrint('UpdateCheckerService: check failed — $e');
       return null;
     }
   }
