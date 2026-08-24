@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:wakeel_ai_app/l10n/app_localizations.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_shadows.dart';
+import '../../../core/widgets/logout_confirmation.dart';
 
-class MainNavigationScaffold extends StatelessWidget {
+class MainNavigationScaffold extends ConsumerWidget {
   const MainNavigationScaffold({
     super.key,
     required this.navigationShell,
@@ -14,7 +16,13 @@ class MainNavigationScaffold extends StatelessWidget {
 
   final StatefulNavigationShell navigationShell;
 
-  void _onTap(BuildContext context, int index) {
+  static const int _logoutIndex = 4;
+
+  void _onTap(BuildContext context, WidgetRef ref, int index) {
+    if (index == _logoutIndex) {
+      confirmLogout(context, ref);
+      return;
+    }
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,
@@ -22,7 +30,7 @@ class MainNavigationScaffold extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).extension<AppColors>()!;
     final shadows = Theme.of(context).extension<AppShadows>()!;
     final l10n = AppLocalizations.of(context)!;
@@ -37,7 +45,7 @@ class MainNavigationScaffold extends StatelessWidget {
         ),
         child: BottomNavigationBar(
           currentIndex: navigationShell.currentIndex,
-          onTap: (index) => _onTap(context, index),
+          onTap: (index) => _onTap(context, ref, index),
           backgroundColor: Colors.transparent,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
@@ -65,6 +73,11 @@ class MainNavigationScaffold extends StatelessWidget {
               icon: const Icon(Symbols.folder_open, fill: 0),
               activeIcon: const Icon(Symbols.folder_open, fill: 1),
               label: l10n.navDocs,
+            ),
+            BottomNavigationBarItem(
+              icon: const Icon(Symbols.logout, fill: 0),
+              activeIcon: const Icon(Symbols.logout, fill: 1),
+              label: l10n.logout,
             ),
           ],
         ),
