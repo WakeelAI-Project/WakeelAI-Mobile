@@ -154,6 +154,8 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
           return t.newLeaveRequestErrorInsufficientBalance;
         case LeaveDraftCreationFailureReason.attachmentRequired:
           return t.newLeaveRequestErrorAttachmentRequired;
+        case LeaveDraftCreationFailureReason.overlappingRequest:
+          return error.message ?? t.newLeaveRequestErrorGeneric;
         case LeaveDraftCreationFailureReason.unknown:
           return t.newLeaveRequestErrorGeneric;
       }

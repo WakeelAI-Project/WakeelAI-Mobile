@@ -13,11 +13,15 @@ import 'package:wakeel_ai_app/features/leaves/domain/leave_request.dart';
 import 'package:wakeel_ai_app/features/leaves/domain/leave_type.dart';
 import 'package:wakeel_ai_app/features/leaves/presentation/new_leave_request_screen.dart';
 
-DioException _errorResponse(String errorCode, int statusCode) {
+DioException _errorResponse(String errorCode, int statusCode, {String? message}) {
   final requestOptions = RequestOptions(path: '/api/leave-requests');
   return DioException(
     requestOptions: requestOptions,
-    response: Response(requestOptions: requestOptions, statusCode: statusCode, data: {'error': errorCode}),
+    response: Response(
+      requestOptions: requestOptions,
+      statusCode: statusCode,
+      data: {'error': errorCode, 'message': message},
+    ),
   );
 }
 
@@ -229,5 +233,22 @@ void main() {
 
     expect(client.createCalled, isTrue);
     expect(find.text("Your remaining leave balance isn't enough to cover these dates."), findsOneWidget);
+  });
+
+  testWidgets('server overlapping_leave_request (409) surfaces the server\'s own message', (tester) async {
+    const serverMessage = 'You already have a pending Annual leave from 2026-03-01 to 2026-03-05 that overlaps these dates.';
+    final client = _FakeLeaveApiClient(
+      createError: _errorResponse('overlapping_leave_request', 409, message: serverMessage),
+    );
+    await tester.pumpWidget(_wrapPlain(client));
+    await tester.pumpAndSettle();
+
+    await _confirmDatePicker(tester, 'Select date'); // start
+    await _confirmDatePicker(tester, 'Select date'); // end
+    await tester.tap(find.text('Submit Request'));
+    await tester.pumpAndSettle();
+
+    expect(client.createCalled, isTrue);
+    expect(find.text(serverMessage), findsOneWidget);
   });
 }

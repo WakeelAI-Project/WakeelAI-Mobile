@@ -93,13 +93,14 @@ class LeaveRequestService {
         attachment: attachment,
       );
     } on DioException catch (e) {
-      throw LeaveDraftCreationException(_creationReasonFor(e));
+      final body = e.response?.data;
+      final errorCode = body is Map ? body['error'] as String? : null;
+      final message = body is Map ? body['message'] as String? : null;
+      throw LeaveDraftCreationException(_creationReasonFor(errorCode), message: message);
     }
   }
 
-  LeaveDraftCreationFailureReason _creationReasonFor(DioException e) {
-    final body = e.response?.data;
-    final errorCode = body is Map ? body['error'] as String? : null;
+  LeaveDraftCreationFailureReason _creationReasonFor(String? errorCode) {
     switch (errorCode) {
       case 'validation_error':
         return LeaveDraftCreationFailureReason.validationError;
@@ -107,6 +108,8 @@ class LeaveRequestService {
         return LeaveDraftCreationFailureReason.insufficientBalance;
       case 'attachment_required':
         return LeaveDraftCreationFailureReason.attachmentRequired;
+      case 'overlapping_leave_request':
+        return LeaveDraftCreationFailureReason.overlappingRequest;
       default:
         return LeaveDraftCreationFailureReason.unknown;
     }

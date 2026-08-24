@@ -49,12 +49,23 @@ enum LeaveDraftCreationFailureReason {
   /// still return it (e.g. a stale client), so it must be handled too.
   attachmentRequired,
 
+  /// 409 `{"error": "overlapping_leave_request"}` — dates overlap an
+  /// existing Pending or Approved request. [LeaveDraftCreationException.message]
+  /// carries the server's own description of which one, since only the
+  /// server knows the conflicting request's type, dates, and status.
+  overlappingRequest,
+
   /// Any other error (network failure, unexpected response shape, etc.).
   unknown,
 }
 
 /// Thrown when creating a leave draft is rejected.
 class LeaveDraftCreationException implements Exception {
-  const LeaveDraftCreationException(this.reason);
+  const LeaveDraftCreationException(this.reason, {this.message});
   final LeaveDraftCreationFailureReason reason;
+
+  /// The server's own `message` for this error, when it sent one worth
+  /// showing verbatim (currently just [overlappingRequest]) rather than a
+  /// fixed client-side string.
+  final String? message;
 }

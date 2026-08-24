@@ -9,14 +9,14 @@ import 'package:wakeel_ai_app/features/leaves/domain/leave_request_exceptions.da
 import 'package:wakeel_ai_app/features/leaves/domain/leave_type.dart';
 import 'package:wakeel_ai_app/features/leaves/application/leave_request_service.dart';
 
-DioException _errorResponse(String errorCode, int statusCode) {
+DioException _errorResponse(String errorCode, int statusCode, {String? message}) {
   final requestOptions = RequestOptions(path: '/api/leave-requests/req-1/submit');
   return DioException(
     requestOptions: requestOptions,
     response: Response(
       requestOptions: requestOptions,
       statusCode: statusCode,
-      data: {'error': errorCode},
+      data: {'error': errorCode, 'message': message},
     ),
   );
 }
@@ -245,6 +245,29 @@ void main() {
         ),
         throwsA(isA<LeaveDraftCreationException>()
             .having((e) => e.reason, 'reason', LeaveDraftCreationFailureReason.attachmentRequired)),
+      );
+    });
+
+    test('throws LeaveDraftCreationException(overlappingRequest) with the server message on 409 overlapping_leave_request', () async {
+      final client = _FakeLeaveApiClient(
+        createError: _errorResponse(
+          'overlapping_leave_request',
+          409,
+          message: 'You already have a pending Annual leave from 2026-03-01 to 2026-03-05 that overlaps these dates.',
+        ),
+      );
+      final service = LeaveRequestService(client);
+
+      await expectLater(
+        () => service.createLeaveDraft(
+          leaveType: LeaveType.annual,
+          startDate: DateTime(2026, 3, 1),
+          endDate: DateTime(2026, 3, 3),
+        ),
+        throwsA(isA<LeaveDraftCreationException>()
+            .having((e) => e.reason, 'reason', LeaveDraftCreationFailureReason.overlappingRequest)
+            .having((e) => e.message, 'message',
+                'You already have a pending Annual leave from 2026-03-01 to 2026-03-05 that overlaps these dates.')),
       );
     });
   });
