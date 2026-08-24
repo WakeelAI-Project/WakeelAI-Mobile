@@ -233,6 +233,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateAvailableLater => 'Later';
 
   @override
+  String get stillWorkingNotice =>
+      'Still working… the server may be waking up.';
+
+  @override
   String get navHome => 'Home';
 
   @override
@@ -278,6 +282,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeLeaveNotAvailable => 'Not available';
+
+  @override
+  String get homeLeaveUnlimited => 'Unlimited';
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return '$used days used · no cap';
+  }
 
   @override
   String get homeCurrentLeaveTitle => 'On Leave Now';
@@ -454,6 +466,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get newLeaveRequestSuccessMessage => 'Leave request submitted';
 
   @override
+  String get newLeaveRequestSavedNotSubmittedMessage =>
+      'Your request was saved as a draft but could not be submitted. Open it from your requests list and press Submit.';
+
+  @override
   String get newLeaveRequestErrorValidation =>
       'Check the request details and try again.';
 
@@ -467,6 +483,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'New Request';
+
+  @override
+  String get leaveRequestDraftNotSentHint =>
+      'This draft hasn\'t been sent to HR yet.';
+
+  @override
+  String get leaveRequestSubmitButton => 'Submit';
+
+  @override
+  String get leaveRequestWithdrawButton => 'Withdraw request';
+
+  @override
+  String get leaveRequestWithdrawConfirmTitle => 'Withdraw request';
+
+  @override
+  String get leaveRequestWithdrawConfirmMessage =>
+      'This request will be withdrawn before HR reviews it, and any reserved leave balance released. You can submit a new request afterwards.';
+
+  @override
+  String get leaveRequestWithdrawConfirmAction => 'Withdraw';
 
   @override
   String get chatDrawerNewChat => 'New Chat';

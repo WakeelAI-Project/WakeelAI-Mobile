@@ -231,6 +231,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get updateAvailableLater => 'لاحقًا';
 
   @override
+  String get stillWorkingNotice => 'ما زلنا نعمل… قد يكون الخادم قيد التشغيل.';
+
+  @override
   String get navHome => 'الرئيسية';
 
   @override
@@ -276,6 +279,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeLeaveNotAvailable => 'غير متاح';
+
+  @override
+  String get homeLeaveUnlimited => 'غير محدود';
+
+  @override
+  String homeLeaveSubtitleUnlimited(int used) {
+    return 'تم استخدام $used يوم · بدون حد';
+  }
 
   @override
   String get homeCurrentLeaveTitle => 'في إجازة الآن';
@@ -452,6 +463,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get newLeaveRequestSuccessMessage => 'تم إرسال طلب الإجازة';
 
   @override
+  String get newLeaveRequestSavedNotSubmittedMessage =>
+      'تم حفظ طلبك كمسودة ولكن تعذّر إرساله. افتحه من قائمة طلباتك واضغط إرسال.';
+
+  @override
   String get newLeaveRequestErrorValidation =>
       'تحقق من تفاصيل الطلب وحاول مرة أخرى.';
 
@@ -464,6 +479,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get myLeaveRequestsFabLabel => 'طلب جديد';
+
+  @override
+  String get leaveRequestDraftNotSentHint =>
+      'لم يتم إرسال هذه المسودة إلى الموارد البشرية بعد.';
+
+  @override
+  String get leaveRequestSubmitButton => 'إرسال';
+
+  @override
+  String get leaveRequestWithdrawButton => 'سحب الطلب';
+
+  @override
+  String get leaveRequestWithdrawConfirmTitle => 'سحب الطلب';
+
+  @override
+  String get leaveRequestWithdrawConfirmMessage =>
+      'سيتم سحب هذا الطلب قبل مراجعته من الموارد البشرية، وسيُفرج عن أي رصيد إجازة محجوز. يمكنك تقديم طلب جديد بعد ذلك.';
+
+  @override
+  String get leaveRequestWithdrawConfirmAction => 'سحب';
 
   @override
   String get chatDrawerNewChat => 'محادثة جديدة';

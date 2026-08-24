@@ -494,6 +494,12 @@ abstract class AppLocalizations {
   /// **'Later'**
   String get updateAvailableLater;
 
+  /// No description provided for @stillWorkingNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Still working… the server may be waking up.'**
+  String get stillWorkingNotice;
+
   /// No description provided for @navHome.
   ///
   /// In en, this message translates to:
@@ -583,6 +589,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not available'**
   String get homeLeaveNotAvailable;
+
+  /// No description provided for @homeLeaveUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited'**
+  String get homeLeaveUnlimited;
+
+  /// No description provided for @homeLeaveSubtitleUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} days used · no cap'**
+  String homeLeaveSubtitleUnlimited(int used);
 
   /// No description provided for @homeCurrentLeaveTitle.
   ///
@@ -896,6 +914,12 @@ abstract class AppLocalizations {
   /// **'Leave request submitted'**
   String get newLeaveRequestSuccessMessage;
 
+  /// No description provided for @newLeaveRequestSavedNotSubmittedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was saved as a draft but could not be submitted. Open it from your requests list and press Submit.'**
+  String get newLeaveRequestSavedNotSubmittedMessage;
+
   /// No description provided for @newLeaveRequestErrorValidation.
   ///
   /// In en, this message translates to:
@@ -919,6 +943,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Request'**
   String get myLeaveRequestsFabLabel;
+
+  /// No description provided for @leaveRequestDraftNotSentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This draft hasn\'t been sent to HR yet.'**
+  String get leaveRequestDraftNotSentHint;
+
+  /// No description provided for @leaveRequestSubmitButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get leaveRequestSubmitButton;
+
+  /// No description provided for @leaveRequestWithdrawButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw request'**
+  String get leaveRequestWithdrawButton;
+
+  /// No description provided for @leaveRequestWithdrawConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw request'**
+  String get leaveRequestWithdrawConfirmTitle;
+
+  /// No description provided for @leaveRequestWithdrawConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This request will be withdrawn before HR reviews it, and any reserved leave balance released. You can submit a new request afterwards.'**
+  String get leaveRequestWithdrawConfirmMessage;
+
+  /// No description provided for @leaveRequestWithdrawConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get leaveRequestWithdrawConfirmAction;
 
   /// No description provided for @chatDrawerNewChat.
   ///

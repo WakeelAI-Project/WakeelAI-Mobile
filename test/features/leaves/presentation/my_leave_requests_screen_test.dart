@@ -14,12 +14,17 @@ import 'package:wakeel_ai_app/features/leaves/presentation/widgets/leave_request
 import 'package:wakeel_ai_app/features/leaves/presentation/widgets/leave_status_filter_row.dart';
 
 class _FakeLeaveApiClient implements LeaveApiClient {
-  _FakeLeaveApiClient({required this.total, this.shouldThrow = false});
+  _FakeLeaveApiClient({required this.total, this.shouldThrow = false, this.statusFor});
 
   final int total;
   final bool shouldThrow;
+
+  /// Overrides the default "req-0 is a Draft, the rest are Pending" shape.
+  final LeaveStatus Function(int index)? statusFor;
+
   final List<int> requestedPages = [];
   final List<String?> requestedStatuses = [];
+  final List<String> cancelledIds = [];
 
   late final List<LeaveRequest> _all = List.generate(
     total,
@@ -28,7 +33,7 @@ class _FakeLeaveApiClient implements LeaveApiClient {
       leaveType: 'Annual',
       startDate: '2026-03-0${(i % 9) + 1}',
       endDate: '2026-03-0${(i % 9) + 1}',
-      status: i == 0 ? LeaveStatus.draft : LeaveStatus.pending,
+      status: statusFor?.call(i) ?? (i == 0 ? LeaveStatus.draft : LeaveStatus.pending),
       daysRequested: 1,
     ),
   );
@@ -54,7 +59,9 @@ class _FakeLeaveApiClient implements LeaveApiClient {
   Future<void> submitDraft(String id) async {}
 
   @override
-  Future<void> cancelDraft(String id) async {}
+  Future<void> cancelDraft(String id) async {
+    cancelledIds.add(id);
+  }
 
   @override
   Future<String> uploadAttachment(File file) => throw UnimplementedError();
@@ -148,6 +155,57 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(client.requestedStatuses.last, 'Pending');
+  });
+
+  testWidgets('a Draft card spells out that it has not reached HR', (tester) async {
+    await tester.pumpWidget(createWidgetUnderTest(_FakeLeaveApiClient(total: 2)));
+    await tester.pumpAndSettle();
+
+    // req-0 is the only Draft in the fake's data; req-1 is Pending.
+    expect(find.text("This draft hasn't been sent to HR yet."), findsOneWidget);
+  });
+
+  testWidgets('a Pending card offers Withdraw and confirms before calling the API', (tester) async {
+    final client = _FakeLeaveApiClient(total: 1, statusFor: (_) => LeaveStatus.pending);
+    await tester.pumpWidget(createWidgetUnderTest(client));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Withdraw request'));
+    await tester.pumpAndSettle();
+
+    // The dialog is up; nothing has been sent yet.
+    expect(client.cancelledIds, isEmpty);
+    expect(find.text('Withdraw'), findsOneWidget);
+
+    await tester.tap(find.text('Withdraw'));
+    await tester.pumpAndSettle();
+
+    expect(client.cancelledIds, ['req-0']);
+  });
+
+  testWidgets('dismissing the withdraw dialog leaves the request alone', (tester) async {
+    final client = _FakeLeaveApiClient(total: 1, statusFor: (_) => LeaveStatus.pending);
+    await tester.pumpWidget(createWidgetUnderTest(client));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Withdraw request'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(client.cancelledIds, isEmpty);
+  });
+
+  testWidgets('Approved and Rejected cards offer no withdraw action', (tester) async {
+    final client = _FakeLeaveApiClient(
+      total: 2,
+      statusFor: (i) => i == 0 ? LeaveStatus.approved : LeaveStatus.rejected,
+    );
+    await tester.pumpWidget(createWidgetUnderTest(client));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LeaveRequestCard), findsNWidgets(2));
+    expect(find.text('Withdraw request'), findsNothing);
   });
 
   testWidgets('Submit on a Draft card flips it to Pending', (tester) async {

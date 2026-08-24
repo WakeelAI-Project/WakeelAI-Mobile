@@ -9,6 +9,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/theme/app_button_styles.dart';
+import '../../../core/widgets/still_working_notice.dart';
 import '../../profile/presentation/widgets/profile_avatar.dart';
 import '../application/employee_provider.dart';
 import 'widgets/current_leave_card.dart';
@@ -196,8 +197,12 @@ class EmployeeHomeScreen extends ConsumerWidget {
                     },
                   ),
                   loading: () => SliverList.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) => const _LeaveBalanceCardSkeleton(),
+                    // The last slot is the "still working…" line, which stays
+                    // invisible unless the profile call outlives a cold
+                    // backend's wake-up time.
+                    itemCount: 4,
+                    itemBuilder: (context, index) =>
+                        index == 3 ? const StillWorkingNotice() : const _LeaveBalanceCardSkeleton(),
                   ),
                   error: (e, st) => SliverToBoxAdapter(
                     child: Center(

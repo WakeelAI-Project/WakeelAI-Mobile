@@ -192,6 +192,41 @@ void main() {
       expect(handler.forwardedError, isNotNull);
     });
 
+    test('preserves the session when the refresh call times out (cold backend)', () async {
+      final storage = _FakeTokenStorage()
+        ..accessToken = 'old-access'
+        ..refreshToken = 'old-refresh';
+
+      final dioForRefresh = Dio();
+      dioForRefresh.interceptors.add(InterceptorsWrapper(
+        onRequest: (options, handler) {
+          handler.reject(DioException(
+            requestOptions: options,
+            type: DioExceptionType.receiveTimeout,
+          ));
+        },
+      ));
+
+      ForceLogoutReason? loggedOutReason;
+      final interceptor = AuthInterceptor(storage, dioForRefresh, (reason) async {
+        loggedOutReason = reason;
+      });
+
+      final originalOptions = RequestOptions(
+        path: '/some-endpoint',
+        headers: {'Authorization': 'Bearer old-access'},
+      );
+      final handler = _FakeErrorHandler();
+
+      await interceptor.onError(_unauthorized(originalOptions), handler);
+
+      // A timeout says nothing about whether the session is still valid, so
+      // it must surface as a retryable error rather than a forced logout.
+      expect(loggedOutReason, isNull);
+      expect(storage.refreshToken, 'old-refresh');
+      expect(handler.forwardedError, isNotNull);
+    });
+
     test('forces a session-expired logout when the refresh endpoint rejects the refresh token', () async {
       final storage = _FakeTokenStorage()
         ..accessToken = 'old-access'

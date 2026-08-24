@@ -20,6 +20,20 @@ class FakeTokenStorage implements TokenStorage {
 }
 
 void main() {
+  group('request timeouts', () {
+    test('the default budget covers a cold backend rather than failing at 10s', () {
+      // A sleeping MonsterASP.NET/Render host regularly needs more than ten
+      // seconds to answer its first request; anything under that made the
+      // app look dead on launch.
+      expect(apiRequestTimeout, const Duration(seconds: 30));
+      expect(apiRequestTimeout.inSeconds, greaterThan(10));
+    });
+
+    test('the slow-request hint fires well before the request gives up', () {
+      expect(slowRequestHintDelay, lessThan(apiRequestTimeout));
+    });
+  });
+
   group('AuthInterceptor', () {
     late FakeTokenStorage tokenStorage;
     late AuthInterceptor interceptor;

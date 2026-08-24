@@ -8,6 +8,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_radius.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/widgets/brand_mark.dart';
+import '../../../core/widgets/still_working_notice.dart';
 import '../../../l10n/app_localizations.dart';
 import '../application/login_controller.dart';
 import '../application/pending_password_change_provider.dart';
@@ -273,6 +274,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             )
                           : Text(t.loginSubmit),
                     ),
+                    // Login is the first call of a session and therefore the
+                    // one most likely to hit a sleeping backend.
+                    if (isLoading) const StillWorkingNotice(),
                   ],
                 ),
               ),
