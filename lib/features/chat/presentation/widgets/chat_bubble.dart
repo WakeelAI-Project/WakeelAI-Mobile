@@ -184,30 +184,186 @@ class ChatBubble extends ConsumerWidget {
                 ],
                 if (hasMissingFields) ...[
                   const SizedBox(height: 8),
-                  MissingFieldsForm(
-                    fields: message.missingFields!,
-                    onSubmit: (fieldValues) async {
-                      // Map the internal keys back to the human-readable labels for the message text
-                      final labelMap = { for (var f in message.missingFields!) f.name : f.label };
-                      final details = fieldValues.entries.map((e) {
-                        final label = labelMap[e.key] ?? e.key;
-                        return '$label (${e.key}): ${e.value}';
-                      }).join('\n');
-                      
-                      final msg = 'Providing requested details:\n$details';
-                      
-                      // Sending structured data as required by the backend API.
-                      // If the backend drops older fields (like start_date) when this is sent,
-                      // the backend intent-router's state merging bug is still present.
-                      await ref.read(chatProvider.notifier).sendMessage(msg, fieldValues: fieldValues);
-                    },
-                  ),
+                  if (message.submittedValues != null)
+                    _buildSubmittedConfirmation(context, colors)
+                  else
+                    MissingFieldsForm(
+                      fields: message.missingFields!,
+                      onSubmit: (fieldValues) async {
+                        final labelMap = { for (var f in message.missingFields!) f.name : f.label };
+                        final details = fieldValues.entries.map((e) {
+                          final label = labelMap[e.key] ?? e.key;
+                          return '$label (${e.key}): ${e.value}';
+                        }).join('\n');
+                        
+                        final msg = 'Providing requested details:\n$details';
+                        
+                        await ref.read(chatProvider.notifier).submitForm(message.id, msg, fieldValues);
+                      },
+                    ),
                 ],
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+  
+  Widget _buildSubmittedConfirmation(BuildContext context, AppColors colors) {
+    final values = message.submittedValues!;
+    final labelMap = { for (var f in message.missingFields!) f.name : f.label };
+    final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
+
+    // 1. Combine Date Range
+    DateTime? startDate;
+    DateTime? endDate;
+    
+    for (var entry in values.entries) {
+      if (entry.value == null || entry.value.toString().trim().isEmpty) continue;
+      
+      if (entry.key.toLowerCase().contains('start') && (entry.value is DateTime || DateTime.tryParse(entry.value.toString()) != null)) {
+        startDate = entry.value is DateTime ? entry.value : DateTime.parse(entry.value.toString());
+      } else if (entry.key.toLowerCase().contains('end') && (entry.value is DateTime || DateTime.tryParse(entry.value.toString()) != null)) {
+        endDate = entry.value is DateTime ? entry.value : DateTime.parse(entry.value.toString());
+      }
+    }
+
+    String? dateRangeString;
+    if (startDate != null) {
+      final startStr = AppDateFormat.date(startDate, isArabic: isArabic);
+      if (endDate != null) {
+        final duration = endDate.difference(startDate).inDays + 1; // inclusive
+        if (startDate.year == endDate.year && startDate.month == endDate.month && startDate.day == endDate.day) {
+           dateRangeString = startStr;
+        } else {
+           final endStr = AppDateFormat.date(endDate, isArabic: isArabic);
+           final durationStr = isArabic 
+               ? (duration == 1 ? 'يوم واحد' : duration == 2 ? 'يومين' : duration <= 10 ? '$duration أيام' : '$duration يوماً') 
+               : '$duration days';
+           dateRangeString = '$startStr – $endStr ($durationStr)';
+        }
+      } else {
+        dateRangeString = startStr;
+      }
+    }
+
+    // 2. Filter out empty fields and start/end dates
+    final displayEntries = <MapEntry<String, String>>[];
+    for (var entry in values.entries) {
+      if (entry.value == null || entry.value.toString().trim().isEmpty) continue;
+      
+      final keyLower = entry.key.toLowerCase();
+      if (dateRangeString != null && (keyLower.contains('start') || keyLower.contains('end'))) {
+        continue;
+      }
+
+      String label = labelMap[entry.key] ?? entry.key;
+      if (label.toLowerCase().contains('reason')) label = isArabic ? 'السبب' : 'Reason';
+      if (label.toLowerCase().contains('medical report') || label.toLowerCase().contains('report')) label = isArabic ? 'التقرير الطبي' : 'Medical Report';
+
+      String displayValue = entry.value.toString();
+      
+      if (displayValue.startsWith('http')) {
+        displayValue = isArabic ? 'مستند مرفق' : 'Attached Document';
+      } else if (displayValue.startsWith('File:')) {
+        displayValue = displayValue.replaceAll(RegExp(r"^File:\s*'?|'?$"), '').split('/').last.split('\\').last;
+      } else if (DateTime.tryParse(displayValue) != null) {
+         final d = DateTime.tryParse(displayValue);
+         if (d != null && d.year > 2000) {
+            displayValue = AppDateFormat.date(d, isArabic: isArabic);
+         }
+      }
+
+      displayEntries.add(MapEntry(label, displayValue));
+    }
+    
+    final submittedTime = AppDateFormat.time(message.timestamp, isArabic: isArabic);
+    final submittedDate = AppDateFormat.date(message.timestamp, isArabic: isArabic);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colors.bgCard,
+        border: Border.all(color: colors.borderDefault),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(LucideIcons.checkCircle2, color: colors.brandPrimary, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  isArabic ? 'تم الحفظ' : 'Saved',
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: colors.brandPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Text(
+                '$submittedDate, $submittedTime',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: colors.textSecondary,
+                  fontSize: 11,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          if (dateRangeString != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isArabic ? 'تواريخ الإجازة' : 'Leave Dates',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    dateRangeString,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ...displayEntries.map((e) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    e.key,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: colors.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    e.value,
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
     );
   }
 }

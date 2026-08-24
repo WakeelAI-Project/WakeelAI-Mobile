@@ -54,11 +54,46 @@ class ChatNotifier extends StateNotifier<ChatState> {
     state = state.copyWith(isLoadingHistory: true);
     
     try {
-      final oldMessages = await _repository.getHistory(page: state.currentPage);
+      final oldMessagesRaw = await _repository.getHistory(page: state.currentPage);
+      final oldMessages = oldMessagesRaw;
+      
+      final existingIds = state.messages.map((m) => m.id).toSet();
+      final existingSignatures = state.messages.map((m) => '${m.role.name}:${m.text.trim()}').toSet();
+      
+      final filteredOld = oldMessages.where((m) {
+        if (existingIds.contains(m.id)) return false;
+        if (existingSignatures.contains('${m.role.name}:${m.text.trim()}')) return false;
+        return true;
+      }).toList();
+
+      final List<ChatMessage> processedOld = [];
+      Map<String, dynamic>? pendingSubmittedValues;
+
+      for (int i = filteredOld.length - 1; i >= 0; i--) {
+        final m = filteredOld[i];
+        if (m.role == MessageRole.user && m.text.trim().startsWith('Providing requested details:')) {
+          pendingSubmittedValues = {};
+          final lines = m.text.split('\n').skip(1);
+          for (var line in lines) {
+            final match = RegExp(r'\(([^)]+)\):\s*(.*)$').firstMatch(line);
+            if (match != null) {
+              pendingSubmittedValues[match.group(1)!] = match.group(2)!;
+            }
+          }
+          continue;
+        }
+
+        if (m.role == MessageRole.assistant && m.missingFields != null && m.missingFields!.isNotEmpty && pendingSubmittedValues != null) {
+          processedOld.insert(0, m.copyWith(submittedValues: pendingSubmittedValues));
+          pendingSubmittedValues = null;
+        } else {
+          processedOld.insert(0, m);
+        }
+      }
       
       state = state.copyWith(
-        messages: [...oldMessages, ...state.messages],
-        hasMoreHistory: oldMessages.isNotEmpty,
+        messages: [...processedOld, ...state.messages],
+        hasMoreHistory: processedOld.isNotEmpty && oldMessagesRaw.length >= 20,
         currentPage: state.currentPage + 1,
         isLoadingHistory: false,
       );
@@ -130,6 +165,56 @@ class ChatNotifier extends StateNotifier<ChatState> {
         }).where((m) => m.id != tempAssistantId).toList(),
       );
       rethrow; // Rethrow to let UI show toast/banner
+    }
+  }
+  
+  Future<void> submitForm(String messageId, String text, Map<String, dynamic> fieldValues) async {
+    // 1. Mark the form as submitted locally
+    state = state.copyWith(
+      messages: state.messages.map((m) {
+        if (m.id == messageId) {
+          return m.copyWith(submittedValues: fieldValues);
+        }
+        return m;
+      }).toList(),
+    );
+
+    // 2. Send the message but don't show the user's optimistic text message
+    final tempAssistantId = 'temp_assistant_${DateTime.now().millisecondsSinceEpoch}';
+
+    final assistantTypingMessage = ChatMessage(
+      id: tempAssistantId,
+      role: MessageRole.assistant,
+      text: '',
+      status: MessageStatus.sending,
+      timestamp: DateTime.now(),
+    );
+
+    state = state.copyWith(
+      messages: [...state.messages, assistantTypingMessage],
+    );
+
+    try {
+      final response = await _repository.sendMessage(
+        message: text,
+        fieldValues: fieldValues,
+      );
+      
+      final streamingResponse = response.copyWith(status: MessageStatus.streaming);
+      
+      state = state.copyWith(
+        messages: state.messages.map((m) {
+          if (m.id == tempAssistantId) return streamingResponse;
+          return m;
+        }).toList(),
+      );
+      
+      _ref.read(conversationProvider.notifier).loadConversations(refresh: true);
+    } catch (e) {
+      state = state.copyWith(
+        messages: state.messages.where((m) => m.id != tempAssistantId).toList(),
+      );
+      rethrow;
     }
   }
   
