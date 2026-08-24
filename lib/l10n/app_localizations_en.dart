@@ -72,6 +72,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your account has been deactivated. Please contact your HR administrator.';
 
   @override
+  String get loginRoleNotAllowed =>
+      'This app is for employees only. Company Owner and HR Manager accounts should sign in from the web dashboard.';
+
+  @override
   String get loginGenericError => 'Something went wrong. Please try again.';
 
   @override

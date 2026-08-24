@@ -80,6 +80,10 @@
   "@loginAccountInactive": {
     "description": "Error banner shown when the account has been deactivated by an Owner/HR manager"
   },
+  "loginRoleNotAllowed": "This app is for employees only. Company Owner and HR Manager accounts should sign in from the web dashboard.",
+  "@loginRoleNotAllowed": {
+    "description": "Error banner shown when a Company Owner or HR Manager account tries to sign in on the mobile app"
+  },
   "loginGenericError": "Something went wrong. Please try again.",
   "@loginGenericError": {
     "description": "Error banner shown for network/server failures during login"

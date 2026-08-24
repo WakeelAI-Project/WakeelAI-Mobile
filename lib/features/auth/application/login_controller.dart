@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/storage/token_storage.dart';
+import '../../../core/utils/jwt.dart';
 import '../data/auth_api_client.dart';
+import '../domain/auth_exceptions.dart';
 import 'auth_state_provider.dart';
 import 'pending_password_change_provider.dart';
 
@@ -21,6 +23,15 @@ class LoginController extends AutoDisposeAsyncNotifier<void> {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       final tokens = await ref.read(authApiClientProvider).login(email: email, password: password);
+
+      // The backend has no role restriction on /auth/login — this app is
+      // employee-only (Company Owner / HR Manager belong in the web
+      // dashboard), so reject anything else before persisting a token or
+      // touching the must-change-password flow below.
+      final role = decodeJwtPayload(tokens.accessToken)?['role'];
+      if (role != 'Employee') {
+        throw const LoginFailure(LoginFailureReason.roleNotAllowed);
+      }
 
       if (tokens.mustChangePassword) {
         // Don't persist these tokens or mark the session authenticated —

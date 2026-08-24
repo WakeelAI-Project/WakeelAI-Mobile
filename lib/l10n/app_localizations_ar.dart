@@ -72,6 +72,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم إيقاف حسابك. يرجى التواصل مع مسؤول الموارد البشرية.';
 
   @override
+  String get loginRoleNotAllowed =>
+      'هذا التطبيق مخصص للموظفين فقط. يرجى تسجيل دخول حسابات مالك الشركة ومسؤول الموارد البشرية من لوحة التحكم على الويب.';
+
+  @override
   String get loginGenericError => 'حدث خطأ ما. حاول مرة أخرى.';
 
   @override
