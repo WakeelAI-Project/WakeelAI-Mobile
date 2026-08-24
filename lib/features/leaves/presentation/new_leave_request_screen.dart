@@ -50,14 +50,15 @@ class _NewLeaveRequestScreenState extends ConsumerState<NewLeaveRequestScreen> {
   }
 
   Future<void> _pickDate(bool isStart) async {
-    final initialDate = isStart ? (_startDate ?? DateTime.now()) : (_endDate ?? _startDate ?? DateTime.now());
-    final firstDate = isStart ? DateTime.now() : (_startDate ?? DateTime.now());
+    final now = DateTime.now();
+    final initialDate = isStart ? (_startDate ?? now) : (_endDate ?? _startDate ?? now);
+    final firstDate = isStart ? now : (_startDate ?? now);
 
     final picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
       firstDate: firstDate,
-      lastDate: DateTime.now().add(const Duration(days: 365 * 2)),
+      lastDate: DateTime(now.year, 12, 31),
     );
     if (picked == null) return;
 

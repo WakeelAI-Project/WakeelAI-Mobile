@@ -143,10 +143,51 @@ class _MissingFieldsFormState extends ConsumerState<MissingFieldsForm> {
           onSaved: (v) => _values[field.name] = v,
         );
       case 'date':
+        final isStartDate = field.name.toLowerCase().contains('start');
+        final isEndDate = field.name.toLowerCase().contains('end');
+        
+        final now = DateTime.now();
+        DateTime minDate = DateTime(now.year, now.month, 1);
+        DateTime maxDate = DateTime(now.year, 12, 31);
+        DateTime? defaultInitialDate;
+
+        if (isEndDate) {
+          DateTime? start;
+          for (var entry in _values.entries) {
+            if (entry.key.toLowerCase().contains('start') && entry.value is DateTime) {
+              start = entry.value as DateTime;
+              break;
+            }
+          }
+          if (start != null) {
+            if (start.isAfter(minDate)) {
+              minDate = start;
+            }
+            defaultInitialDate = start;
+          }
+        }
+
         return _DateSelector(
           label: field.label,
           initialDate: _values[field.name] as DateTime?,
-          onChanged: (d) => setState(() => _values[field.name] = d),
+          defaultInitialDate: defaultInitialDate,
+          firstDate: minDate,
+          lastDate: maxDate,
+          onChanged: (d) {
+            setState(() {
+              _values[field.name] = d;
+              if (isStartDate && d != null) {
+                for (var key in _values.keys.toList()) {
+                  if (key.toLowerCase().contains('end')) {
+                    final end = _values[key];
+                    if (end is DateTime && end.isBefore(d)) {
+                      _values[key] = null;
+                    }
+                  }
+                }
+              }
+            });
+          },
         );
       case 'file':
         return _FileSelector(
@@ -183,10 +224,20 @@ class _MissingFieldsFormState extends ConsumerState<MissingFieldsForm> {
 }
 
 class _DateSelector extends StatelessWidget {
-  const _DateSelector({required this.label, this.initialDate, required this.onChanged});
+  const _DateSelector({
+    required this.label, 
+    this.initialDate, 
+    this.defaultInitialDate,
+    this.firstDate,
+    this.lastDate,
+    required this.onChanged
+  });
   
   final String label;
   final DateTime? initialDate;
+  final DateTime? defaultInitialDate;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
   final ValueChanged<DateTime?> onChanged;
 
   @override
@@ -194,11 +245,12 @@ class _DateSelector extends StatelessWidget {
     final isArabic = AppLocalizations.of(context)!.localeName == 'ar';
     return InkWell(
       onTap: () async {
+        final now = DateTime.now();
         final d = await showDatePicker(
           context: context,
-          initialDate: initialDate ?? DateTime.now(),
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
+          initialDate: initialDate ?? defaultInitialDate ?? now,
+          firstDate: firstDate ?? DateTime(2000),
+          lastDate: lastDate ?? DateTime(2100),
         );
         if (d != null) onChanged(d);
       },

@@ -14,6 +14,7 @@ class ChatMessage {
   final List<ChatCitation>? citations;
   final List<ChatMissingField>? missingFields;
   final ChatResultCard? resultCard;
+  final Map<String, dynamic>? submittedValues;
   final DateTime timestamp;
 
   ChatMessage({
@@ -24,6 +25,7 @@ class ChatMessage {
     this.citations,
     this.missingFields,
     this.resultCard,
+    this.submittedValues,
     required this.timestamp,
   });
 
@@ -42,6 +44,7 @@ class ChatMessage {
       resultCard: json['result_card'] != null
           ? ChatResultCard.fromJson(json['result_card'] as Map<String, dynamic>)
           : null,
+      submittedValues: json['submitted_values'] as Map<String, dynamic>?,
       timestamp: (json['createdAt'] != null || json['created_at'] != null || json['timestamp'] != null
           ? DateTime.tryParse((json['createdAt'] ?? json['created_at'] ?? json['timestamp']).toString()) ?? DateTime.now()
           : DateTime.now()).toLocal(),
@@ -56,6 +59,7 @@ class ChatMessage {
     List<ChatCitation>? citations,
     List<ChatMissingField>? missingFields,
     ChatResultCard? resultCard,
+    Map<String, dynamic>? submittedValues,
     DateTime? timestamp,
   }) {
     return ChatMessage(
@@ -66,6 +70,7 @@ class ChatMessage {
       citations: citations ?? this.citations,
       missingFields: missingFields ?? this.missingFields,
       resultCard: resultCard ?? this.resultCard,
+      submittedValues: submittedValues ?? this.submittedValues,
       timestamp: timestamp ?? this.timestamp,
     );
   }
