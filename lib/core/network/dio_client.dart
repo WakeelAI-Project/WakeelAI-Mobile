@@ -15,7 +15,7 @@ import 'package:wakeel_ai_app/features/auth/application/auth_state_provider.dart
 /// point at a locally-run backend during development.
 const String apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'https://wakeelapi-gqc2dte2a2fwepg8.switzerlandnorth-01.azurewebsites.net',
+  defaultValue: 'https://wakeelai-api-1921.azurewebsites.net',
 );
 
 /// Default connect/receive timeout for every API call.
