@@ -113,6 +113,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           return t.loginInvalidCredentials;
         case LoginFailureReason.accountInactive:
           return t.loginAccountInactive;
+        case LoginFailureReason.roleNotAllowed:
+          return t.loginRoleNotAllowed;
         case LoginFailureReason.unknown:
           return t.loginGenericError;
       }

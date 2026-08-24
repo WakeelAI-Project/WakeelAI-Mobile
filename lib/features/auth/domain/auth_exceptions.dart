@@ -6,6 +6,12 @@ enum LoginFailureReason {
   /// 403 `{"error": "account_inactive"}` — deactivated by Owner/HR.
   accountInactive,
 
+  /// The credentials are valid but the account's `role` claim isn't
+  /// `Employee` — the backend has no role check on `/auth/login` itself, so
+  /// this app rejects it client-side before persisting any token. Company
+  /// Owner and HR Manager accounts belong in the web dashboard.
+  roleNotAllowed,
+
   /// Any other error (network failure, unexpected response shape, etc.).
   unknown,
 }

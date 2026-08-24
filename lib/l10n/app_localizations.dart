@@ -218,6 +218,12 @@ abstract class AppLocalizations {
   /// **'Your account has been deactivated. Please contact your HR administrator.'**
   String get loginAccountInactive;
 
+  /// Error banner shown when a Company Owner or HR Manager account tries to sign in on the mobile app
+  ///
+  /// In en, this message translates to:
+  /// **'This app is for employees only. Company Owner and HR Manager accounts should sign in from the web dashboard.'**
+  String get loginRoleNotAllowed;
+
   /// Error banner shown for network/server failures during login
   ///
   /// In en, this message translates to:
