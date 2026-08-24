@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import '../../../../core/theme/app_colors.dart';
+import 'latex_markdown_support.dart';
 
 class TypewriterText extends StatefulWidget {
   const TypewriterText({
@@ -78,6 +79,10 @@ class _TypewriterTextState extends State<TypewriterText> {
     
     return MarkdownBody(
       data: _displayedText,
+      inlineSyntaxes: [LatexInlineSyntax()],
+      builders: {
+        'math': LatexElementBuilder(textStyle: widget.style),
+      },
       styleSheet: MarkdownStyleSheet(
         p: widget.style,
         strong: widget.style?.copyWith(fontWeight: FontWeight.bold),
