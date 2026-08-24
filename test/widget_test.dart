@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,23 +11,45 @@ import 'package:wakeel_ai_app/core/storage/token_storage.dart';
 import 'package:wakeel_ai_app/features/auth/data/auth_api_client.dart';
 import 'package:wakeel_ai_app/features/auth/domain/auth_exceptions.dart';
 
+/// Builds a well-formed (but unsigned) JWT string carrying [claims] in its
+/// payload segment — LoginController decodes the real access token's `role`
+/// claim to reject non-Employee accounts, so fake tokens need to look like a
+/// real JWT for that check to see what the test intends.
+String _fakeJwt(Map<String, dynamic> claims) {
+  String segment(Object value) => base64Url.encode(utf8.encode(jsonEncode(value))).replaceAll('=', '');
+  return '${segment({
+        'alg': 'none'
+      })}.${segment(claims)}.signature';
+}
+
+final String _employeeAccessToken = _fakeJwt({'role': 'Employee'});
+final String _firstLoginAccessToken = _fakeJwt({'role': 'Employee', 'sub': 'first-login'});
+final String _hrAccessToken = _fakeJwt({'role': 'HR_Manager'});
+
 class _FakeAuthApiClient implements AuthApiClient {
   @override
   Future<AuthTokens> login({required String email, required String password}) async {
     // Small delay so tests can observe the loading state mid-flight, like a real request.
     await Future.delayed(const Duration(milliseconds: 50));
     if (email == 'employee@company.com' && password == 'correct-password') {
-      return const AuthTokens(
-        accessToken: 'fake-access',
+      return AuthTokens(
+        accessToken: _employeeAccessToken,
         refreshToken: 'fake-refresh',
         mustChangePassword: false,
       );
     }
     if (email == 'newhire@company.com' && password == 'temp-password') {
-      return const AuthTokens(
-        accessToken: 'fake-first-login-access',
+      return AuthTokens(
+        accessToken: _firstLoginAccessToken,
         refreshToken: 'fake-first-login-refresh',
         mustChangePassword: true,
+      );
+    }
+    if (email == 'hr@company.com' && password == 'correct-password') {
+      return AuthTokens(
+        accessToken: _hrAccessToken,
+        refreshToken: 'fake-hr-refresh',
+        mustChangePassword: false,
       );
     }
     throw const LoginFailure(LoginFailureReason.invalidCredentials);
@@ -38,7 +62,7 @@ class _FakeAuthApiClient implements AuthApiClient {
     required String newPassword,
   }) async {
     await Future.delayed(const Duration(milliseconds: 50));
-    if (accessToken != 'fake-first-login-access' || currentPassword != 'temp-password') {
+    if (accessToken != _firstLoginAccessToken || currentPassword != 'temp-password') {
       throw const ChangePasswordFailure(ChangePasswordFailureReason.invalidCurrentPassword);
     }
   }
@@ -159,8 +183,33 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(tester.takeException(), isNull);
-    expect(await tokenStorage.readAccessToken(), 'fake-access');
+    expect(await tokenStorage.readAccessToken(), _employeeAccessToken);
     expect(await tokenStorage.readRefreshToken(), 'fake-refresh');
+  });
+
+  testWidgets('An HR/Owner account is rejected without persisting tokens', (WidgetTester tester) async {
+    final tokenStorage = _FakeTokenStorage();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          authApiClientProvider.overrideWithValue(_FakeAuthApiClient()),
+          tokenStorageProvider.overrideWithValue(tokenStorage),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+        child: const WakeelApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.widgetWithText(TextFormField, 'Email'), 'hr@company.com');
+    await tester.enterText(find.widgetWithText(TextFormField, 'Password'), 'correct-password');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Log in'));
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(find.textContaining('employees only'), findsOneWidget);
+    expect(await tokenStorage.readAccessToken(), isNull);
+    expect(await tokenStorage.readRefreshToken(), isNull);
   });
 
   testWidgets('First-login employee is routed to change-password without persisting tokens', (
