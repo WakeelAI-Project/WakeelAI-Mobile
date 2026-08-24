@@ -15,12 +15,12 @@ import 'package:wakeel_ai_app/features/auth/application/auth_state_provider.dart
 /// point at a locally-run backend during development.
 const String apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
-  defaultValue: 'https://wakeel-ai-api.runasp.net',
+  defaultValue: 'https://wakeelapi-gqc2dte2a2fwepg8.switzerlandnorth-01.azurewebsites.net',
 );
 
 /// Default connect/receive timeout for every API call.
 ///
-/// The backend sleeps when idle (MonsterASP.NET / Render free tiers), and a
+/// The backend sleeps when idle (Azure App Service / Render free tiers), and a
 /// cold start regularly costs well over ten seconds — the previous budget —
 /// so the first request of a session used to fail and make the app look
 /// dead. Thirty seconds covers a cold start while still failing fast enough
