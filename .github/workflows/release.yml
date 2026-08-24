@@ -80,11 +80,19 @@ jobs:
       - name: Publish public download release
         env:
           GH_TOKEN: ${{ github.token }}
+          # Passed as env vars rather than interpolated straight into the
+          # script below - a commit message is untrusted, attacker-influenceable
+          # text, and a `${{ }}` substituted directly into `run:` becomes literal
+          # shell syntax (a stray `"` already broke this step once). Referenced
+          # as "$VAR" instead, the shell treats it as inert data.
+          COMMIT_SHA: ${{ github.sha }}
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          RUN_NUMBER: ${{ github.run_number }}
         run: |
           gh release delete latest --yes --cleanup-tag || true
           gh release create latest build/app/outputs/flutter-apk/WakeelAI.apk \
             --repo "${{ github.repository }}" \
             --title "Latest Build" \
-            --notes "versionCode: ${{ github.run_number }}
-          Automatically updated on every push to main. Commit: ${{ github.sha }} — ${{ github.event.head_commit.message }}" \
+            --notes "versionCode: ${RUN_NUMBER}
+          Automatically updated on every push to main. Commit: ${COMMIT_SHA} — ${COMMIT_MESSAGE}" \
             --latest
