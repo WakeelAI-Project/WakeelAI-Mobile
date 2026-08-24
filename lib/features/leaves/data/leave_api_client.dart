@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,41 @@ import '../../../core/network/dio_client.dart';
 import '../../../core/utils/app_date_format.dart';
 import '../domain/leave_request.dart';
 import '../domain/leave_type.dart';
+
+/// Sniffs [file]'s magic bytes to get a reliable content type for the
+/// attachment upload endpoints, which whitelist exactly PDF/JPEG/PNG.
+///
+/// Filename-extension detection (what `MultipartFile.fromFile` falls back to
+/// on its own) is not reliable here: on Android, `file_picker` frequently
+/// hands back a path to a cached copy with no extension at all (e.g. content
+/// URIs resolved from Google Drive/Downloads, or some camera roll picks), so
+/// the request would go out with no usable content type and arrive at the
+/// backend as `application/octet-stream`, which its whitelist rejects.
+Future<DioMediaType> _attachmentContentType(File file) async {
+  final header = Uint8List.fromList(await file.openRead(0, 8).expand((chunk) => chunk).toList());
+
+  if (header.length >= 4 && header[0] == 0x25 && header[1] == 0x50 && header[2] == 0x44 && header[3] == 0x46) {
+    return DioMediaType('application', 'pdf'); // %PDF
+  }
+  if (header.length >= 3 && header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF) {
+    return DioMediaType('image', 'jpeg');
+  }
+  if (header.length >= 8 &&
+      header[0] == 0x89 &&
+      header[1] == 0x50 &&
+      header[2] == 0x4E &&
+      header[3] == 0x47 &&
+      header[4] == 0x0D &&
+      header[5] == 0x0A &&
+      header[6] == 0x1A &&
+      header[7] == 0x0A) {
+    return DioMediaType('image', 'png');
+  }
+
+  // Not one of the whitelisted types by content — fall back to whatever the
+  // filename suggests (still better than nothing) rather than guessing.
+  return MultipartFile.lookupMediaType(file.uri.pathSegments.last) ?? DioMediaType('application', 'octet-stream');
+}
 
 class LeaveRequestsPage {
   const LeaveRequestsPage({required this.items, required this.page, required this.hasMore});
@@ -117,7 +153,11 @@ class DioLeaveApiClient implements LeaveApiClient {
   @override
   Future<String> uploadAttachment(File file) async {
     final formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(file.path, filename: file.uri.pathSegments.last),
+      'file': await MultipartFile.fromFile(
+        file.path,
+        filename: file.uri.pathSegments.last,
+        contentType: await _attachmentContentType(file),
+      ),
     });
     final response = await _dio.post<Map<String, dynamic>>('/api/leave-requests/attachments', data: formData);
     final url = response.data?['url'] as String?;
@@ -156,6 +196,7 @@ class DioLeaveApiClient implements LeaveApiClient {
       formDataMap['attachment'] = await MultipartFile.fromFile(
         attachment.path,
         filename: attachment.uri.pathSegments.last,
+        contentType: await _attachmentContentType(attachment),
       );
     }
 
